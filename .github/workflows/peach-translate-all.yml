@@ -1,0 +1,37 @@
+name: Peach one-pass English coverage inventory
+on:
+  push:
+    branches: ["feature/english-complete-audit"]
+    paths: [".github/workflows/peach-translate-all.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+      - name: Inventory and translate public hard-coded source strings
+        run: python scripts/audit_translate_peach.py
+      - name: Validate output without claiming human review
+        run: |
+          python - <<'PY'
+          import json
+          a=json.load(open('english-audit-output/coverage.json'))
+          d=json.load(open('english-audit-output/translations.json'))
+          assert a['source_candidates']>2000
+          assert len(d)>=1000
+          assert a['curated_covered']+a['machine_translated']+a['untranslated']==a['source_candidates']
+          print('Translation audit valid:',a['source_candidates'],'source strings;',len(d),'draft English mappings')
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: peach-source-English-draft-catalog
+          path: english-audit-output/
+          retention-days: 7
+          if-no-files-found: warn
