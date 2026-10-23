@@ -1,4 +1,4 @@
-import { uiText } from '../../i18n';
+import { uiText } from '../../../i18n';
 import { useState, type FormEvent } from 'react';
 
 import { Button } from '@/components/base/buttons/button';
