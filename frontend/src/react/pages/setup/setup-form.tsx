@@ -5,7 +5,7 @@
  * 的那一句放在目录区上方；高级设置里任一项出错就展开它；访问密码出错时开关保持打开。已填的
  * 内容都留在原地，焦点落到第一个标错的框。 */
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { uiText } from '../../i18n';
+import { uiText } from '../../../i18n';
 import { Radio } from 'react-aria-components';
 import { RiAddLine } from '@remixicon/react';
 
