@@ -49,10 +49,11 @@ Windows packaging already invokes the frontend build and bundles the entire `web
 folder, including the language assets. **Upstream Peach installers will not contain
 this fork's English translations.**
 
-To build a candidate from GitHub when checks pass, enable GitHub Actions for
-`acchtt/peach-en`, choose **Actions → Release → Run workflow**, select the tested
-fork branch, and retrieve the `desktop-candidate` artifact after the Windows build
-and smoke tests complete. The project creates unsigned test packages.
+The fork's **Release** workflow can produce an unsigned Windows candidate from this
+feature branch without publishing a GitHub release. Retrieve the `desktop-candidate`
+artifact only after the Windows build and smoke-test jobs succeed. A manual run is
+also available under **Actions → Release → Run workflow**. The original upstream
+installers do not include this branch's localization changes.
 
 Do not publish or promote a release before the Windows installer, installed
 application, and portable package have been smoke-tested. A workflow artifact is
