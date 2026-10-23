@@ -253,7 +253,7 @@ describe('导航', () => {
       store.save();
     });
     expect(navKeys(scroll).slice(0, 2)).toEqual(['follow', 'immerse']);
-    expect(scroll.querySelector('[data-nav="immerse"]')?.textContent).toContain('沉浸模式');
+    expect(scroll.querySelector('[data-nav="immerse"]')?.textContent).toContain('Immersive mode');
   });
 
   it('store 里的顺序一变（设置面板或另一台机器同步回来），这一列当场重排', async () => {
