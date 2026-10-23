@@ -565,6 +565,19 @@ def app_asset(request: Request, args: dict[str, str] = Depends(require_asset_aut
     return asset_response(request, path, "text/css")
 
 
+@router.api_route("/peach-locale.js", methods=["GET", "HEAD"])
+def peach_locale_asset(request: Request):
+    """Public, static locale adapter for both setup and authenticated views.
+
+    No settings, account data, media paths, or credentials are read here.
+    Use the same ETag handling as the other immutable application assets.
+    """
+    path = request.app.state.settings.page_path.parent / "peach-locale.js"
+    if not path.is_file():
+        raise HTTPException(404)
+    return asset_response(request, path, "text/javascript")
+
+
 _BUNDLE_NAMES = frozenset({"peach-app.js", "peach-app.css", "peach-pages.js", "peach-pages.css"})
 
 
