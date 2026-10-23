@@ -452,6 +452,18 @@
 
   function start() {
     installSelector();
+    // Some standalone setup views update the document title after this script loads.
+    const syncTitle = () => {
+      const prefix = 'Peach · ';
+      if (document.title.startsWith(prefix)) {
+        const en = translations[document.title.slice(prefix.length).trim()];
+        if (en) document.title = prefix + en;
+      }
+    };
+    syncTitle();
+    new MutationObserver(syncTitle).observe(document.head, {
+      childList: true, characterData: true, subtree: true,
+    });
     scan(document.body);
     const pending = new Set();
     let scheduled = false;
