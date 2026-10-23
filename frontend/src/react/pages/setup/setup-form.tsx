@@ -5,7 +5,7 @@
  * 的那一句放在目录区上方；高级设置里任一项出错就展开它；访问密码出错时开关保持打开。已填的
  * 内容都留在原地，焦点落到第一个标错的框。 */
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { uiText } from '../../../i18n';
+import { getLocale, uiText } from '../../../i18n';
 import { Radio } from 'react-aria-components';
 import { RiAddLine } from '@remixicon/react';
 
@@ -40,6 +40,10 @@ function folderErrors(value: SetupErrors[string], count: number): { rows: string
 
 function scanLabel(paths: string[]): string {
   if (!paths.length) return uiText('完成设置后扫描并补全资料');
+  if (getLocale() === 'zh-CN') {
+    if (paths.length === 1) return `完成设置后扫描并补全资料：${paths[0]}`;
+    return `完成设置后扫描这 ${paths.length} 个文件夹并补全资料`;
+  }
   if (paths.length === 1) return `${uiText('完成设置后扫描并补全资料')}: ${paths[0]}`;
   return `${uiText('完成设置后扫描并补全资料')}: ${paths.length} ${uiText('文件夹')}`;
 }
