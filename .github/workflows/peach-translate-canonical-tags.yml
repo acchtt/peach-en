@@ -1,0 +1,54 @@
+name: Peach canonical UI tag localization
+on:
+  push:
+    branches: ["feature/english-complete-audit"]
+    paths: [".github/workflows/peach-translate-canonical-tags.yml"]
+  workflow_dispatch:
+permissions: { contents: read }
+jobs:
+  translate-tags:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with: { python-version: "3.14" }
+      - name: Translate exact Peach catalog taxonomy values (not user content)
+        run: |
+          python - <<'PY'
+          import ast,re,json,concurrent.futures
+          from pathlib import Path
+          from scripts.audit_translate_peach import batch
+          root=Path('src/peach')
+          result=set()
+          for fn in ('genre_taxonomy.py','catalog_rules.py'):
+            tree=ast.parse((root/fn).read_text('utf8'))
+            for node in tree.body:
+              if not isinstance(node,(ast.Assign,ast.AnnAssign)):continue
+              targets=node.targets if isinstance(node,ast.Assign) else [node.target]
+              names=[n.id for n in targets if isinstance(n,ast.Name)]
+              if not any(('TAG' in n or 'GENRES' in n or 'ALIASES' in n) for n in names):continue
+              try:data=ast.literal_eval(node.value)
+              except (ValueError,TypeError):continue
+              values=data.values() if isinstance(data,dict) else data if isinstance(data,(set,list,tuple,frozenset)) else []
+              for value in values:
+                for term in value if isinstance(value,(list,tuple,set)) else (value,):
+                  if isinstance(term,str) and re.search('[\u3400-\u9fff]',term):result.add(term)
+          curated=json.loads(Path('web/peach-ui-en-comprehensive.json').read_text('utf8'))
+          targets=sorted(t for t in result if t not in curated)
+          batches=[targets[i:i+12] for i in range(0,len(targets),12)]
+          translated={};failed=[]
+          with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
+            for new,errors in pool.map(batch,batches):
+              translated.update(new);failed+=errors
+          Path('tag-translations.json').write_text(json.dumps(translated,ensure_ascii=False,indent=2),'utf8')
+          Path('tag-coverage.json').write_text(json.dumps({'canonical_tags':len(result),'already_in_catalog':len(result)-len(targets),'newly_translated':len(translated),'untranslated_tags':failed},ensure_ascii=False,indent=2),'utf8')
+          print('TAGS',len(result),'NEW',len(translated),'MISSING',len(failed))
+          PY
+      - uses: actions/upload-artifact@v7
+        with:
+          name: peach-canonical-tag-draft-translations
+          path: |
+            tag-translations.json
+            tag-coverage.json
+          retention-days: 7
