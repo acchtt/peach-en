@@ -36,6 +36,8 @@ jobs:
         run: npm --prefix frontend ci
       - name: Typecheck
         run: npm --prefix frontend run typecheck
+      - name: Frontend lint
+        run: npm --prefix frontend run lint
       - name: Frontend regression tests
         run: npm --prefix frontend test
       - name: Build both application and standalone pages
