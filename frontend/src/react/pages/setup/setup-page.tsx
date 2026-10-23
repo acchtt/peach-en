@@ -2,7 +2,7 @@
  *
  * 题目接口只对运行 Peach 的这台电脑开放；别的设备打开时它回 403，页面不画表单，只说去哪里打开。 */
 import { useEffect, useState } from 'react';
-import { uiText } from '../../i18n';
+import { uiText } from '../../../i18n';
 
 import { Button } from '@/components/base/buttons/button';
 
