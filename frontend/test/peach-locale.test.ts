@@ -1,9 +1,9 @@
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const localeAdapter = readFileSync(
-  fileURLToPath(new URL('../../web/peach-locale.js', import.meta.url)), 'utf8',
+  resolve(process.cwd(), '../web/peach-locale.js'), 'utf8',
 );
 
 function runAdapter() {
