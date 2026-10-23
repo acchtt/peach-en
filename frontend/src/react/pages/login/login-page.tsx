@@ -6,7 +6,7 @@
  * 原因由 `role="alert"` 播报，焦点落在框里。改了框里的内容就撤掉这条原因：BoardUI 的 Input 走原生
  * 校验，标着错误时表单交不出去。 */
 import { useState } from 'react';
-import { uiText } from '../../i18n';
+import { uiText } from '../../../i18n';
 
 import { Button } from '@/components/base/buttons/button';
 import { Checkbox } from '@/components/base/checkbox/checkbox';
