@@ -1,0 +1,70 @@
+name: Consolidate Peach English source audit catalog
+on:
+  push:
+    branches: ["feature/english-complete-audit"]
+    paths: [".github/workflows/peach-consolidate-catalog.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  merge-audits:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feature/english-complete-audit
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: peach-source-English-draft-catalog
+          run-id: 39986337588
+          github-token: ${{ github.token }}
+          path: /tmp/source
+      - uses: actions/download-artifact@v8
+        with:
+          name: peach-canonical-tag-draft-translations
+          run-id: 39988089639
+          github-token: ${{ github.token }}
+          path: /tmp/tags
+      - uses: actions/download-artifact@v8
+        with:
+          name: peach-backend-error-draft-translations
+          run-id: 39988208678
+          github-token: ${{ github.token }}
+          path: /tmp/backend
+      - name: Consolidate unique UI mappings and document machine-translation provenance
+        run: |
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          frontend=json.load(open('/tmp/source/translations.json'))
+          backend=json.load(open('/tmp/backend/backend-translations.json'))
+          tagdraft=json.load(open('/tmp/tags/tag-translations.json'))
+          def good(k,v):
+            return (isinstance(k,str) and isinstance(v,str) and k and v
+              and not k.lstrip().startswith(('#','//'))
+              and not any(x in k for x in (r'\b',r'\s',r'\d',r'(?',r'[一-',r'[0-9'))
+              and not (k.count('|')>=2 or k.count('\\')>=2)
+              and not re.search('[\u3400-\u9fff]',v)
+              and len(k)<=230 and len(v)<=600)
+          merged={**{k:v for k,v in backend.items() if good(k,v)},**frontend}
+          Path('web/peach-ui-en-comprehensive.json').write_text(json.dumps(merged,ensure_ascii=False,indent=2)+'\n','utf8')
+          Path('web/peach-ui-en-tags.json').write_text(json.dumps(tagdraft,ensure_ascii=False,indent=2)+'\n','utf8')
+          a={'source_ui_candidates':json.load(open('/tmp/source/coverage.json'))['source_candidates'],
+              'canonical_tag_labels':json.load(open('/tmp/tags/tag-coverage.json'))['canonical_tags'],
+              'backend_source_candidates':json.load(open('/tmp/backend/backend-coverage.json'))['backend_candidates'],
+              'combined_machine_and_curated_mappings':len(merged),
+              'machine_translation_warning':'Draft auto-translations may be awkward. Never mutate actual filenames, names, API data or library metadata.',
+              'note':'This is a source inventory, not a guarantee that all rendered text has been translated.'}
+          Path('docs/PEACH_EN_FULL_AUDIT.json').write_text(json.dumps(a,ensure_ascii=False,indent=2)+'\n','utf8')
+          print(a)
+          PY
+          git add web/peach-ui-en-comprehensive.json web/peach-ui-en-tags.json docs/PEACH_EN_FULL_AUDIT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --cached --quiet; then
+            git commit -m "feat(i18n): consolidate frontend, backend and canonical tag English source coverage"
+            git push origin HEAD:feature/english-complete-audit
+          fi
