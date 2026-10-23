@@ -1,0 +1,44 @@
+name: Sync Peach English frontend bundles
+
+on:
+  push:
+    branches: ["feature/english-localization"]
+    paths:
+      - ".github/workflows/sync-peach-en-bundles.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  synchronize:
+    if: github.repository == 'acchtt/peach-en' && github.ref == 'refs/heads/feature/english-localization'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feature/english-localization
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: node scripts/sync_peach_ui_labels.mjs --check
+      - run: npm --prefix frontend ci
+      - run: npm --prefix frontend run typecheck
+      - run: npm --prefix frontend run build
+      - name: Commit generated frontend bundles to the feature branch
+        shell: bash
+        run: |
+          git add -- web/dist/peach-app.js web/dist/peach-app.css web/dist/peach-pages.js web/dist/peach-pages.css
+          if git diff --cached --quiet; then
+            echo "Frontend bundles already match their source."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build(i18n): synchronize compiled English bundles"
+          git push origin HEAD:feature/english-localization
