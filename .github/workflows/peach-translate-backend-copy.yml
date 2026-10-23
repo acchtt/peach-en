@@ -1,0 +1,63 @@
+name: Peach backend UI/error copy localization
+on:
+  push:
+    branches: ["feature/english-complete-audit"]
+    paths: [".github/workflows/peach-translate-backend-copy.yml"]
+  workflow_dispatch:
+permissions: { contents: read }
+jobs:
+  translate-backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with: { python-version: "3.14" }
+      - name: Translate Chinese source-coded backend messages without private data
+        run: |
+          python - <<'PY'
+          import ast,json,re,concurrent.futures
+          from pathlib import Path
+          from scripts.audit_translate_peach import batch,clean
+          path=Path('src/peach');texts=set()
+          for fn in path.rglob('*.py'):
+            if fn.name in {'genre_taxonomy.py','catalog_rules.py','studio_icons.py'}:continue
+            try:tree=ast.parse(fn.read_text('utf8'))
+            except SyntaxError:continue
+            docstrings=set()
+            for node in ast.walk(tree):
+              if isinstance(node,(ast.Module,ast.ClassDef,ast.FunctionDef,ast.AsyncFunctionDef)):
+                if node.body and isinstance(node.body[0],ast.Expr) and isinstance(node.body[0].value,ast.Constant) and isinstance(node.body[0].value.value,str):
+                  docstrings.add(id(node.body[0].value))
+            for node in ast.walk(tree):
+              if isinstance(node,ast.Constant) and isinstance(node.value,str) and id(node) not in docstrings:
+                t=clean(node.value)
+                if t:texts.add(t)
+              elif isinstance(node,ast.JoinedStr):
+                words=[];i=0
+                for value in node.values:
+                  if isinstance(value,ast.Constant):words.append(str(value.value))
+                  elif isinstance(value,ast.FormattedValue):words.append('{'+str(i)+'}');i+=1
+                t=clean(''.join(words))
+                if t:texts.add(t)
+          existing=json.loads(Path('web/peach-ui-en-comprehensive.json').read_text('utf8'))
+          targets=sorted(t for t in texts if t not in existing)
+          print('Backend UI message candidates:',len(texts),'missing:',len(targets),flush=True)
+          batches=[targets[i:i+12] for i in range(0,len(targets),12)]
+          new={};failed=[]
+          with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            futures=[executor.submit(batch,g) for g in batches]
+            for i,f in enumerate(concurrent.futures.as_completed(futures),1):
+              x,e=f.result();new.update(x);failed.extend(e)
+              if i%25==0:print('Backend groups',i,'/',len(batches),'translated',len(new),flush=True)
+          Path('backend-translations.json').write_text(json.dumps(new,ensure_ascii=False,indent=2),'utf8')
+          Path('backend-coverage.json').write_text(json.dumps({'backend_candidates':len(texts),'already_in_catalog':len(texts)-len(targets),'newly_translated':len(new),'untranslated_messages':failed,'notice':'Public source-coded messages only, no runtime user data transmitted, machine drafts need language QA.'},ensure_ascii=False,indent=2),'utf8')
+          print('COMPLETE',len(new),'untranslated',len(failed))
+          PY
+      - uses: actions/upload-artifact@v7
+        with:
+          name: peach-backend-error-draft-translations
+          path: |
+            backend-translations.json
+            backend-coverage.json
+          retention-days: 7
