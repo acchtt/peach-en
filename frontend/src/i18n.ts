@@ -1,3 +1,4 @@
+import englishLabels from '../../web/peach-ui-en.json';
 /** Peach English fork: lightweight, dependency-free interface localization. */
 export type Locale = 'en-US' | 'zh-CN';
 const STORAGE_KEY = 'peach-ui-locale';
@@ -38,4 +39,10 @@ export function setLocale(locale: Locale): void {
 }
 export function t(key: MessageKey, locale: Locale = currentLocale): string {
   return messages[key][locale];
+}
+
+/** Translate reviewed interface copy while preserving source identifiers and media metadata. */
+export function uiText(value: string, locale: Locale = currentLocale): string {
+  if (locale === 'zh-CN') return value;
+  return (englishLabels as Record<string, string>)[value] ?? value;
 }
