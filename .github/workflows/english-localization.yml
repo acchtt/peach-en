@@ -1,0 +1,60 @@
+name: Peach English localization
+
+on:
+  pull_request:
+  push:
+    branches:
+      - feature/english-localization
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: English UI, typecheck, tests and frontend build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+      - name: Validate the shared language catalog
+        run: |
+          node scripts/sync_peach_ui_labels.mjs --check
+          node --check web/peach-locale.js
+      - name: Check Python syntax
+        run: python -m compileall -q src/peach
+      - name: Install locked frontend dependencies
+        run: npm --prefix frontend ci
+      - name: Typecheck
+        run: npm --prefix frontend run typecheck
+      - name: Frontend regression tests
+        run: npm --prefix frontend test
+      - name: Build both application and standalone pages
+        run: npm --prefix frontend run build
+      - name: Verify installable frontend assets
+        shell: bash
+        run: |
+          test -s web/dist/peach-app.js
+          test -s web/dist/peach-pages.js
+          test -s web/dist/peach-app.css
+          test -s web/dist/peach-pages.css
+          test -s web/peach-locale.js
+          test -s web/peach-ui-en.json
+      - uses: actions/upload-artifact@v7
+        if: success()
+        with:
+          name: peach-en-frontend-check
+          path: |
+            web/dist/peach-app.js
+            web/dist/peach-app.css
+            web/dist/peach-pages.js
+            web/dist/peach-pages.css
+          retention-days: 7
