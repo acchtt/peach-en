@@ -1,0 +1,41 @@
+name: Peach English source audit snapshot
+
+on:
+  push:
+    branches: ["feature/english-localization"]
+    paths:
+      - ".github/workflows/english-source-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - name: Create source audit package
+        run: |
+          python - <<'PY'
+          import zipfile
+          from pathlib import Path
+          selected = [Path("frontend/src"), Path("src/peach"), Path("web/index.html"),
+                      Path("web/peach-ui-en.json"), Path("web/peach-locale.js"),
+                      Path("frontend/package.json"), Path("frontend/test")]
+          with zipfile.ZipFile("source-audit.zip", "w", compression=zipfile.ZIP_DEFLATED) as out:
+              for target in selected:
+                  if target.is_file():
+                      out.write(target, target.as_posix())
+                  elif target.is_dir():
+                      for p in target.rglob("*"):
+                          if p.is_file() and p.suffix in {".py",".ts",".tsx",".json",".js",".html",".css"}:
+                              out.write(p, p.as_posix())
+          print("Source audit archive ready")
+          PY
+      - uses: actions/upload-artifact@v7
+        with:
+          name: peach-en-source-audit
+          path: source-audit.zip
+          retention-days: 3
