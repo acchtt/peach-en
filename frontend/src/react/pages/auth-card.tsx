@@ -22,7 +22,6 @@ export function AuthCard({ title, lede, busy = false, children }: {
           <div className="mb-4 flex items-center justify-between gap-3">
             <img src="/peach-logo.png" alt="" width={40} height={40} className="size-10" />
             <label className="flex items-center gap-2 text-body-2-regular text-text-secondary">
-              <span className="sr-only">Language / 语言</span>
               <select aria-label="Interface language" defaultValue={getLocale()}
                 className="rounded-lg border border-separator-border bg-background-tertiary-default px-2 py-1 text-body-2-regular text-text-primary"
                 onChange={(event) => setLocale(event.currentTarget.value === 'zh-CN' ? 'zh-CN' : 'en-US')}>
