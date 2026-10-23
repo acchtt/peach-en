@@ -18,6 +18,7 @@ env:
   PEACH_LIBRARY_SENTRY_DSN: ${{ vars.PEACH_LIBRARY_SENTRY_DSN }}
   PYTHONUTF8: "1"
   PYTHONIOENCODING: "utf-8"
+  PEACH_RELEASE_REPO: ${{ github.repository }}
 
 jobs:
   validate:
