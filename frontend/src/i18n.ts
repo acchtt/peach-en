@@ -17,13 +17,23 @@ try {
   const saved = globalThis.localStorage?.getItem(STORAGE_KEY);
   if (saved === 'en-US' || saved === 'zh-CN') currentLocale = saved;
 } catch { /* Private browsing or restricted storage: use English. */ }
+// The non-bundled locale adapter also broadcasts changes through this event.
+if (typeof document !== 'undefined') {
+  document.addEventListener('peach:locale-changed', (event: Event) => {
+    const detail = (event as CustomEvent<unknown>).detail;
+    if (detail === 'en-US' || detail === 'zh-CN') currentLocale = detail;
+  });
+}
 export function getLocale(): Locale { return currentLocale; }
 export function setLocale(locale: Locale): void {
+  if (locale === currentLocale) return;
   currentLocale = locale;
   try { globalThis.localStorage?.setItem(STORAGE_KEY, locale); } catch { /* nonpersistent */ }
   if (typeof document !== 'undefined') {
     document.documentElement.lang = locale;
     document.dispatchEvent(new CustomEvent('peach:locale-changed', { detail: locale }));
+    // Full reload re-evaluates static labels and React state with the selected locale.
+    window.location.reload();
   }
 }
 export function t(key: MessageKey, locale: Locale = currentLocale): string {
