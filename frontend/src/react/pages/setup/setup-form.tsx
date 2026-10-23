@@ -185,7 +185,7 @@ export function SetupForm({ setup, onDone }: { setup: SetupQuestions; onDone: (d
             ))}
           </div>
           <Button ref={addButton} variant="secondary" leadingIcon={RiAddLine} className="self-start" onClick={folders.add}>
-            添加媒体库
+            {uiText("添加媒体库")}
           </Button>
           {cloud ? (
             <>
