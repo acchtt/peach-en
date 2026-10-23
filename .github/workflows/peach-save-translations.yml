@@ -1,0 +1,45 @@
+name: Save complete Peach English source catalog
+on:
+  push:
+    branches: ["feature/english-complete-audit"]
+    paths: [".github/workflows/peach-save-translations.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  commit-catalog:
+    if: github.repository == 'acchtt/peach-en'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feature/english-complete-audit
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: peach-source-English-draft-catalog
+          run-id: 39986337588
+          github-token: ${{ github.token }}
+          path: /tmp/english-catalog
+      - name: Add machine-draft catalog and source coverage audit
+        shell: bash
+        run: |
+          cp /tmp/english-catalog/translations.json web/peach-ui-en-comprehensive.json
+          cp /tmp/english-catalog/coverage.json docs/PEACH_EN_SOURCE_COVERAGE.json
+          test -s web/peach-ui-en-comprehensive.json
+          python - <<'PY'
+          import json
+          d=json.load(open('web/peach-ui-en-comprehensive.json'))
+          a=json.load(open('docs/PEACH_EN_SOURCE_COVERAGE.json'))
+          assert len(d)>3000 and a['untranslated']==0
+          print('Validated',len(d),'draft translations; note these are not fully human-reviewed')
+          PY
+          git add web/peach-ui-en-comprehensive.json docs/PEACH_EN_SOURCE_COVERAGE.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if ! git diff --cached --quiet; then
+            git commit -m 'feat(i18n): add comprehensive offline English draft and coverage audit'
+            git push origin HEAD:feature/english-complete-audit
+          fi
