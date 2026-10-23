@@ -1,3 +1,8 @@
+> **English localization fork:** This repository includes in-progress English-first UI work on
+> [feature/english-localization](https://github.com/acchtt/peach-en/tree/feature/english-localization).
+> The original project's published installers do **not** include these changes.
+> Use a verified build from this fork; see [English fork status and build steps](docs/ENGLISH_FORK.md).
+>
 <p align="center">
   <img src="resources/peach-logo.png" alt="Peach" width="96">
 </p>
