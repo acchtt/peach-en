@@ -35,6 +35,7 @@ import type {
   SidebarApi, SidebarChip, SidebarContent, SidebarDot, SidebarFacets, SidebarHost, SidebarProps,
 } from './sidebar-api';
 import { moveSidebarKey, useCommitSidebarOrder } from './sidebar-order';
+import { uiText } from '../../i18n';
 
 /* 首页那一项的键是空串；空串写进 dataTransfer 等于没写，给它一个占位。 */
 const HOME = '__home__';
@@ -148,12 +149,12 @@ function Navigation({ host: at, epoch, version }: { host: SidebarHost; epoch: nu
     <>
       <div data-sidebar-nav="" ref={column} onPointerLeave={glide.leave}>
         {items.map(([key, label, glyph], index) => (
-          <button type="button" key={key || HOME} data-nav={key} aria-pressed={pressed[index]} aria-label={label}
+          <button type="button" key={key || HOME} data-nav={key} aria-pressed={pressed[index]} aria-label={uiText(label)}
             data-dragging={dragging === key ? '' : undefined}
             data-drop={drop?.key === key ? (drop.after ? 'after' : 'before') : undefined}
             onClick={() => at.navTo(key)} onPointerEnter={glide.hover} {...drag(key)}>
             {key === '' ? <img data-sidebar-home-logo="" src="/peach-logo.png" alt="" /> : <Icon name={glyph} />}
-            <span>{label}</span>
+            <span>{uiText(label)}</span>
           </button>
         ))}
       </div>
@@ -307,7 +308,7 @@ function Group({ title, kind, active, index, epoch, children }: {
   return (
     <details ref={details} data-sidebar-group={title} data-sidebar-kind={kind}>
       <summary role="button" data-sidebar-toggle="" aria-expanded={open} aria-controls={collapseId} onClick={toggle}>
-        <Icon name="chevron-right" /><span>{title}</span>
+        <Icon name="chevron-right" /><span>{uiText(title)}</span>
       </summary>
       <div ref={body} data-sidebar-collapse="" id={collapseId} inert={!open}>
         <div data-sidebar-collapse-body="">

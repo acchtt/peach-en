@@ -3,6 +3,9 @@ name: Release
 on:
   push:
     tags: ["v*.*.*"]
+    # One-shot English preview on a documentation touch (no prerelease published).
+    branches: ["feature/english-localization"]
+    paths: ["docs/ENGLISH_FORK.md"]
   workflow_dispatch:
 
 permissions:
@@ -18,6 +21,7 @@ env:
   PEACH_LIBRARY_SENTRY_DSN: ${{ vars.PEACH_LIBRARY_SENTRY_DSN }}
   PYTHONUTF8: "1"
   PYTHONIOENCODING: "utf-8"
+  PEACH_RELEASE_REPO: ${{ github.repository }}
 
 jobs:
   validate:
@@ -238,6 +242,7 @@ jobs:
 
   macos:
     name: macOS ${{ matrix.arch }} 独立测试包
+    if: github.ref_type == 'tag'
     needs: validate
     strategy:
       fail-fast: false

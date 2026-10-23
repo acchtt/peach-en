@@ -47,6 +47,7 @@ def page_shell(title: str, page: str, data: Mapping[str, str] | None = None, *, 
     return (f'{_PAGE_HEAD}<title>{escape(title)}</title>{_THEME_SCRIPT}'
             '<link rel="stylesheet" href="/vendor/inter/5.3.0/index.css">'
             '<link rel="stylesheet" href="/dist/peach-pages.css">'
+            '<script src="/peach-locale.js" defer></script>'
             '<script type="module" src="/dist/peach-pages.js"></script></head>'
             f'<body class="peach-react">{sprite}'
             f'<div id="peach-page" data-page="{escape(page, quote=True)}"{attributes}></div></body></html>\n')

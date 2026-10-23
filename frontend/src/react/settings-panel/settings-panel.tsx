@@ -24,6 +24,7 @@ import {
 } from '@peach/legacy/ui';
 
 import { normalizeJavImage } from '../../jav-artwork';
+import { uiText } from '../../i18n';
 import { boundedPreference } from '../../number-setting';
 import { GlowSettings } from './glow-settings';
 import { Icon, RemixIcon } from './icon';
@@ -231,7 +232,7 @@ function SettingsNav({ tab, epoch, configurable, openConfiguration, onSelect }: 
           ref={(node) => { buttons.current[index] = node }}
           onClick={() => onSelect(index)} onKeyDown={(event) => keys(event, index)}
           onPointerEnter={(event) => { if (event.pointerType !== 'touch') place(event.currentTarget, true) }}>
-          {icon === 'jav' ? <Icon name={icon} /> : <RemixIcon name={icon} />}{title}
+          {icon === 'jav' ? <Icon name={icon} /> : <RemixIcon name={icon} />}{uiText(title)}
         </button>
       ))}
       <div data-settings-service="" role="presentation">
@@ -247,7 +248,7 @@ function SettingsNav({ tab, epoch, configurable, openConfiguration, onSelect }: 
 function Group({ index, tab, children }: { index: number; tab: number; children: ReactNode }) {
   return (
     <section data-setting-group="" id={groupId(index)} role="tabpanel" aria-labelledby={tabId(index)} hidden={index !== tab}>
-      <h3>{SECTIONS[index][0]}</h3>
+      <h3>{uiText(SECTIONS[index][0])}</h3>
       {children}
     </section>
   );
@@ -259,7 +260,7 @@ function ToggleRow({ id, title, description, describedBy = `${id.replace(/Settin
 }) {
   return (
     <label data-setting-row="">
-      <span><b>{title}</b>{description ? <small id={describedBy}>{description}</small> : null}</span>
+      <span><b>{uiText(title)}</b>{description ? <small id={describedBy}>{uiText(description)}</small> : null}</span>
       <input data-toggle="" type="checkbox" id={id} role="switch" aria-describedby={description ? describedBy : undefined}
         checked={checked} onChange={(event) => onToggle(event.target.checked)} />
     </label>
@@ -272,7 +273,7 @@ function Row({ title, description, kind, children }: {
   return (
     <div data-setting-row="" data-setting-sort={kind === 'sort' ? '' : undefined}
       data-setting-related={kind === 'related' ? '' : undefined}>
-      <span><b>{title}</b>{typeof description === 'string' ? <small>{description}</small> : description}</span>
+      <span><b>{uiText(title)}</b>{typeof description === 'string' ? <small>{uiText(description)}</small> : description}</span>
       {children}
     </div>
   );
@@ -331,7 +332,7 @@ function SettingsPanel({ host: current, view: shown }: { host: SettingsPanelHost
       onClick={(event) => { if (event.target === event.currentTarget) close() }}>
       <div data-settings-card="" ref={card}>
         <div data-settings-head="" ref={head}>
-          <h2 id="settingsTitle">{SECTIONS[shown.tab][0]}</h2>
+          <h2 id="settingsTitle">{uiText(SECTIONS[shown.tab][0])}</h2>
             <SettingsDialogClose id="settingsClose" label="关闭设置" onPress={() => close()} />
         </div>
         <SettingsNav tab={shown.tab} epoch={epoch} configurable={shown.configurable} onSelect={select}
@@ -479,7 +480,7 @@ function CompilationToggle({ host: current, id, settingKey, label, title }: {
   };
   return (
     <label data-setting-row="">
-      <span><b>{title}</b></span>
+      <span><b>{uiText(title)}</b></span>
       <input data-toggle="" type="checkbox" id={id} role="switch" ref={box}
         checked={pending ?? settings[settingKey]} onChange={(event) => toggle(event.target.checked)} />
     </label>

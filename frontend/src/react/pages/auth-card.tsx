@@ -6,6 +6,7 @@
  * 24px 圆角，窄屏收内边距。
  * `busy` 时卡上写 `aria-busy`，题目还没取回来。 */
 import type { ReactNode } from 'react';
+import { getLocale, setLocale, uiText } from '../../i18n';
 
 export function AuthCard({ title, lede, busy = false, children }: {
   title: string;
@@ -18,9 +19,19 @@ export function AuthCard({ title, lede, busy = false, children }: {
       <section aria-labelledby="auth-card-title" aria-busy={busy || undefined}
         className="flex w-full max-w-140 flex-col gap-6 rounded-3xl border border-separator-border bg-background-secondary-default p-8 max-sm:p-5">
         <header className="flex flex-col gap-1">
-          <img src="/peach-logo.png" alt="" width={40} height={40} className="mb-4 size-10" />
-          <h1 id="auth-card-title" className="text-title-2-medium text-text-primary">{title}</h1>
-          {lede ? <p className="whitespace-pre-line text-body-2-regular text-text-secondary wrap-anywhere">{lede}</p> : null}
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <img src="/peach-logo.png" alt="" width={40} height={40} className="size-10" />
+            <label className="flex items-center gap-2 text-body-2-regular text-text-secondary">
+              <select aria-label="Interface language" defaultValue={getLocale()}
+                className="rounded-lg border border-separator-border bg-background-tertiary-default px-2 py-1 text-body-2-regular text-text-primary"
+                onChange={(event) => setLocale(event.currentTarget.value === 'zh-CN' ? 'zh-CN' : 'en-US')}>
+                <option value="en-US">English</option>
+                <option value="zh-CN">简体中文</option>
+              </select>
+            </label>
+          </div>
+          <h1 id="auth-card-title" className="text-title-2-medium text-text-primary">{uiText(title)}</h1>
+          {lede ? <p className="whitespace-pre-line text-body-2-regular text-text-secondary wrap-anywhere">{uiText(lede)}</p> : null}
         </header>
         {children}
       </section>

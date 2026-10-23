@@ -1,3 +1,4 @@
+import { uiText } from '../../../i18n';
 import { useState, type FormEvent } from 'react';
 
 import { Button } from '@/components/base/buttons/button';
@@ -26,10 +27,10 @@ export function SetupRestore({ onDone }: { onDone: (done: SetupDone) => void }) 
   };
   return (
     <form className="flex flex-col gap-4" onSubmit={submit} noValidate>
-      <Input label="已有数据目录" value={path} onChange={setPath} isRequired autoComplete="off" spellCheck="false"
+      <Input label={uiText("已有数据目录")} value={path} onChange={setPath} isRequired autoComplete="off" spellCheck="false"
         validationBehavior="aria" isInvalid={Boolean(error)}
-        hint={error ? <span role="alert">{error}</span> : '选择包含 config.toml 和 database 文件夹的数据目录。'} />
-      <Button type="submit" className="self-start" {...busyProps(busy)}>{busy ? '正在连接数据目录…' : '使用此目录'}</Button>
+        hint={error ? <span role="alert">{error}</span> : uiText('选择包含 config.toml 和 database 文件夹的数据目录。')} />
+      <Button type="submit" className="self-start" {...busyProps(busy)}>{uiText(busy ? '正在连接数据目录…' : '使用此目录')}</Button>
     </form>
   );
 }
