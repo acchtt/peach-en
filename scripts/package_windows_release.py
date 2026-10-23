@@ -27,7 +27,8 @@ def archive(destination: Path, root: Path, files: list[Path], manifest: dict | N
 
 def download_notes(version: str, *, lite_installer: bool = False) -> str:
     """发布页的下载入口与包类型说明。"""
-    base = f"https://github.com/peach-mitao/peach/releases/download/v{version}/Peach-{version}-windows-x64"
+    repository = os.environ.get("PEACH_RELEASE_REPO", "peach-mitao/peach")
+    base = f"https://github.com/{repository}/releases/download/v{version}/Peach-{version}-windows-x64"
     lite = (f"| [轻量安装包（lite-setup.exe）]({base}-lite-setup.exe) | 不含工具，安装时复用已有工具或按需联网下载 |\n"
             if lite_installer else "")
     return (
