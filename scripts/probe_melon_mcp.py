@@ -146,6 +146,20 @@ def main():
                         summary["chart_fields"]={k:str(v)[:130] for k,v in contents.items() if "date" in k.lower() or "time" in k.lower() or "chart" in k.lower() or "period" in k.lower() or "update" in k.lower()}
                 except ValueError:
                     pass
+    if isinstance(result,dict) and not result.get("isError"):
+        blocks=result.get("content",[])
+        if blocks and isinstance(blocks[0],dict):
+            try:
+                from datetime import datetime,timezone
+                from melon_mcp_adapter import inspect_ive
+                result_check=inspect_ive(
+                    blocks[0].get("text",""),
+                    chart_type="TOP_100",
+                    captured_at=datetime.now(timezone.utc),
+                )
+                summary["inspection"] = result_check
+            except Exception as exc:
+                summary["inspection_error"] = type(exc).__name__
     print(json.dumps(summary, ensure_ascii=False))
 
 
