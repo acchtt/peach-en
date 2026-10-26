@@ -102,6 +102,35 @@ def main():
     if status==200 and not record.get("tool_count"):
         record["response_sample"] = content[:240].decode("utf-8", "replace")
     print(json.dumps(record, ensure_ascii=False))
+    # One normal chart-tool request to establish whether unauthenticated access
+    # is accepted. No credentials, no persisted chart data, no polling.
+    call_status, call_headers, call_bytes = request(
+        ENDPOINT, "POST", {
+            "jsonrpc": "2.0", "id": 2, "method": "tools/call",
+            "params": {
+                "name": "get_music_chart",
+                "arguments": {"chart_type": "TOP_100", "start": 1, "size": 10}
+            },
+        }
+    )
+    parsed = parse_rpc(call_bytes, call_headers.get("content-type", ""))
+    result = parsed.get("result") if isinstance(parsed, dict) else None
+    error = parsed.get("error") if isinstance(parsed, dict) else None
+    summary = {
+        "url": ENDPOINT,
+        "method": "tools/call/get_music_chart",
+        "status": call_status,
+        "content_type": call_headers.get("content-type", ""),
+        "auth_challenge": call_headers.get("www-authenticate", "")[:300],
+        "rpc_error_code": error.get("code") if isinstance(error, dict) else None,
+        "rpc_error_message": str(error.get("message", ""))[:220] if isinstance(error, dict) else None,
+        "mcp_result_is_error": result.get("isError") if isinstance(result, dict) else None,
+        "content_block_count": len(result.get("content", [])) if isinstance(result, dict) else None,
+    }
+    if isinstance(result,dict) and result.get("isError"):
+        blocks=result.get("content",[])
+        summary["error_text"] = str(blocks[0].get("text",""))[:240] if blocks and isinstance(blocks[0],dict) else ""
+    print(json.dumps(summary, ensure_ascii=False))
 
 
 if __name__ == "__main__":
