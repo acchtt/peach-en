@@ -128,6 +128,19 @@
       "source_url": "https://www.melon.com/chart/",
       "verification": "official-chart-snapshot",
       "note": "IVE - Looks Can Kill at #6, unchanged, official Melon TOP100 21:00 KST."
+    },
+    {
+      "track_id": "looks-can-kill",
+      "chart_id": "apple-music-kr-top-songs",
+      "rank": 2,
+      "movement": null,
+      "collected_at": "2026-10-27T01:33:38+09:00",
+      "feed_updated_at": "2026-10-27T01:33:38+09:00",
+      "source_url": "https://rss.applemarketingtools.com/api/v2/kr/music/most-played/100/songs.json",
+      "song_url": "https://music.apple.com/kr/album/looks-can-kill/6820421860?i=6820422075",
+      "song_id": "6820422075",
+      "verification": "official-apple-rss",
+      "note": "Apple Music KR Top Songs RSS feed rank, captured during collection. Timestamp is NOT an hourly chart publication period."
     }
   ],
   "streaming": [
