@@ -13,6 +13,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate probe syntax
         run: python3 -m py_compile scripts/probe_melon_mcp.py
+      - name: Run offline Melon MCP parser safety tests
+        run: |
+          python3 -m py_compile scripts/melon_mcp_adapter.py
+          python3 -m unittest discover -s tests -v
       - name: Discover public MCP chart tools and OAuth metadata only
         run: python3 scripts/probe_melon_mcp.py
       - name: Validate existing website data unchanged
