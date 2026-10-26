@@ -86,6 +86,121 @@ footer a{text-decoration:underline;text-underline-offset:2px}
 @media(max-width:760px){.hero-motion-toggle{bottom:8px;right:9px;font-size:10px;min-height:34px}.hero-right .hero-copy h2{font-size:clamp(51px,11vw,69px)}}
 @media(prefers-reduced-motion:reduce){.hero-three-canvas{display:none!important;transition:none!important}}
 
+
+/* v2 quieter design: comic identity concentrated in accents and hero rather than every panel. */
+:root{--ink:#1a1720;--pink:#df159e;--yellow:#ffe769;--cyan:#4bc9d2;--paper:#fff}
+body{background:#faf8fb;background-image:none;color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}
+.site-header{background:#151319;border-bottom:2px solid var(--pink)}
+.header-inner{max-width:1320px;min-height:66px}
+.brand{font-size:28px;letter-spacing:.1px}
+nav{gap:24px}
+nav a{font-size:11px;letter-spacing:.65px;font-weight:700}
+.top-tag{background:transparent;color:#e8dce7;border:1px solid #625960;transform:none;box-shadow:none;font-size:10px;padding:5px 9px}
+main{max-width:1290px;padding:26px 27px 60px}
+.hero{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:16px;margin:2px 0 37px}
+.hero-left,.hero-right{transform:none;min-height:308px;box-shadow:none;border:2px solid #211e22;border-radius:8px}
+.hero-left{padding:36px 37px 32px;background:#fff;background-image:none}
+.hero-right{padding:24px;background:#f9def3;background-image:none;overflow:hidden;isolation:isolate}
+.hero-overline{margin:0 0 17px!important;color:#6d5465;font-size:11px!important;font-weight:800!important;letter-spacing:1.1px}
+.hero h1{font-family:Impact,'Arial Black',Arial,sans-serif;font-size:clamp(47px,5.1vw,74px);line-height:1;letter-spacing:-.018em;margin:0 0 14px;color:#17141a;-webkit-text-stroke:0;text-shadow:none}
+.hero-dot{color:var(--pink)}
+.hero-era{font-size:23px!important;font-weight:800!important;margin:0 0 10px!important;line-height:1.2}
+.hero-description{color:#5d525d;font-size:14px!important;font-weight:400!important;max-width:440px;line-height:1.7;margin:0 0 18px!important}
+.cta{margin-top:0;padding:10px 15px;font:700 13px/1.2 Arial,Helvetica,sans-serif;text-transform:none;letter-spacing:0;color:#fff;background:#211c23;border:2px solid #211c23;border-radius:5px;box-shadow:none;min-height:44px;gap:16px}
+.cta:hover{box-shadow:none;transform:none;background:var(--pink);border-color:var(--pink)}
+.hero-copy{position:relative;z-index:2;pointer-events:none;text-align:center}
+.hero-mark{font:clamp(72px,10vw,140px)/.9 Impact,'Arial Black',Arial,sans-serif;letter-spacing:-.025em;color:#17141a;text-shadow:3px 3px 0 #fff}
+.hero-mark span{font:35px/1 Impact,'Arial Black',Arial,sans-serif;color:var(--pink);position:relative;top:-40px;left:6px;text-shadow:none}
+.hero-right p.hero-tagline{display:block;margin:13px auto 0;padding:0;background:transparent;border:0;box-shadow:none;transform:none;font-weight:750;letter-spacing:1.8px;font-size:11px;color:#55404e}
+.hero-right .burst{display:none}
+.hero-three-canvas{transition:none;image-rendering:auto}
+.hero-motion-toggle{right:12px;bottom:12px;min-height:40px;border:1px solid #211e22;border-radius:5px;box-shadow:none;background:rgba(255,255,255,.93);font-size:11px;font-weight:650;padding:9px 12px}
+.hero-motion-toggle:hover{background:#fff}
+.row-title{margin:0 0 14px}
+.section-heading{font:700 24px/1.25 Arial,Helvetica,sans-serif;text-transform:none;letter-spacing:-.025em;margin:0 0 16px;padding:0;color:var(--ink);background:none;box-shadow:none;transform:none}
+.row-title .section-heading{margin:0}
+.status,.status.warning{font-size:12px;font-weight:500;color:#67485d;border:1px solid #ecd4e3;border-radius:5px;background:#fff3fa;padding:9px 12px}
+.quick{grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.rank-card,.rank-card:nth-child(n){background:#fff;transform:none;border:1px solid #e6dce5;border-top:3px solid var(--pink);border-radius:6px;box-shadow:none;padding:14px 13px;min-height:122px}
+.rank-card:nth-child(n+4){border-top-color:#48bfc7}
+.rank-card header{font-size:11px;font-weight:700;min-height:31px;line-height:1.3;color:#675a69;letter-spacing:.2px}
+.rank-card .number{font:48px/.98 Impact,'Arial Black',Arial,sans-serif;color:var(--ink);margin:8px 0 12px}
+.rank-card .smallline{font-size:10px;font-weight:700;gap:6px;color:#544b56}
+.rank-card .smallline span:last-child{background:#f7eff5;color:#725869;font-weight:600;border-radius:3px;white-space:nowrap;padding:3px 5px}
+#charts{margin-top:38px;margin-bottom:18px}
+.analytics{gap:16px;grid-template-columns:minmax(0,1.55fr) minmax(310px,1fr)}
+.panel{border:1px solid #e2dbe3;border-radius:8px;background:#fff;box-shadow:none;padding:23px}
+.panel h3{font:700 20px/1.3 Arial,Helvetica,sans-serif;margin:0 0 17px;color:#26202a;letter-spacing:-.015em;text-transform:none}
+.panel-top{gap:12px}
+.panel-top h3{margin-bottom:4px}
+.kicker{display:none}
+.filters{gap:5px}
+.filters button{min-height:42px;background:#fff;color:#554957;border:1px solid #d8ccd7;border-radius:5px;box-shadow:none;font-size:11px;padding:8px 12px}
+.filters button[aria-pressed="true"]{background:#fbe0f2;color:#75234f;border-color:#efb5dc}
+.graph{margin-top:17px;background:#fff;border:1px solid #eee6ec;border-radius:6px;padding:11px;background-image:none}
+.graph svg{height:255px}
+.graph .empty{inset:25% 13%;border:0;box-shadow:none;background:rgba(255,255,255,.94);color:#675766;font-size:13px;font-weight:650;line-height:1.6;padding:25px}
+.graph-notes{margin-top:13px;font-size:11px;font-weight:650;color:#6e626e}
+.graph-notes strong{background:#f8e7f2;color:#834365;padding:4px 7px;border-radius:3px}
+.subtitle{font-size:13px;font-weight:400;line-height:1.55;color:#665a66}
+.stats{gap:9px;margin-top:20px}
+.stat,.stat:nth-child(n){background:#faf7fa;border:1px solid #e9e2e9;border-radius:6px;padding:14px 12px;min-height:96px}
+.stat label{font-size:11px;font-weight:650;color:#655b64}
+.stat strong{font:34px/1.2 Impact,'Arial Black',Arial,sans-serif;margin:6px 0 0}
+.stat small{font-size:11px;color:#766e77}
+.note{font-size:12px;font-weight:500;color:#726876}
+.lower{gap:16px;margin-top:18px}
+.lower .panel{padding:22px}
+.lower h3{font-size:20px}
+.album-lockup{gap:14px}
+.album-icon{background:#f9e6f3;color:#712f60;box-shadow:none;border:1px solid #e7cbe0;border-radius:7px}
+.album-lockup strong{font:700 18px/1.2 Arial,Helvetica,sans-serif}
+.album-lockup span{font-size:11px;color:#726875;font-weight:500}
+table{font-size:12px}
+th{background:#f7f2f6;color:#5a4958;padding:10px 8px;font-weight:700}
+td{border-bottom:1px solid #efe9ef;padding:10px 8px}
+.info-row,.info-row:nth-child(n){background:#fff;border:1px solid #e9e3e9;border-radius:5px;font-weight:650;min-height:46px}
+.secondary-link{display:inline-flex;gap:12px;align-items:center;margin-top:16px;color:#a41474;font-size:12px;font-weight:750;text-decoration:underline;text-underline-offset:4px;min-height:40px}
+footer{border-top:1px solid #e5dce4;font-size:11px;color:#6f6270;font-weight:500}
+::selection{background:#f9c9e8;color:#211525}
+@media(max-width:1120px){
+ .quick{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .hero{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+}
+@media(max-width:760px){
+ .header-inner{padding:11px 16px;gap:8px}
+ .brand{font-size:25px}
+ .top-tag{font-size:9px}
+ nav{padding-top:8px;padding-bottom:5px;gap:18px}
+ nav a{font-size:10px}
+ main{padding:20px 15px 45px}
+ .hero{grid-template-columns:1fr;gap:12px;margin-bottom:27px}
+ .hero-left,.hero-right{min-height:auto;transform:none}
+ .hero-left{padding:25px 21px}
+ .hero h1{font-size:clamp(48px,11vw,66px)}
+ .hero-era{font-size:20px!important}
+ .hero-description{font-size:14px!important}
+ .hero-right{height:216px;min-height:216px;padding:18px}
+ .hero-mark{font-size:100px}
+ .hero-mark span{font-size:27px;top:-30px}
+ .hero-tagline{margin-top:5px!important}
+ .hero-motion-toggle{min-height:37px;bottom:8px;right:8px;font-size:10px}
+ .row-title{gap:9px}
+ .section-heading{font-size:21px}
+ .quick{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .rank-card{min-height:116px;padding:12px 10px}
+ .rank-card .number{font-size:44px}
+ .analytics{grid-template-columns:1fr}
+ .panel{padding:16px}
+ .graph svg{height:205px}
+ .graph .empty{inset:18% 7%;font-size:12px;padding:13px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .lower{grid-template-columns:1fr;gap:14px}
+ .lower .panel{padding:18px}
+ .status{max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){.hero-three-canvas{display:none!important}}
+
 </style>
 </head>
 <body>
@@ -95,12 +210,22 @@ footer a{text-decoration:underline;text-underline-offset:2px}
 <span class="top-tag">CURRENT COMEBACK · FAN PROJECT</span>
 </div></header>
 <main id="top">
-<span class="tape"><span>01</span> COMEBACK HEADQUARTERS</span>
+
 <div class="hero">
-<section class="hero-left"><span class="eyebrow">★ CHART INTELLIGENCE MISSION</span><h1>IVE RADAR!</h1><div class="pink-tape">LOOKS CAN KILL / THE COMEBACK FILE</div><p>Melon. Genie. Bugs. Streaming. Music shows. One command center for IVE's current era.</p><a class="cta" href="#charts">OPEN CHART BOARD ↗</a></section>
-<section class="hero-right" aria-label="Current era"><canvas class="hero-three-canvas" id="hero-three-canvas" aria-hidden="true"></canvas><div class="burst" aria-hidden="true">NEW!</div><div class="hero-copy"><span class="micro">★ IVE HERO OFFICE / DATA DIVISION ★</span><h2>SHOW YOUR<br>CHART<br>POWER!</h2><p>RANKINGS · MILESTONES · STREAMING</p></div><button class="hero-motion-toggle" id="hero-motion-toggle" type="button" aria-label="Pause 3D animation" aria-pressed="true" hidden>Ⅱ PAUSE 3D</button></section>
+<section class="hero-left">
+<p class="hero-overline">IVE / CURRENT COMEBACK</p>
+<h1>IVE RADAR<span class="hero-dot">.</span></h1>
+<p class="hero-era">Looks Can Kill</p>
+<p class="hero-description">A clearer view of IVE's charts, milestones and streaming. Rankings appear only when the source has been verified.</p>
+<a class="cta" href="#rank-cards">Explore charts <span aria-hidden="true">↗</span></a>
+</section>
+<section class="hero-right" aria-label="IVE comeback decorative 3D display">
+<canvas class="hero-three-canvas" id="hero-three-canvas" aria-hidden="true"></canvas>
+<div class="hero-copy"><div class="hero-mark" aria-hidden="true">IVE<span>★</span></div><p class="hero-tagline">COMEBACK FILE · 2026</p></div>
+<button class="hero-motion-toggle" id="hero-motion-toggle" type="button" aria-label="Pause animation" aria-pressed="true" hidden>Pause animation</button>
+</section>
 </div>
-<div class="row-title"><span class="tape"><span>02</span> CHART SCOREBOARD</span><div id="data-status" class="status warning" role="status">DESIGN PREVIEW · NO VERIFIED CHART FEED CONNECTED</div></div>
+<div class="row-title"><h2 class="section-heading">Current charts</h2><div id="data-status" class="status warning" role="status">Preview only — chart sources not connected</div></div>
 <div id="rank-cards" class="quick" aria-label="Chart rankings">
 <article class="rank-card"><header>MELON<br>TOP100</header><div class="number">—</div><div class="smallline"><span>PEAK: —</span><span>NO DATA</span></div></article>
 <article class="rank-card"><header>MELON<br>DAILY</header><div class="number">—</div><div class="smallline"><span>PEAK: —</span><span>NO DATA</span></div></article>
@@ -109,17 +234,17 @@ footer a{text-decoration:underline;text-underline-offset:2px}
 <article class="rank-card"><header>BUGS<br>REALTIME</header><div class="number">—</div><div class="smallline"><span>PEAK: —</span><span>NO DATA</span></div></article>
 <article class="rank-card"><header>FLO<br>REALTIME</header><div class="number">—</div><div class="smallline"><span>PEAK: —</span><span>NO DATA</span></div></article>
 </div>
-<span class="section-tag" id="charts">03 / CHART INTELLIGENCE</span>
+<h2 class="section-heading" id="charts">Ranking history</h2>
 <div class="analytics">
-<section class="panel"><div class="panel-top"><div><span class="kicker">★ TRACK YOUR RISE</span><h2>RANKING HISTORY!</h2></div><div class="filters" role="group" aria-label="Chart history platform"><button type="button" data-source="melon-top100" aria-pressed="true">MELON</button><button type="button" data-source="genie-realtime" aria-pressed="false">GENIE</button><button type="button" data-source="bugs-realtime" aria-pressed="false">BUGS</button><button type="button" data-source="flo-realtime" aria-pressed="false">FLO</button></div></div>
+<section class="panel"><div class="panel-top"><div><h3>Chart movement</h3></div><div class="filters" role="group" aria-label="Chart history platform"><button type="button" data-source="melon-top100" aria-pressed="true">MELON</button><button type="button" data-source="genie-realtime" aria-pressed="false">GENIE</button><button type="button" data-source="bugs-realtime" aria-pressed="false">BUGS</button><button type="button" data-source="flo-realtime" aria-pressed="false">FLO</button></div></div>
 <div class="graph"><svg id="history-svg" viewBox="0 0 720 270" role="img" aria-label="Rank history: no verified data yet"><g stroke="#111" opacity=".18" stroke-width="1"><path d="M55 20V235H706M55 72H706M55 127H706M55 181H706"/></g><g font-size="13" font-family="Arial" fill="#111" font-weight="bold"><text x="7" y="25">#1</text><text x="7" y="77">#25</text><text x="7" y="132">#50</text><text x="7" y="186">#75</text><text x="1" y="240">#100</text></g><path id="history-line" d="" fill="none" stroke="#111" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><path id="history-accent" d="" fill="none" stroke="#ed00b9" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg><div class="empty" id="chart-empty">NO VERIFIED RANK HISTORY YET.<br>THE GRAPH WILL APPEAR WHEN A SOURCE IS CONNECTED.</div></div>
 <div class="graph-notes"><span id="series-title">MELON TOP100</span><span>RANK #1 = CHART TOP</span><strong id="series-count">0 VERIFIED POINTS</strong></div></section>
-<section class="panel"><span class="kicker">★ THE SCOREBOARD</span><h2>CHART MILESTONES</h2><p class="subtitle">Every number will show its original source and reporting timestamp once collection is configured.</p><div class="stats"><div class="stat"><label>TOP100 PEAK</label><strong id="peak-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>CURRENT RANK</label><strong id="current-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>DAYS CHARTED</label><strong id="days-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>TOP 20 HOURS</label><strong id="hours-stat">—</strong><small>Awaiting source</small></div></div><p class="note" id="source-time">SOURCE TIMESTAMP: NOT CONNECTED</p></section>
+<section class="panel"><h3>Milestones</h3><p class="subtitle">Every number will show its original source and reporting timestamp once collection is configured.</p><div class="stats"><div class="stat"><label>TOP100 PEAK</label><strong id="peak-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>CURRENT RANK</label><strong id="current-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>DAYS CHARTED</label><strong id="days-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>TOP 20 HOURS</label><strong id="hours-stat">—</strong><small>Awaiting source</small></div></div><p class="note" id="source-time">SOURCE TIMESTAMP: NOT CONNECTED</p></section>
 </div>
 <div class="lower">
-<section class="panel" id="album"><span class="kicker">★ FILE 04 / ALBUM</span><h2>THE TRACKLIST</h2><div class="album-lockup"><div class="album-icon" aria-hidden="true">IVE</div><div><strong>LOOKS CAN KILL</strong><span>Current comeback · title track</span></div></div><table><thead><tr><th>TRACK</th><th>TOP100</th><th>PEAK</th></tr></thead><tbody id="tracks-body"><tr><td>Looks Can Kill</td><td>—</td><td>—</td></tr><tr><td>Other tracks</td><td>—</td><td>—</td></tr></tbody></table><a class="cta" href="#charts">VIEW CHART DATA ↗</a></section>
-<section class="panel" id="streaming"><span class="kicker">★ FILE 05 / GLOBAL</span><h2>STREAMING POWER</h2><p class="subtitle">YouTube, Spotify and album sales are kept separate because they follow different reporting schedules.</p><div class="info-stack" id="streams"><div class="info-row"><span>YOUTUBE</span><span>AWAITING DATA</span></div><div class="info-row"><span>SPOTIFY</span><span>AWAITING DATA</span></div><div class="info-row"><span>HANTEO</span><span>AWAITING DATA</span></div></div><p class="note">No projections or fabricated counters.</p></section>
-<section class="panel" id="shows"><span class="kicker">★ FILE 06 / MUSIC SHOWS</span><h2>WIN WATCH!</h2><p class="subtitle">Verified nominations, show appearances, scores and wins — with evidence links when available.</p><table><thead><tr><th>SHOW</th><th>STATUS</th></tr></thead><tbody id="shows-body"><tr><td>M Countdown</td><td>NOT LOADED</td></tr><tr><td>Music Bank</td><td>NOT LOADED</td></tr><tr><td>Inkigayo</td><td>NOT LOADED</td></tr></tbody></table><a class="cta" href="#top">BACK TO HQ ↑</a></section>
+<section class="panel" id="album"><h3>Album</h3><div class="album-lockup"><div class="album-icon" aria-hidden="true">IVE</div><div><strong>LOOKS CAN KILL</strong><span>Current comeback · title track</span></div></div><table><thead><tr><th>TRACK</th><th>TOP100</th><th>PEAK</th></tr></thead><tbody id="tracks-body"><tr><td>Looks Can Kill</td><td>—</td><td>—</td></tr><tr><td>Other tracks</td><td>—</td><td>—</td></tr></tbody></table><a class="secondary-link" href="#charts">View chart history <span aria-hidden="true">↗</span></a></section>
+<section class="panel" id="streaming"><h3>Streaming</h3><p class="subtitle">YouTube, Spotify and album sales are kept separate because they follow different reporting schedules.</p><div class="info-stack" id="streams"><div class="info-row"><span>YOUTUBE</span><span>AWAITING DATA</span></div><div class="info-row"><span>SPOTIFY</span><span>AWAITING DATA</span></div><div class="info-row"><span>HANTEO</span><span>AWAITING DATA</span></div></div><p class="note">No projections or fabricated counters.</p></section>
+<section class="panel" id="shows"><h3>Music shows</h3><p class="subtitle">Verified nominations, show appearances, scores and wins — with evidence links when available.</p><table><thead><tr><th>SHOW</th><th>STATUS</th></tr></thead><tbody id="shows-body"><tr><td>M Countdown</td><td>NOT LOADED</td></tr><tr><td>Music Bank</td><td>NOT LOADED</td></tr><tr><td>Inkigayo</td><td>NOT LOADED</td></tr></tbody></table><a class="secondary-link" href="#top">Back to top <span aria-hidden="true">↑</span></a></section>
 </div>
 <footer><span>IVE RADAR ★ UNOFFICIAL FAN PROJECT · NOT AFFILIATED WITH IVE OR STARSHIP</span><span>FREE PROJECT · VERIFIED DATA ONLY · <a href="https://github.com/acchtt/peach-en">SOURCE CODE</a></span></footer>
 </main>
@@ -161,7 +286,7 @@ document.getElementById('source-time').textContent=data.updated_at?'SOURCE TIMES
 }
 function updateTable(id,rows,columns,placeholder){if(!Array.isArray(rows)||rows.length===0)return;var target=document.getElementById(id);target.replaceChildren();rows.forEach(function(row){var tr=document.createElement('tr');columns.forEach(function(col){tr.appendChild(el('td','',safeText(row[col])))});target.appendChild(tr)})}
 function updateStreaming(){if(!Array.isArray(data.streaming)||data.streaming.length===0)return;var host=document.getElementById('streams');host.replaceChildren();data.streaming.forEach(function(item){var row=el('div','info-row');row.append(el('span','',safeText(item.platform)),el('span','',safeText(item.value)));host.appendChild(row)})}
-function refresh(){refreshCards();refreshChart();refreshStats();updateTable('tracks-body',data.tracks,['name','melon_top100','peak']);updateTable('shows-body',data.shows,['name','status']);updateStreaming();var any=data.sources.some(function(s){return typeof s.rank==='number'});var st=document.getElementById('data-status');st.textContent=any?'VERIFIED DATA LOADED · LAST UPDATE: '+safeText(data.updated_at):'DESIGN PREVIEW · NO VERIFIED CHART FEED CONNECTED';st.className='status'+(any?'':' warning')}
+function refresh(){refreshCards();refreshChart();refreshStats();updateTable('tracks-body',data.tracks,['name','melon_top100','peak']);updateTable('shows-body',data.shows,['name','status']);updateStreaming();var any=data.sources.some(function(s){return typeof s.rank==='number'});var st=document.getElementById('data-status');st.textContent=any?'VERIFIED DATA LOADED · LAST UPDATE: '+safeText(data.updated_at):'Preview only — chart sources not connected';st.className='status'+(any?'':' warning')}
 document.querySelectorAll('[data-source]').forEach(function(btn){btn.addEventListener('click',function(){current=btn.dataset.source;refreshChart()})});
 fetch('./data.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw Error('data unavailable');return r.json()}).then(function(payload){if(payload&&Array.isArray(payload.sources)&&Array.isArray(payload.history)){data=payload;refresh()}}).catch(function(){refresh()});
 })();
