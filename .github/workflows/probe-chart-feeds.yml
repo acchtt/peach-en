@@ -1,0 +1,15 @@
+name: QA - Korean Chart Feed Discovery
+on:
+  push:
+    branches: [demo/korean-chart-feeds]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check source access and supported feed JSON
+        run: python3 scripts/probe_chart_feeds.py
