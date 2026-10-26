@@ -75,6 +75,16 @@ button,a{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none
 .chart-collection-note{margin-top:9px;font-size:10px;line-height:1.5;color:#746777;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
 .chart-collection-note b{font-weight:850;color:#5b3150}
 .chart-collection-note a{color:#a0166b;text-decoration:underline;text-underline-offset:2px}
+
+/* Production chart-reader spacing: timestamps must never overlap movement. */
+.scoreboards{grid-template-columns:repeat(4,minmax(0,1fr))}
+.score{display:flex;flex-direction:column;min-height:191px}
+.score .meta{min-height:43px;margin-bottom:8px;align-content:start}
+.score .data-source{margin-top:auto;padding-top:7px;border-top:1px solid #f0eaf0;line-height:1.5;min-height:29px;overflow-wrap:anywhere;font-size:10px}
+.score .rank{margin:13px 0 10px}
+@media(max-width:1350px){.scoreboards{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:760px){.scoreboards{grid-template-columns:repeat(2,minmax(0,1fr))}.score{min-height:160px}.score .meta{min-height:37px;margin-bottom:8px}.score .data-source{font-size:9px}}
+
 </style>
 </head>
 <body>

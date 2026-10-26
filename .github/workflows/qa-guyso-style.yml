@@ -23,6 +23,8 @@ jobs:
         run: |
           python3 scripts/collect_melon_mcp.py --dry-run --chart TOP_100
           git diff --exit-code -- data.json
+      - name: Check Melon Daily and Weekly feed shapes without writing
+        run: python3 scripts/collect_melon_mcp.py --dry-run --chart DAILY --chart WEEKLY
       - name: End-to-end chart ingestion in disposable QA runner
         run: |
           python3 scripts/collect_melon_mcp.py --chart TOP_100
