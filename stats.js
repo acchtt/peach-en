@@ -153,6 +153,42 @@ function renderMilestones(){
   });
   if (rows[3]) rows[3].lastElementChild.textContent='—';
 }
+
+function renderStreaming(){
+  const panel=$('#streaming');
+  if(!panel)return;
+  const rows=panel.querySelectorAll('.card-rows .statrow');
+  if(rows.length<2)return;
+  const count=rows[0].querySelector('strong');
+  const updated=rows[1].querySelector('strong');
+  const description=panel.querySelector('.small-desc');
+  const platform=state.stream;
+  $('#stream-metric').textContent=platform==='YouTube'?'YouTube views':platform==='Spotify'?'Spotify streams':'Apple Music plays';
+  count.textContent='—';
+  updated.textContent='—';
+  if(platform!=='YouTube'){
+    description.textContent=platform+' stream totals are not connected.';
+    return;
+  }
+  const points=(state.data?.streaming||[]).filter(x=>
+    x && x.platform==='YouTube' && x.metric==='view_count' &&
+    x.track_id===state.data.default_track_id && x.verification==='youtube-data-api-v3' &&
+    Number.isSafeInteger(x.value) && x.value>=0 && Number.isFinite(Date.parse(x.collected_at))
+  ).sort((a,b)=>Date.parse(a.collected_at)-Date.parse(b.collected_at));
+  const latest=points.at(-1);
+  if(!latest){
+    description.textContent='Official YouTube MV counter awaiting API connection.';
+    return;
+  }
+  count.textContent=latest.value.toLocaleString('en-US');
+  updated.textContent=time(latest.collected_at);
+  description.replaceChildren(make('span','Official MV views collected '+time(latest.collected_at)+' · '));
+  const link=make('a','Video source ↗');
+  link.href='https://www.youtube.com/watch?v=rsNhWkC4neE';
+  link.target='_blank';link.rel='noopener noreferrer';
+  description.append(link);
+}
+
 function renderHeader(){
   const obs=state.data?.observations || [];
   const label=$('#source-status');
@@ -160,7 +196,7 @@ function renderHeader(){
   const recent=obs.at(-1);
   label.textContent=(Date.now()-Date.parse(recent.observed_at)>3*3600000?'HISTORICAL SNAPSHOT · ':'VERIFIED SNAPSHOT · ')+time(recent.observed_at);
 }
-function render(){renderScores();updateHistory();renderStats();renderRecent();renderMilestones();renderHeader()}
+function render(){renderScores();updateHistory();renderStats();renderRecent();renderMilestones();renderStreaming();renderHeader()}
 for(const [selector,key] of SELECTORS){
   $$(selector).forEach(button=>button.addEventListener('click',()=>{
     const value=button.getAttribute('data-'+key);
@@ -173,7 +209,7 @@ for(const [selector,key] of SELECTORS){
       }
     }
     if(key==='sales')$('#sales-label').textContent=value+' · awaiting verified sales source';
-    if(key==='stream')$('#stream-metric').textContent=value==='YouTube'?'YouTube views':value==='Spotify'?'Spotify streams':'Apple Music plays';
+    if(key==='stream')renderStreaming();
     if(['chart','cycle','history','window'].includes(key))render();
   }));
 }
@@ -182,7 +218,25 @@ $$('.side-items a,.topnav a').forEach(link=>link.addEventListener('click',()=>{
   group.querySelectorAll('a').forEach(item=>item.classList.remove('active'));
   link.classList.add('active');
 }));
-fetch('./data.json',{cache:'no-store'})
-  .then(response=>{if(!response.ok)throw Error('Data feed unavailable');return response.json()})
-  .then(data=>{state.data=loadData(data);render()})
-  .catch(error=>{console.warn('IVE RADAR data unavailable:',error);$('#source-status').textContent='DATA FEED UNAVAILABLE';$('#history-empty').textContent='Unable to load verified observations.'});
+// Poll static published JSON every five minutes while the website is open.
+// Collector runs separately in GitHub Actions; no credentials in the browser.
+let loading=false;
+async function refreshData(){
+  if(document.hidden || loading)return;
+  loading=true;
+  try{
+    const response=await fetch('./data.json',{cache:'no-store'});
+    if(!response.ok)throw Error('Data feed unavailable');
+    state.data=loadData(await response.json());
+    render();
+  }catch(error){
+    console.warn('IVE RADAR data refresh unavailable:',error);
+    if(!state.data){
+      $('#source-status').textContent='DATA FEED UNAVAILABLE';
+      $('#history-empty').textContent='Unable to load verified observations.';
+    }
+  }finally{loading=false;}
+}
+refreshData();
+setInterval(refreshData,5*60*1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshData()});

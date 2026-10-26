@@ -56,3 +56,22 @@ Run `python3 scripts/validate_data.py` before commit. A future collector workflo
 - YouTube Data API videos: https://developers.google.com/youtube/data/reference/rest/v3/videos/list
 - Spotify Web API track details (no stream-count field): https://developer.spotify.com/documentation/web-api/reference/get-track
 - IVE official artist page: https://www.starship-ent.com/musician/ive
+
+## YouTube MV counter: official API, separate metric
+
+The collector calls the YouTube Data API videos.list endpoint with the confirmed Starship MV video ID and fetches the public viewCount from statistics. It verifies title, channel and ID before appending a sample. The schema for streaming[] is:
+
+- track_id: looks-can-kill
+- platform: YouTube
+- metric: view_count
+- video_id: rsNhWkC4neE
+- value: official nonnegative integer public view count
+- collected_at: timezone-aware ISO 8601 timestamp when the API request completed
+- source_url: official YouTube watch URL
+- verification: youtube-data-api-v3
+
+The view count is cumulative, not a song-chart rank or the number of views gained in the last hour. The API supplies no chart reporting timestamp for that counter; never label collected_at as a published reporting period. YouTube may adjust the counter, so later readings are not required to increase monotonically. One sample per UTC hour is allowed.
+
+Enable by adding the YOUTUBE_DATA_API_KEY Actions secret. The web client never receives that key. GitHub Actions runs hourly and commits validated changes before performing the Pages deployment in the same run.
+
+Melon's robots.txt prohibits our chart collector in its GitHub-hosted test. Do not bypass access restrictions. Continue storing manually verified published Melon chart snapshots with exact KST time until an authorized reliable feed is available.

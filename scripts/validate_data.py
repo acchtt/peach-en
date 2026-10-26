@@ -27,3 +27,27 @@ for o in data['observations']:
     assert key not in seen, 'Duplicate chart observation'
     seen.add(key)
 print(f'PASS: {len(tracks)} tracks, {len(charts)} chart series, {len(seen)} timestamped observations')
+
+# Official MV cumulative counters are separate from chart positions and times.
+from urllib.parse import parse_qs
+from datetime import timezone
+streaming = data.get('streaming', [])
+assert isinstance(streaming, list), 'streaming must be a list'
+video_ids = {t['id']: t.get('mv_video_id') for t in data['tracks']}
+samples = set()
+for item in streaming:
+    assert item.get('track_id') in tracks, 'Unknown streaming track'
+    assert item.get('platform') == 'YouTube', 'Unsupported streaming platform'
+    assert item.get('metric') == 'view_count', 'Unsupported metric'
+    assert item.get('video_id') == video_ids[item['track_id']], 'Video ID mismatch'
+    assert type(item.get('value')) is int and 0 <= item['value'] <= 100_000_000_000, 'Invalid views'
+    captured = datetime.fromisoformat(item['collected_at'])
+    assert captured.tzinfo is not None, 'Missing timezone'
+    assert item.get('verification') == 'youtube-data-api-v3', 'Unsupported verification'
+    url = urlparse(item.get('source_url', ''))
+    assert url.scheme == 'https' and url.hostname in ('www.youtube.com','youtube.com'), 'Wrong MV hostname'
+    assert parse_qs(url.query).get('v') == [item['video_id']], 'MV URL does not match'
+    key = (item['track_id'], item['video_id'], captured.astimezone(timezone.utc).strftime('%Y-%m-%dT%H'))
+    assert key not in samples, 'Duplicate hourly MV counter sample'
+    samples.add(key)
+print(f'PASS: {len(samples)} YouTube MV counter samples')
