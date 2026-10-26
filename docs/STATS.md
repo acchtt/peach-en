@@ -36,9 +36,9 @@ Rank `6` means position #6 in the exact named chart and reporting period, not a 
 
 | Priority | Source | Realistic method | Status |
 |---|---|---|---|
-| 1 | Melon TOP100 | Official chart page, timestamped observations; verify access and reuse terms before scheduled automation | One manually verified snapshot |
-| 2 | YouTube MV views | Official YouTube Data API `videos.list?part=statistics` with a free API key (video ID confirmed first) | Not connected |
-| 3 | Melon Daily/HOT100, Genie, Bugs, FLO | Source-specific collectors **only if** allowed and reliably accessible; fail closed and log blocked attempts | Not connected |
+| 1 | Melon TOP100 | Official published chart observations; automation blocked by chart robots rules | Two timestamped historical snapshots |
+| 2 | YouTube MV views | Official YouTube Data API `videos.list?part=statistics` | Connected, hourly collection |
+| 3 | Apple Music KR Top Songs | Official Apple marketing RSS Top Songs (KR); captured snapshots, no chart-hour claims | Tested; automated capture |\n| 4 | Melon Daily/HOT100, Genie, Bugs, FLO | Only authorized reliable chart feeds; do not bypass robots restrictions | Not connected |
 | 4 | Hanteo / Circle | Authorized publicly accessible releases/official reported counts; label periods and avoid guessing sales | Not connected |
 | 5 | Spotify | Chart rankings only from an authorized accessible chart feed; Spotify Web API track popularity is NOT stream count | Not connected |
 | 6 | Music shows | Official published winner/nominee results and score breakdowns, manual verification initially | Not connected |
