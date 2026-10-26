@@ -130,6 +130,22 @@ def main():
     if isinstance(result,dict) and result.get("isError"):
         blocks=result.get("content",[])
         summary["error_text"] = str(blocks[0].get("text",""))[:240] if blocks and isinstance(blocks[0],dict) else ""
+    if isinstance(result,dict) and not result.get("isError"):
+        blocks=result.get("content",[])
+        if isinstance(blocks,list) and blocks and isinstance(blocks[0],dict):
+            first=blocks[0]
+            raw=first.get("text","")
+            summary["first_content_type"] = first.get("type","")
+            summary["first_content_length"] = len(raw) if isinstance(raw,str) else None
+            summary["first_content_preview"] = str(raw)[:900]
+            if isinstance(raw,str):
+                try:
+                    contents=json.loads(raw)
+                    summary["payload_top_level_keys"]=list(contents)[:15] if isinstance(contents,dict) else [type(contents).__name__]
+                    if isinstance(contents,dict):
+                        summary["chart_fields"]={k:str(v)[:130] for k,v in contents.items() if "date" in k.lower() or "time" in k.lower() or "chart" in k.lower() or "period" in k.lower() or "update" in k.lower()}
+                except ValueError:
+                    pass
     print(json.dumps(summary, ensure_ascii=False))
 
 
