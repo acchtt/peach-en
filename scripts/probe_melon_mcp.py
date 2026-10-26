@@ -31,9 +31,9 @@ def request(url: str, method: str = "GET", body: dict | None = None):
     req = Request(url, data=data, method=method, headers=headers)
     try:
         with urlopen(req, timeout=16) as response:
-            return response.status, dict(response.headers.items()), response.read(150000)
+            return response.status, {k.lower(): v for k, v in response.headers.items()}, response.read(150000)
     except HTTPError as exc:
-        return exc.code, dict(exc.headers.items()), exc.read(1000)
+        return exc.code, {k.lower(): v for k, v in exc.headers.items()}, exc.read(1000)
     except (URLError, TimeoutError, OSError) as exc:
         return "NETWORK_ERROR", {}, type(exc).__name__.encode()
 
@@ -53,7 +53,7 @@ def parse_rpc(payload: bytes, content_type: str):
 def main():
     for url in URLS:
         status, headers, content = request(url)
-        record = {"url": url, "status": status, "content_type": headers.get("Content-Type", "")[:90]}
+        record = {"url": url, "status": status, "content_type": headers.get("content-type", "")[:90]}
         if status == 200 and "json" in record["content_type"].lower():
             try:
                 data = json.loads(content)
@@ -78,8 +78,8 @@ def main():
         "url": ENDPOINT,
         "method": "tools/list",
         "status": status,
-        "www_authenticate": response_headers.get("WWW-Authenticate", "")[:500],
-        "content_type": response_headers.get("Content-Type", "")[:100],
+        "www_authenticate": response_headers.get("www-authenticate", "")[:500],
+        "content_type": response_headers.get("content-type", "")[:100],
     }
     if status == 200:
         data = parse_rpc(content, record["content_type"])
@@ -88,12 +88,15 @@ def main():
         tools = result.get("tools", []) if isinstance(result, dict) else []
         if isinstance(tools, list):
             record["tool_count"] = len(tools)
+            record["tool_names"] = [tool.get("name","") for tool in tools if isinstance(tool,dict)]
             record["chart_tool_names"] = [
                 tool.get("name", "") for tool in tools
                 if isinstance(tool, dict)
                 and ("chart" in tool.get("name", "").lower() or
                      "chart" in tool.get("description", "").lower())
             ]
+    if status==200 and not record.get("tool_count"):
+        record["response_sample"] = content[:240].decode("utf-8", "replace")
     print(json.dumps(record, ensure_ascii=False))
 
 
