@@ -72,6 +72,19 @@ button,a{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none
 @media(max-width:760px){.scoreboards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 .circle-ref a{color:#a0166b;text-decoration:underline;text-underline-offset:2px}.circle-ref{line-height:1.6}.pill-note a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.chart-collection-note{margin-top:9px;font-size:10px;line-height:1.5;color:#746777;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.chart-collection-note b{font-weight:850;color:#5b3150}
+.chart-collection-note a{color:#a0166b;text-decoration:underline;text-underline-offset:2px}
+
+/* Production chart-reader spacing: timestamps must never overlap movement. */
+.scoreboards{grid-template-columns:repeat(4,minmax(0,1fr))}
+.score{display:flex;flex-direction:column;min-height:191px}
+.score .meta{min-height:43px;margin-bottom:8px;align-content:start}
+.score .data-source{margin-top:auto;padding-top:7px;border-top:1px solid #f0eaf0;line-height:1.5;min-height:29px;overflow-wrap:anywhere;font-size:10px}
+.score .rank{margin:13px 0 10px}
+@media(max-width:1350px){.scoreboards{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:760px){.scoreboards{grid-template-columns:repeat(2,minmax(0,1fr))}.score{min-height:160px}.score .meta{min-height:37px;margin-bottom:8px}.score .data-source{font-size:9px}}
+
 </style>
 </head>
 <body>
@@ -96,6 +109,7 @@ button,a{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none
 <div class="score" data-name="YouTube"><div class="scorehead"><div class="logo" style="background:#ee2626">▶</div><div>YouTube<br><small>Music</small></div></div><div class="rank">—</div><div class="meta"><span>Peak</span><b>—</b><span>Change</span><b>—</b></div></div>
 <div class="score" data-name="Spotify"><div class="scorehead"><div class="logo" style="background:#15b86c">≋</div><div>Spotify<br><small>Top Songs</small></div></div><div class="rank">—</div><div class="meta"><span>Peak</span><b>—</b><span>Change</span><b>—</b></div></div>
 </div>
+<div class="chart-collection-note" role="note"><b>DATA SOURCES</b> · Melon: official MCP capture · Apple Music: official RSS · YouTube: official API · <a href="https://xn--o39an51b2re.com/" target="_blank" rel="noopener noreferrer">Guyso history ↗</a> (external reference; not copied)</div>
 </section>
 <div class="centerrow">
 <section class="panel chart-panel"><h2 class="section-heading"><span>⚡</span> RANKING HISTORY</h2><div class="chart-controls"><div class="tabs" role="group" aria-label="History platform"><button data-history="Melon" aria-pressed="true">Melon</button><button data-history="Apple Music" aria-pressed="false">Apple Music</button><button data-history="Genie" aria-pressed="false">Genie</button><button data-history="Bugs" aria-pressed="false">Bugs</button><button data-history="FLO" aria-pressed="false">FLO</button><button data-history="YouTube" aria-pressed="false">YouTube</button></div><div class="tabs" role="group" aria-label="Time range"><button data-window="7D" aria-pressed="true">7D</button><button data-window="30D" aria-pressed="false">30D</button><button data-window="ALL" aria-pressed="false">ALL</button></div></div>

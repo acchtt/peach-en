@@ -32,6 +32,7 @@ function isValidObservation(item, charts, tracks){
   if (!item || typeof item !== 'object' || !charts.has(item.chart_id) || !tracks.has(item.track_id)) return false;
   if (!Number.isInteger(item.rank) || item.rank < 1 || item.rank > 200) return false;
   const apple = item.chart_id === 'apple-music-kr-top-songs';
+  const melonCapture = item.verification === 'official-melon-mcp-capture';
   const stamp = sampleTime(item);
   if (typeof stamp !== 'string' || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d[+-]\d\d:\d\d$/.test(stamp) || !Number.isFinite(Date.parse(stamp))) return false;
   if (apple) {
@@ -40,6 +41,14 @@ function isValidObservation(item, charts, tracks){
       const song = new URL(item.song_url);
       if(song.protocol!=='https:' || song.hostname!=='music.apple.com' || song.searchParams.get('i')!==item.song_id) return false;
     }catch{return false;}
+  } else if(melonCapture) {
+    if(!['melon-top100','melon-daily','melon-weekly'].includes(item.chart_id)) return false;
+    if(item.rank>100 || item.movement!==null || item.observed_at !== undefined ||
+       item.mcp_endpoint!=='https://mcp.melon.com/mcp/' ||
+       item.melon_song_id!==tracks.get(item.track_id).melon_song_id ||
+       !Number.isInteger(item.melon_song_id) ||
+       !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\+09:00$/.test(item.collected_at) ||
+       item.source_url!==charts.get(item.chart_id).source_url) return false;
   } else if(item.verification!=='official-chart-snapshot') return false;
   try {
     const source = new URL(item.source_url);
@@ -80,9 +89,10 @@ function renderScores(){
     const small=card.querySelector('.scorehead small');
     const rank=card.querySelector('.rank');
     card.hidden=state.chart!=='all' && state.chart!==platform;
-    small.textContent=sourceLabel(id);
+    small.textContent=sourceLabel(id)+(recent?.verification==='official-melon-mcp-capture'?' · MCP':'');
     rank.textContent=recent ? '#'+recent.rank : '—';
-    card.dataset.status=recent ? (Date.now()-Date.parse(sampleTime(recent))>(platform==='Apple Music'?12:3)*3600000?'stale':'available'):'missing';
+    const freshness = platform==='Apple Music'?12:(platform==='Melon'&&state.cycle==='Daily'?36:platform==='Melon'&&state.cycle==='Weekly'?192:3);
+    card.dataset.status=recent ? (Date.now()-Date.parse(sampleTime(recent))>freshness*3600000?'stale':'available'):'missing';
     meta.replaceChildren();
     const peak=points.length?Math.min(...points.map(p=>p.rank)):null;
     const change=recent?.movement;
@@ -91,8 +101,8 @@ function renderScores(){
     card.querySelectorAll('.data-source').forEach(n=>n.remove());
     if (recent){
       const foot=make('div',null,'data-source');
-      foot.append(make('span',(platform==='Apple Music'?'Captured ':'As of ')+time(sampleTime(recent))+' · '));
-      const a=make('a',platform==='Apple Music'?'Apple Music ↗':'Source');a.href=platform==='Apple Music'?recent.song_url:recent.source_url;a.target='_blank';a.rel='noopener noreferrer';foot.append(a);card.append(foot);
+      foot.append(make('span',((platform==='Apple Music'||recent.verification==='official-melon-mcp-capture')?'Captured ':'Published ')+time(sampleTime(recent))+' · '));
+      const a=make('a',platform==='Apple Music'?'Apple Music ↗':recent.verification==='official-melon-mcp-capture'?'Melon ↗':'Source');a.href=platform==='Apple Music'?recent.song_url:recent.source_url;a.target='_blank';a.rel='noopener noreferrer';foot.append(a);card.append(foot);
     } else {
       card.append(make('div',id ? 'No verified observation' : 'Chart type unavailable','data-source'));
     }
@@ -105,12 +115,12 @@ function updateHistory(){
   const points=series(id).filter(p=>Date.parse(sampleTime(p))>=cutoff);
   const emptyState=$('#history-empty');
   emptyState.hidden=points.length>=2;
-  emptyState.textContent= !id ? 'This platform does not publish the selected chart type.' : points.length===0 ? 'No verified rank history for this chart yet.' : (state.history==='Apple Music'?'One feed capture recorded. A second is needed for a ranking curve.':'One verified observation recorded. A second is needed for a ranking curve.');
+  emptyState.textContent= !id ? 'This platform does not publish the selected chart type.' : points.length===0 ? 'No verified rank captures for this chart yet.' : (state.history==='Apple Music'||state.history==='Melon'?'One captured observation recorded. A second is needed for a ranking curve.':'One verified observation recorded. A second is needed for a ranking curve.');
   const line=$('#example-line');const area=$('#example-area');const dots=$('#example-points');
   const name=$('#chart-label');name.textContent=state.history;
   $('#chart-source-label').lastChild.textContent=' · '+(id?sourceLabel(id):'Unavailable');
-  $('#chart-timestamp').textContent=reference?(state.history==='Apple Music'?'Last feed capture: ':'Latest observation: ')+time(sampleTime(reference)):'No verified observations';
-  $('.demo-stamp').textContent=state.history==='Apple Music'?'APPLE MUSIC RSS CAPTURES · NOT HOURLY':'VERIFIED CHART OBSERVATIONS';
+  $('#chart-timestamp').textContent=reference?((state.history==='Apple Music'||reference.verification==='official-melon-mcp-capture')?'Last captured: ':'Last published: ')+time(sampleTime(reference)):'No verified observations';
+  $('.demo-stamp').textContent=state.history==='Apple Music'?'APPLE MUSIC RSS CAPTURES · NOT HOURLY':state.history==='Melon'?'MELON · CAPTURES ARE NOT PUBLISHED CHART HOURS':'VERIFIED CHART OBSERVATIONS';
   line.setAttribute('d','');area.setAttribute('d','');dots.replaceChildren();
   if (points.length < 2) return;
   const begin=Date.parse(sampleTime(points[0]));
@@ -132,14 +142,14 @@ function renderStats(){
   const values=[
     ['Highest observed rank',peak?'#'+peak:'—'],
     ['Latest observed rank',recent?'#'+recent.rank:'—'],
-    ['Verified observations',String(points.length)],
+    ['Recorded snapshots',String(points.length)],
     ['Observed chart dates',points.length?String(days):'—'],
     ['Hours in Top 20','—'],
     ['Hours in Top 50','—'],
-    [id==='apple-music-kr-top-songs'?'Last feed capture':'Last observation',recent?time(sampleTime(recent)):'—']
+    [(recent?.collected_at)?'Last captured':'Last published',recent?time(sampleTime(recent)):'—']
   ];
   rows.forEach((row,i)=>{if(!values[i])return;row.firstElementChild.textContent=values[i][0];row.lastElementChild.textContent=values[i][1]});
-  $('.key-panel .small-desc').textContent=id==='apple-music-kr-top-songs'?'Apple Music RSS snapshots are captured when checked, not published hourly chart periods. Peaks are observed only.':'Observed peaks are not lifetime chart peaks. Hour totals require complete, verified hourly coverage.';
+  $('.key-panel .small-desc').textContent=id==='apple-music-kr-top-songs'?'Apple Music RSS snapshots are captured when checked, not published hourly chart periods. Peaks are observed only.':state.history==='Melon'?'First-party Melon MCP fetch times are captures, not official chart period timestamps. Peaks represent recorded points only. Hours require complete coverage.':'Observed peaks are not lifetime chart peaks. Hour totals require complete, verified hourly coverage.';
 }
 function renderRecent(){
   const body=$('.bottomrow .data-table tbody');
@@ -149,7 +159,7 @@ function renderRecent(){
   items.forEach(observation=>{
     const tr=make('tr');const chart=state.data.chartsById.get(observation.chart_id);
     const track=state.data.tracksById.get(observation.track_id);
-    tr.append(make('td',time(sampleTime(observation))),make('td',`${chart.platform} ${chart.chart}`),make('td',track.title));
+    tr.append(make('td',time(sampleTime(observation))),make('td',`${chart.platform} ${chart.chart}${observation.collected_at?' · capture':''}`),make('td',track.title));
     const td=make('td');const link=make('a','#'+observation.rank);link.href=observation.song_url || observation.source_url;link.target='_blank';link.rel='noopener noreferrer';td.append(link);tr.append(td);body.append(tr);
   });
 }
@@ -263,7 +273,7 @@ function renderHeader(){
   const label=$('#source-status');
   if(!obs.length){label.textContent='NO VERIFIED DATA YET';return;}
   const recent=obs.at(-1);
-  label.textContent=(Date.now()-Date.parse(sampleTime(recent))>12*3600000?'HISTORICAL DATA · ':'LATEST VERIFIED DATA · ')+time(sampleTime(recent));
+  label.textContent=(Date.now()-Date.parse(sampleTime(recent))>12*3600000?'HISTORICAL DATA · ':recent.collected_at?'LATEST CHART CAPTURE · ':'VERIFIED SNAPSHOT · ')+time(sampleTime(recent));
 }
 function render(){renderScores();updateHistory();renderStats();renderRecent();renderMilestones();renderAlbum();renderStreaming();renderHeader()}
 for(const [selector,key] of SELECTORS){
