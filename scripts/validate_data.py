@@ -2,8 +2,8 @@
 """Strict schema and provenance checks; no synthetic numbers or silently duplicated periods."""
 import json
 from pathlib import Path
-from urllib.parse import urlparse
-from datetime import datetime
+from urllib.parse import urlparse, parse_qs
+from datetime import datetime, timedelta
 
 root=Path(__file__).resolve().parents[1]
 data=json.loads((root/'data.json').read_text())
@@ -16,13 +16,26 @@ for o in data['observations']:
     assert o['chart_id'] in charts, 'Unknown chart ID'
     assert o['track_id'] in tracks, 'Unknown track ID'
     assert type(o['rank']) is int and 1<=o['rank']<=200, 'Invalid rank'
-    iso=o['observed_at']
-    instant=datetime.fromisoformat(iso)
+    apple = o['chart_id']=='apple-music-kr-top-songs'
+    iso = o['collected_at'] if apple else o['observed_at']
+    instant = datetime.fromisoformat(iso)
     assert instant.tzinfo is not None, 'Time must include timezone'
-    url=urlparse(o['source_url'])
-    expected=urlparse(charts[o['chart_id']]['source_url'])
+    url = urlparse(o['source_url'])
+    expected = urlparse(charts[o['chart_id']]['source_url'])
     assert url.scheme=='https' and url.hostname==expected.hostname, 'Source domain mismatch'
-    assert o['verification']=='official-chart-snapshot', 'Not a verified snapshot'
+    if apple:
+        assert o['verification']=='official-apple-rss', 'Apple RSS verification mismatch'
+        assert 1<=o['rank']<=100, 'Apple RSS rank outside Top 100'
+        assert o.get('song_id')==tracks[o['track_id']].get('apple_music_kr_song_id'), 'Wrong Apple song ID'
+        assert o.get('movement') is None, 'Apple feed cannot assert movement'
+        song_url=urlparse(o.get('song_url', ''))
+        assert song_url.scheme=='https' and song_url.hostname=='music.apple.com', 'Invalid official Apple song link'
+        assert parse_qs(song_url.query).get('i')==[o['song_id']], 'Apple track link mismatch'
+        feed_updated=datetime.fromisoformat(o['feed_updated_at'])
+        assert feed_updated.tzinfo is not None, 'Apple feed metadata time needs timezone'
+        assert feed_updated<=instant + timedelta(minutes=10), 'RSS feed metadata cannot be in the future'
+    else:
+        assert o['verification']=='official-chart-snapshot', 'Not a verified official chart snapshot'
     key=(o['track_id'],o['chart_id'],iso)
     assert key not in seen, 'Duplicate chart observation'
     seen.add(key)

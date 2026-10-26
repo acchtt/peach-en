@@ -42,3 +42,19 @@ Visitors' browsers now refresh the published static data file every **5 minutes*
 **Melon is NOT automatically polled.** A direct Melon TOP100 collector was tested from GitHub Actions and rejected by Melon's robots rules. It remains solely on the experimental branch demo/automatic-chart-collection; it is not merged or scheduled. The current Melon snapshots on the website remain historical until a permitted, verified new observation is available.
 
 Hourly runs with no new observations do not unnecessarily redeploy Pages. Changes made by the default GITHUB_TOKEN don't trigger a second push workflow, so the scheduled job deploys after its own commit.
+
+
+## Apple Music Korea Top Songs (official RSS)
+
+The first fully tested, public **Korea-market ranking feed** is Apple's marketing RSS generator. It is separate from Melon TOP100, Genie, Bugs, and FLO. Apple offers this feed specifically for putting top-music lists on websites:
+
+- RSS URL: https://rss.applemarketingtools.com/api/v2/kr/music/most-played/100/songs.json
+- Official chart: **Apple Music KR Top Songs / most-played**.
+- IVE title track has Apple song ID \`6820422075\`.
+- The app displays **captured rank snapshots** and an observed peak. It does not call these "realtime", "daily", or Apple-published hourly ranks.
+- Feed \`updated\` appears to refresh per request and is saved as metadata, **not** treated as a chart reporting period. \`collected_at\` is the actual source capture timestamp.
+- The collector runs on the existing hourly GitHub Actions schedule. It records rank changes immediately, and otherwise records a stable rank at most once every 3 hours, avoiding fake hourly rank continuity.
+- If the RSS is blocked, malformed, missing the exact track, or inconsistent, no rank is created. No out-of-chart claim is made.
+- Every card links to Apple Music; only metadata about the tracked IVE track is retained, not the full Top 100 feed.
+
+**Access investigation (26 Oct 2026):** The current public chart URLs for Melon, Genie, Bugs, and FLO were each disallowed by their robots.txt for the chart bot. We did not bypass those rules. Apple RSS was accessible in live GitHub Actions probes, though intermittent timeouts can occur. The historical Melon source data and YouTube API continue independently.

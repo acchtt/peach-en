@@ -75,3 +75,43 @@ The view count is cumulative, not a song-chart rank or the number of views gaine
 Enable by adding the YOUTUBE_DATA_API_KEY Actions secret. The web client never receives that key. GitHub Actions runs hourly and commits validated changes before performing the Pages deployment in the same run.
 
 Melon's robots.txt prohibits our chart collector in its GitHub-hosted test. Do not bypass access restrictions. Continue storing manually verified published Melon chart snapshots with exact KST time until an authorized reliable feed is available.
+
+
+## Automatic Apple Music KR chart snapshots
+
+The chart ID \`apple-music-kr-top-songs\` uses Apple's official RSS Builder:
+https://rss.marketingtools.apple.com/ — feed
+https://rss.applemarketingtools.com/api/v2/kr/music/most-played/100/songs.json
+
+A live GitHub-runner test at 2026-10-27 01:12 KST returned 100 ranked songs and IVE's "Looks Can Kill" at position #2. **This test result is not a hardcoded website rank.** Production uses the collector to retrieve the feed again.
+
+Apple Music most-played is a **separate chart**, not Melon/Genie/Bugs/FLO, Spotify, or Apple Music stream count. Its RSS response reports a dynamic \`updated\` field that appears to follow request time, so we do not use it as an official chart period. We record when the full feed was fetched, retain the RSS update metadata, and label rank values as **captured**. Never derive "hours in Top 10" from this collection.
+
+Example schema (the position below is *illustrative*, not a claim about a chart period):
+
+\`\`\`json
+{
+  "track_id": "looks-can-kill",
+  "chart_id": "apple-music-kr-top-songs",
+  "rank": 2,
+  "movement": null,
+  "collected_at": "2026-10-27T01:16:20+09:00",
+  "feed_updated_at": "2026-10-27T01:16:19+09:00",
+  "source_url": "https://rss.applemarketingtools.com/api/v2/kr/music/most-played/100/songs.json",
+  "song_url": "https://music.apple.com/kr/album/looks-can-kill/6820421860?i=6820422075",
+  "song_id": "6820422075",
+  "verification": "official-apple-rss"
+}
+\`\`\`
+
+The collector verifies country code, 100 unique ranked song IDs, exact Apple song ID and IVE artist/title, and Apple's song link. Source/identity checks fail closed. The collection time is KST. Rank movement stays null because the RSS does not publish movement. If the exact track is missing, status remains **unavailable**, not falsely reported out of the chart.
+
+Official RSS website-use guidance: https://performance-partners.apple.com/tools
+
+All four service-specific chart robots checks disallowed the experimental bot:
+- https://www.melon.com/robots.txt
+- https://www.genie.co.kr/robots.txt
+- https://music.bugs.co.kr/robots.txt
+- https://www.music-flo.com/robots.txt
+
+These results are for the examined chart URLs and our bot, not a determination of license rights for every kind of data reuse.

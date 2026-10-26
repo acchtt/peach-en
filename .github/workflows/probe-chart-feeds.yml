@@ -11,5 +11,14 @@ jobs:
     timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
-      - name: Check source access and supported feed JSON
-        run: python3 scripts/probe_chart_feeds.py
+      - name: Parse and validate official RSS snapshots offline
+        run: python3 -m unittest discover -s tests -v
+      - name: Validate GitHub Pages stats
+        run: |
+          python3 scripts/validate_data.py
+          python3 -m py_compile scripts/collect_apple_kr.py
+          node --check stats.js
+      - name: Dry-run official Apple Music KR feed
+        run: |
+          python3 scripts/collect_apple_kr.py --dry-run
+          git diff --exit-code -- data.json
