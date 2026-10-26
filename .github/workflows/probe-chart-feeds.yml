@@ -18,7 +18,35 @@ jobs:
           python3 scripts/validate_data.py
           python3 -m py_compile scripts/collect_apple_kr.py
           node --check stats.js
-      - name: Dry-run official Apple Music KR feed
+      - name: End-to-end official RSS ingestion (test workspace only)
         run: |
-          python3 scripts/collect_apple_kr.py --dry-run
-          git diff --exit-code -- data.json
+          python3 scripts/collect_apple_kr.py
+          python3 scripts/validate_data.py
+          python3 - <<'PY'
+          import json
+          d=json.load(open('data.json'))
+          points=[o for o in d['observations'] if o['chart_id']=='apple-music-kr-top-songs']
+          assert len(points)>=1, 'No fresh official RSS observation; blocked/empty API'
+          assert points[-1]['verification']=='official-apple-rss'
+          print('PASS: official Apple Music Korea RSS captured ' + str(len(points)) + ' real observation(s)')
+          PY
+      - name: Responsive smoke screenshots
+        if: success()
+        continue-on-error: true
+        run: |
+          python3 -m http.server 8765 >/tmp/radar-http.log 2>&1 &
+          sleep 2
+          CHROME="$(command -v google-chrome || command -v chromium || true)"
+          if [ -z "$CHROME" ]; then echo 'Chrome unavailable; screenshots skipped'; exit 0; fi
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=4500 --screenshot=apple-kr-desktop.png --window-size=1440,1000 http://127.0.0.1:8765/ || true
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=4500 --screenshot=apple-kr-mobile.png --window-size=390,844 http://127.0.0.1:8765/ || true
+      - name: Upload responsive smoke capture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apple-music-kr-chart-smoke
+          path: |
+            apple-kr-desktop.png
+            apple-kr-mobile.png
+          retention-days: 3
+          if-no-files-found: ignore
