@@ -201,12 +201,34 @@ footer{border-top:1px solid #e5dce4;font-size:11px;color:#6f6270;font-weight:500
 }
 @media(prefers-reduced-motion:reduce){.hero-three-canvas{display:none!important}}
 
+
+/* Final responsive pass: put rank data closer to the first screen on phones. */
+@media(max-width:760px){
+ .top-tag{display:none}
+ .header-inner{min-height:0;padding:10px 15px 7px;gap:5px}
+ .brand{font-size:25px}
+ nav{order:3;flex:0 0 100%;overflow-x:visible;justify-content:space-between;gap:8px;padding:8px 0 3px}
+ nav a{font-size:10px;white-space:nowrap}
+ main{padding-top:15px}
+ .hero{gap:10px;margin-bottom:22px}
+ .hero-left{padding:19px 19px 20px}
+ .hero-overline{margin-bottom:10px!important}
+ .hero h1{font-size:clamp(42px,10vw,58px);margin-bottom:11px}
+ .hero-era{font-size:19px!important;margin-bottom:7px!important}
+ .hero-description{font-size:13px!important;line-height:1.55;margin-bottom:12px!important}
+ .hero-right{height:164px;min-height:164px;padding:13px}
+ .hero-mark{font-size:77px}
+ .hero-mark span{font-size:22px;top:-23px}
+ .hero-right p.hero-tagline{font-size:9px;letter-spacing:1.25px;margin:3px auto 0!important}
+ .hero-motion-toggle{padding:7px 8px;min-height:33px;font-size:10px;bottom:6px;right:7px}
+}
+
 </style>
 </head>
 <body>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="#top" aria-label="IVE RADAR home">IVE <b>★</b> RADAR</a>
-<nav aria-label="Main navigation"><a href="#top">HEADQUARTERS</a><a href="#charts">CHART INTEL</a><a href="#album">ALBUM</a><a href="#streaming">STREAMING</a><a href="#shows">MUSIC SHOWS</a></nav>
+<nav aria-label="Main navigation"><a href="#top">HOME</a><a href="#charts">CHARTS</a><a href="#album">ALBUM</a><a href="#streaming">STREAMING</a><a href="#shows">SHOWS</a></nav>
 <span class="top-tag">CURRENT COMEBACK · FAN PROJECT</span>
 </div></header>
 <main id="top">
@@ -237,7 +259,7 @@ footer{border-top:1px solid #e5dce4;font-size:11px;color:#6f6270;font-weight:500
 <h2 class="section-heading" id="charts">Ranking history</h2>
 <div class="analytics">
 <section class="panel"><div class="panel-top"><div><h3>Chart movement</h3></div><div class="filters" role="group" aria-label="Chart history platform"><button type="button" data-source="melon-top100" aria-pressed="true">MELON</button><button type="button" data-source="genie-realtime" aria-pressed="false">GENIE</button><button type="button" data-source="bugs-realtime" aria-pressed="false">BUGS</button><button type="button" data-source="flo-realtime" aria-pressed="false">FLO</button></div></div>
-<div class="graph"><svg id="history-svg" viewBox="0 0 720 270" role="img" aria-label="Rank history: no verified data yet"><g stroke="#111" opacity=".18" stroke-width="1"><path d="M55 20V235H706M55 72H706M55 127H706M55 181H706"/></g><g font-size="13" font-family="Arial" fill="#111" font-weight="bold"><text x="7" y="25">#1</text><text x="7" y="77">#25</text><text x="7" y="132">#50</text><text x="7" y="186">#75</text><text x="1" y="240">#100</text></g><path id="history-line" d="" fill="none" stroke="#111" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><path id="history-accent" d="" fill="none" stroke="#ed00b9" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg><div class="empty" id="chart-empty">NO VERIFIED RANK HISTORY YET.<br>THE GRAPH WILL APPEAR WHEN A SOURCE IS CONNECTED.</div></div>
+<div class="graph"><svg id="history-svg" viewBox="0 0 720 270" role="img" aria-label="Rank history: no verified data yet"><g stroke="#111" opacity=".18" stroke-width="1" fill="none"><path d="M55 20V235H706M55 72H706M55 127H706M55 181H706"/></g><g font-size="13" font-family="Arial" fill="#111" font-weight="bold"><text x="7" y="25">#1</text><text x="7" y="77">#25</text><text x="7" y="132">#50</text><text x="7" y="186">#75</text><text x="1" y="240">#100</text></g><path id="history-line" d="" fill="none" stroke="#111" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><path id="history-accent" d="" fill="none" stroke="#ed00b9" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg><div class="empty" id="chart-empty">NO VERIFIED RANK HISTORY YET.<br>THE GRAPH WILL APPEAR WHEN A SOURCE IS CONNECTED.</div></div>
 <div class="graph-notes"><span id="series-title">MELON TOP100</span><span>RANK #1 = CHART TOP</span><strong id="series-count">0 VERIFIED POINTS</strong></div></section>
 <section class="panel"><h3>Milestones</h3><p class="subtitle">Every number will show its original source and reporting timestamp once collection is configured.</p><div class="stats"><div class="stat"><label>TOP100 PEAK</label><strong id="peak-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>CURRENT RANK</label><strong id="current-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>DAYS CHARTED</label><strong id="days-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>TOP 20 HOURS</label><strong id="hours-stat">—</strong><small>Awaiting source</small></div></div><p class="note" id="source-time">SOURCE TIMESTAMP: NOT CONNECTED</p></section>
 </div>
