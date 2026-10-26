@@ -14,7 +14,8 @@
       "album": "Looks Can Kill",
       "album_release_date": "2026-10-26",
       "source_url": "https://music.apple.com/us/album/looks-can-kill-ep/6823675363",
-      "mv_video_id": "rsNhWkC4neE"
+      "mv_video_id": "rsNhWkC4neE",
+      "apple_music_kr_song_id": "6820422075"
     }
   ],
   "charts": [
@@ -97,6 +98,14 @@
       "cadence": "daily",
       "territory": "KR",
       "source_url": "https://charts.spotify.com/"
+    },
+    {
+      "id": "apple-music-kr-top-songs",
+      "platform": "Apple Music",
+      "chart": "Top Songs (KR) · RSS",
+      "cadence": "feed-capture",
+      "territory": "KR",
+      "source_url": "https://rss.applemarketingtools.com/api/v2/kr/music/most-played/100/songs.json"
     }
   ],
   "observations": [
