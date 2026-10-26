@@ -89,6 +89,10 @@ def main():
         if isinstance(tools, list):
             record["tool_count"] = len(tools)
             record["tool_names"] = [tool.get("name","") for tool in tools if isinstance(tool,dict)]
+            chart_tool = next((x for x in tools if isinstance(x,dict) and x.get("name")=="get_music_chart"),None)
+            if chart_tool:
+                record["get_music_chart_description"] = chart_tool.get("description","")[:1400]
+                record["get_music_chart_input_schema"] = chart_tool.get("inputSchema",{})
             record["chart_tool_names"] = [
                 tool.get("name", "") for tool in tools
                 if isinstance(tool, dict)
