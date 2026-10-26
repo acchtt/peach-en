@@ -1,270 +1,242 @@
 /**
- * IVE RADAR — decorative Three.js comic hero.
- * The existing CSS, headline and chart UI remain functional without WebGL.
+ * IVE RADAR — restrained Three.js hero experiment.
+ * Decorative only. The full HTML hero remains useful if this module cannot run.
  */
 const host = document.querySelector('.hero-right');
 const canvas = document.querySelector('#hero-three-canvas');
-const toggle = document.querySelector('#hero-motion-toggle');
+const motionButton = document.querySelector('#hero-motion-toggle');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-if (host && canvas && toggle && !reduceMotion.matches) {
-  let available = false;
+if (host && canvas && motionButton && !reduceMotion.matches) {
+  let supported = false;
   try {
-    available = Boolean(document.createElement('canvas').getContext('webgl2'));
-  } catch { /* keep CSS fallback */ }
-  if (available) {
+    supported = Boolean(document.createElement('canvas').getContext('webgl2'));
+  } catch {
+    // Non-WebGL browsers keep the original static section.
+  }
+  if (supported) {
     try {
       const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js');
-      mountScene(THREE);
+      createHero(THREE);
     } catch (error) {
-      console.info('IVE RADAR: 3D unavailable; using static hero.', error);
+      console.info('IVE RADAR: 3D unavailable; static hero retained.', error);
     }
   }
 }
 
-function mountScene(THREE) {
+function createHero(THREE) {
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({
-      canvas,
-      alpha: true,
-      antialias: window.devicePixelRatio <= 1.6,
-      powerPreference: 'low-power'
+      canvas, alpha: true, antialias: true, powerPreference: 'default'
     });
   } catch (error) {
-    console.info('IVE RADAR: WebGL renderer unavailable.', error);
+    console.info('IVE RADAR: WebGL unavailable.', error);
     return;
   }
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.OrthographicCamera(-6, 6, 4, -4, 0.1, 40);
-  camera.position.set(0, 0, 16);
+  const camera = new THREE.OrthographicCamera(-5, 5, 3, -3, 0.1, 30);
+  camera.position.set(0, 0, 13);
+  const objects = new THREE.Group();
+  scene.add(objects);
+  scene.add(new THREE.AmbientLight(0xffffff, 2.4));
+  const light = new THREE.DirectionalLight(0xffffff, 2.1);
+  light.position.set(-3, 5, 9);
+  scene.add(light);
 
-  const whole = new THREE.Group();
-  scene.add(whole);
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x796099, 2.1));
-  const key = new THREE.DirectionalLight(0xffffff, 2);
-  key.position.set(-4, 7, 12);
-  scene.add(key);
-
-  const makeMaterial = color => new THREE.MeshStandardMaterial({
-    color, roughness: 0.48, metalness: 0, flatShading: true
+  const mat = hex => new THREE.MeshStandardMaterial({
+    color: hex, roughness: 0.56, metalness: 0, flatShading: true
   });
-  const m = {
-    ink: makeMaterial(0x101010),
-    yellow: makeMaterial(0xf8ff1b),
-    cyan: makeMaterial(0x09d7db),
-    pink: makeMaterial(0xffc0eb),
-    purple: makeMaterial(0xa28bfd),
-    white: makeMaterial(0xffffff)
+  const colors = {
+    ink: mat(0x131015),
+    pink: mat(0xee2db7),
+    yellow: mat(0xffec59),
+    cyan: mat(0x55dae2),
+    lilac: mat(0xc8b2f2)
+  };
+  const actors = [];
+  const add = (node, x, y, scale, phase) => {
+    objects.add(node);
+    node.position.set(x, y, 0);
+    node.scale.setScalar(scale);
+    actors.push({ node, startY: y, phase });
+    return node;
   };
 
-  const actors = [];
-  function place(node, x, y, z, scale, phase) {
-    node.position.set(x, y, z);
-    node.scale.setScalar(scale);
-    whole.add(node);
-    actors.push({ node, y, phase });
-    return node;
+  function extruded(shape, material) {
+    return new THREE.Mesh(new THREE.ExtrudeGeometry(shape, {
+      depth: 0.14, bevelEnabled: true, bevelThickness: 0.035,
+      bevelSize: 0.035, bevelSegments: 1, steps: 1,
+      curveSegments: 1
+    }), material);
   }
 
-  function starShape(tips, outer, inner) {
+  function star() {
     const shape = new THREE.Shape();
-    for (let i = 0; i < tips * 2; i++) {
-      const angle = Math.PI / 2 + i * Math.PI / tips;
-      const radius = i % 2 === 0 ? outer : inner;
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius;
-      if (!i) shape.moveTo(x, y);
-      else shape.lineTo(x, y);
-    }
-    shape.closePath();
-    return shape;
-  }
-
-  function star(color, tips = 5) {
-    const node = new THREE.Group();
-    const geo = new THREE.ExtrudeGeometry(starShape(tips, 0.87, 0.39), {
-      depth: 0.24, steps: 1, bevelEnabled: true,
-      bevelSegments: 1, bevelSize: 0.065, bevelThickness: 0.065,
-      curveSegments: 2
-    });
-    const border = new THREE.Mesh(geo, m.ink);
-    border.scale.set(1.17, 1.17, 1.06);
-    border.position.z = -0.16;
-    node.add(border);
-    const face = new THREE.Mesh(geo, m[color]);
-    face.position.z = 0.04;
-    node.add(face);
-    return node;
-  }
-
-  function token(color) {
-    const node = new THREE.Group();
-    const back = new THREE.Mesh(
-      new THREE.CylinderGeometry(1.03, 1.03, 0.34, 28), m.ink);
-    back.rotation.x = Math.PI / 2;
-    back.position.z = -0.04;
-    const front = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.89, 0.89, 0.35, 28), m[color]);
-    front.rotation.x = Math.PI / 2;
-    front.position.z = 0.16;
-    const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(0.58, 0.065, 8, 32), m.ink);
-    ring.position.z = 0.37;
-    const center = new THREE.Mesh(new THREE.OctahedronGeometry(0.3), m.ink);
-    center.position.z = 0.49;
-    center.rotation.z = Math.PI / 4;
-    node.add(back, front, ring, center);
-    return node;
-  }
-
-  function bolt(color) {
-    const node = new THREE.Group();
-    const shape = new THREE.Shape();
-    const points = [[-0.18, 1], [0.53, 0.19], [0.1, 0.19],
-      [0.4, -0.93], [-0.63, 0.05], [-0.13, 0.05]];
-    for (const [i, point] of points.entries()) {
-      if (!i) shape.moveTo(...point);
+    for (let i = 0; i < 10; i++) {
+      const angle = Math.PI / 2 + i * Math.PI / 5;
+      const radius = i % 2 === 0 ? 0.95 : 0.43;
+      const point = [Math.cos(angle) * radius, Math.sin(angle) * radius];
+      if (i === 0) shape.moveTo(...point);
       else shape.lineTo(...point);
     }
     shape.closePath();
-    const geo = new THREE.ExtrudeGeometry(shape, {
-      depth: 0.16, steps: 1, bevelEnabled: false
-    });
-    const shadow = new THREE.Mesh(geo, m.ink);
-    shadow.scale.set(1.22, 1.2, 1);
-    shadow.position.z = -0.12;
-    const front = new THREE.Mesh(geo, m[color]);
-    front.position.z = 0.07;
-    node.add(shadow, front);
-    return node;
-  }
-
-  function hoop(color) {
     const node = new THREE.Group();
-    const back = new THREE.Mesh(new THREE.TorusGeometry(0.77, 0.25, 8, 30), m.ink);
-    const front = new THREE.Mesh(new THREE.TorusGeometry(0.77, 0.17, 8, 30), m[color]);
-    front.position.z = 0.16;
-    node.add(back, front);
+    const edge = extruded(shape, colors.ink);
+    edge.scale.set(1.09, 1.09, 1);
+    edge.position.z = -0.065;
+    const face = extruded(shape, colors.yellow);
+    face.position.z = 0.05;
+    node.add(edge, face);
     return node;
   }
 
-  place(star('yellow', 8), -4.65, 2.05, 1.1, 1.04, 0).rotation.z = -0.16;
-  place(token('cyan'), -4.37, -1.47, -0.2, 0.82, 1.5).rotation.y = 0.25;
-  place(hoop('white'), -3.4, 0.23, -1.4, 0.67, 2.5).rotation.y = -0.38;
-  place(star('pink'), 4.75, -1.87, 1.15, 1.2, 3.1).rotation.z = 0.35;
-  place(token('yellow'), 4.39, 1.74, -0.3, 0.82, 4.2).rotation.y = -0.2;
-  place(hoop('cyan'), 3.59, 0.18, -1.6, 0.67, 5.1).rotation.x = 0.23;
-  place(bolt('cyan'), -2.68, 2.13, -1.4, 0.62, 2.1).rotation.z = -0.42;
-  place(bolt('yellow'), 2.76, -2.38, -1.3, 0.75, 5.6).rotation.z = 0.18;
-  place(star('purple', 4), -5.68, 0.13, -1.7, 0.34, 1.1);
-  place(star('white', 4), 5.62, 0.18, -1.7, 0.41, 4.1);
-  place(star('cyan', 5), 2.87, 2.5, -1.9, 0.35, 2.8);
-
-  const dots = [
-    [-2.55, 1.35, 0.12, 'yellow'], [-3.12, -1.45, 0.09, 'white'],
-    [2.65, 1.43, 0.11, 'white'], [3, -1.13, 0.14, 'pink'],
-    [-5.6, -2.5, 0.1, 'cyan'], [5.6, 2.45, 0.11, 'yellow'],
-    [3.3, 2.57, 0.08, 'purple'], [-3.5, 2.65, 0.08, 'pink']
-  ];
-  for (const [x, y, radius, color] of dots) {
-    place(new THREE.Mesh(new THREE.IcosahedronGeometry(radius), m[color]),
-      x, y, -1.8, 1, x + y);
+  function disc() {
+    const node = new THREE.Group();
+    const edge = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.2, 48), colors.ink);
+    edge.rotation.x = Math.PI / 2;
+    const face = new THREE.Mesh(new THREE.CylinderGeometry(0.79, 0.79, 0.20, 48), colors.cyan);
+    face.rotation.x = Math.PI / 2;
+    face.position.z = 0.09;
+    const groove = new THREE.Mesh(new THREE.TorusGeometry(0.48, 0.033, 10, 48), colors.ink);
+    groove.position.z = 0.225;
+    const middle = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.19, 0.25, 24), colors.pink);
+    middle.rotation.x = Math.PI / 2;
+    middle.position.z = 0.12;
+    node.add(edge, face, groove, middle);
+    return node;
   }
 
-  let visible = true;
+  function bolt() {
+    const shape = new THREE.Shape();
+    const points = [[-0.19, 0.84], [0.37, 0.14], [0.06, 0.14],
+      [0.30, -0.89], [-0.52, 0.00], [-0.16, 0.00]];
+    points.forEach(([x, y], i) => i ? shape.lineTo(x, y) : shape.moveTo(x, y));
+    shape.closePath();
+    const node = new THREE.Group();
+    const edge = extruded(shape, colors.ink);
+    edge.scale.set(1.12, 1.12, 1);
+    edge.position.z = -0.05;
+    const face = extruded(shape, colors.lilac);
+    face.position.z = 0.045;
+    node.add(edge, face);
+    return node;
+  }
+
+  add(star(), -3.42, 1.06, 0.88, 0).rotation.z = 0.17;
+  add(disc(), 3.29, 0.68, 0.77, 2.1).rotation.y = -0.2;
+  add(bolt(), -3.03, -1.12, 0.58, 4.1).rotation.z = -0.22;
+
+  let frameId = 0;
+  let lastFrame = 0;
   let paused = false;
-  let frame = 0;
-  let previous = 0;
+  let visible = true;
+  let previousTime = performance.now();
+  let elapsed = 0;
+  let observer;
   const pointer = new THREE.Vector2();
-  const clock = new THREE.Clock();
 
   function resize() {
-    const rect = host.getBoundingClientRect();
-    const w = Math.max(rect.width, 1);
-    const h = Math.max(rect.height, 1);
-    camera.left = -6;
-    camera.right = 6;
-    camera.top = (6 * h) / w;
+    const bounds = host.getBoundingClientRect();
+    if (bounds.width < 1 || bounds.height < 1) return;
+    const width = bounds.width;
+    const height = bounds.height;
+    camera.left = -5;
+    camera.right = 5;
+    camera.top = 5 * height / width;
     camera.bottom = -camera.top;
     camera.updateProjectionMatrix();
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    renderer.setSize(w, h, false);
+
+    // Render at up to 2x CSS pixels instead of the previous blurry 1.5x.
+    // Pixel budget prevents large canvases from exhausting mobile GPUs.
+    const pixelBudget = Math.sqrt(2400000 / (width * height));
+    renderer.setPixelRatio(Math.max(1, Math.min(window.devicePixelRatio || 1, 2, pixelBudget)));
+    renderer.setSize(width, height, false);
     renderer.render(scene, camera);
   }
 
-  function animate(now) {
-    frame = requestAnimationFrame(animate);
-    if (now - previous < 1000 / 30) return;
-    previous = now;
-    const time = clock.getElapsedTime();
-    whole.rotation.y += (pointer.x * 0.12 - whole.rotation.y) * 0.045;
-    whole.rotation.x += (-pointer.y * 0.08 - whole.rotation.x) * 0.045;
-    actors.forEach(({ node, y, phase }, i) => {
-      node.position.y = y + Math.sin(time * 0.8 + phase) * 0.12;
-      node.rotation.z += Math.sin(time + i) * 0.0005;
+  function tick(now) {
+    frameId = requestAnimationFrame(tick);
+    if (now - lastFrame < 1000 / 30) return;
+    elapsed += Math.min((now - previousTime) / 1000, 0.08);
+    previousTime = now;
+    lastFrame = now;
+
+    actors.forEach(({ node, startY, phase }) => {
+      node.position.y = startY + 0.055 * Math.sin(elapsed * 0.7 + phase);
+      node.rotation.y += ((pointer.x * 0.11) - node.rotation.y) * 0.02;
     });
     renderer.render(scene, camera);
   }
+
   function stop() {
-    if (frame) cancelAnimationFrame(frame);
-    frame = 0;
+    if (frameId) cancelAnimationFrame(frameId);
+    frameId = 0;
   }
-  function sync() {
-    const run = visible && !paused && !document.hidden && !reduceMotion.matches;
-    if (run && !frame) {
-      previous = 0;
-      clock.start();
-      frame = requestAnimationFrame(animate);
-    } else if (!run) {
+
+  function syncMotion() {
+    const enabled = !paused && visible && !document.hidden && !reduceMotion.matches;
+    if (enabled && !frameId) {
+      previousTime = performance.now();
+      lastFrame = 0;
+      frameId = requestAnimationFrame(tick);
+    }
+    if (!enabled) {
       stop();
       renderer.render(scene, camera);
     }
   }
 
-  host.addEventListener('pointermove', (event) => {
+  host.addEventListener('pointermove', event => {
     if (event.pointerType === 'touch') return;
-    const r = host.getBoundingClientRect();
-    pointer.x = ((event.clientX - r.left) / r.width - 0.5) * 2;
-    pointer.y = ((event.clientY - r.top) / r.height - 0.5) * 2;
+    const rect = host.getBoundingClientRect();
+    pointer.x = (event.clientX - rect.left) / rect.width * 2 - 1;
   }, { passive: true });
-  host.addEventListener('pointerleave', () => pointer.set(0, 0));
+  host.addEventListener('pointerleave', () => { pointer.x = 0; });
 
-  new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-    sync();
-  }, { threshold: 0.05 }).observe(host);
+  if ('IntersectionObserver' in window) {
+    observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      syncMotion();
+    }, { threshold: 0.05 });
+    observer.observe(host);
+  }
   new ResizeObserver(resize).observe(host);
-  document.addEventListener('visibilitychange', sync);
+  document.addEventListener('visibilitychange', syncMotion);
 
-  toggle.hidden = false;
-  toggle.addEventListener('click', () => {
+  motionButton.hidden = false;
+  motionButton.addEventListener('click', () => {
     paused = !paused;
-    toggle.textContent = paused ? '▶ PLAY 3D' : 'Ⅱ PAUSE 3D';
-    toggle.setAttribute('aria-pressed', String(!paused));
-    toggle.setAttribute('aria-label',
-      paused ? 'Play 3D animation' : 'Pause 3D animation');
-    sync();
+    motionButton.textContent = paused ? 'Play animation' : 'Pause animation';
+    motionButton.setAttribute('aria-pressed', String(!paused));
+    motionButton.setAttribute('aria-label', motionButton.textContent);
+    syncMotion();
   });
+
   reduceMotion.addEventListener('change', () => {
+    stop();
     if (reduceMotion.matches) {
-      paused = true;
-      stop();
-      toggle.hidden = true;
+      canvas.classList.remove('is-ready');
+      motionButton.hidden = true;
     } else {
       paused = false;
-      toggle.hidden = false;
-      sync();
+      canvas.classList.add('is-ready');
+      motionButton.hidden = false;
+      syncMotion();
     }
   });
+
   canvas.addEventListener('webglcontextlost', event => {
     event.preventDefault();
     stop();
-    canvas.style.opacity = '0';
-    toggle.hidden = true;
+    canvas.classList.remove('is-ready');
+    motionButton.hidden = true;
+    observer?.disconnect();
   });
+
   resize();
   canvas.classList.add('is-ready');
-  sync();
+  syncMotion();
 }
