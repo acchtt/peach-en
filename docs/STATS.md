@@ -115,3 +115,14 @@ All four service-specific chart robots checks disallowed the experimental bot:
 - https://www.music-flo.com/robots.txt
 
 These results are for the examined chart URLs and our bot, not a determination of license rights for every kind of data reuse.
+
+
+## Additional Apple Music KR most-played album tracking
+
+The album chart is **not album sales**. The public Apple marketing RSS feed is https://rss.applemarketingtools.com/api/v2/kr/music/most-played/100/albums.json, chart ID apple-music-kr-top-albums. The linked IVE EP has Apple KR album ID 6820421860. Collect only a complete 100-entry feed with 100 unique IDs, matching KR country, exact title/artist/album ID and a music.apple.com source URL. Missing target ID means **no observed rank**; never backfill rank 101 or uncharted.
+
+The record belongs to album_chart_observations[] (not songs' observations[] or numeric album_sales[]) and contains track_id, chart_id, album_id, rank, movement:null, collected_at, feed_updated_at, source_url, album_url, verification:official-apple-rss. Duplicate UTC sample-hours are prohibited. Capture times are KST; updated is RSS metadata and **not** a provider-declared chart reporting period.
+
+### Circle Chart
+
+See [CIRCLE.md](CIRCLE.md). Its Digital, Streaming and Album chart categories have distinct meanings, largely weekly reporting periods. Site data holds source links only and **no scraped Circle observations** because authorized collection has not been established. Charts remain unavailable until licensed or manually verified, separately from this Apple Music KR album-ranking feed.

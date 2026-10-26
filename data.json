@@ -15,7 +15,8 @@
       "album_release_date": "2026-10-26",
       "source_url": "https://music.apple.com/us/album/looks-can-kill-ep/6823675363",
       "mv_video_id": "rsNhWkC4neE",
-      "apple_music_kr_song_id": "6820422075"
+      "apple_music_kr_song_id": "6820422075",
+      "apple_music_kr_album_id": "6820421860"
     }
   ],
   "charts": [
@@ -156,5 +157,39 @@
     }
   ],
   "album_sales": [],
-  "music_shows": []
+  "music_shows": [],
+  "album_charts": [
+    {
+      "id": "apple-music-kr-top-albums",
+      "platform": "Apple Music",
+      "chart": "Top 100 Most-Played Albums (KR)",
+      "cadence": "feed-capture",
+      "territory": "KR",
+      "source_url": "https://rss.applemarketingtools.com/api/v2/kr/music/most-played/100/albums.json"
+    }
+  ],
+  "album_chart_observations": [],
+  "circle_chart_sources": [
+    {
+      "id": "circle-digital-weekly",
+      "label": "Digital Chart (weekly)",
+      "cadence": "weekly",
+      "source_url": "https://circlechart.co.kr/page_chart/onoff.circle?serviceGbn=ALL",
+      "collection_status": "permission-unconfirmed"
+    },
+    {
+      "id": "circle-streaming-weekly",
+      "label": "Streaming Chart (weekly)",
+      "cadence": "weekly",
+      "source_url": "https://circlechart.co.kr/page_chart/onoff.circle?serviceGbn=S1040",
+      "collection_status": "permission-unconfirmed"
+    },
+    {
+      "id": "circle-album-weekly",
+      "label": "Album Chart (weekly)",
+      "cadence": "weekly",
+      "source_url": "https://circlechart.co.kr/page_chart/album.circle",
+      "collection_status": "permission-unconfirmed"
+    }
+  ]
 }

@@ -11,5 +11,24 @@ jobs:
     timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect source access controls and official album RSS
-        run: python3 scripts/probe_circle_sources.py
+      - name: Verify Python and JS syntax
+        run: |
+          python3 -m py_compile scripts/collect_apple_albums_kr.py scripts/validate_data.py
+          node --check stats.js
+      - name: Validate existing and mock chart schemas
+        run: |
+          python3 scripts/validate_data.py
+          python3 -m unittest discover -s tests -v
+      - name: Inspect official Apple KR Albums feed without modifying data
+        run: |
+          python3 scripts/collect_apple_albums_kr.py --dry-run
+          git diff --exit-code -- data.json
+      - name: Confirm Circle collection remains disabled
+        run: |
+          test ! -f scripts/collect_circle.py
+          python3 - <<'PY'
+          import json
+          x=json.load(open('data.json'))
+          assert all(a['collection_status']=='permission-unconfirmed' for a in x['circle_chart_sources'])
+          assert not x['album_chart_observations'], 'No fabricated album-chart history should be preloaded'
+          PY

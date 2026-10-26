@@ -58,3 +58,10 @@ The first fully tested, public **Korea-market ranking feed** is Apple's marketin
 - Every card links to Apple Music; only metadata about the tracked IVE track is retained, not the full Top 100 feed.
 
 **Access investigation (26 Oct 2026):** The current public chart URLs for Melon, Genie, Bugs, and FLO were each disallowed by their robots.txt for the chart bot. We did not bypass those rules. Apple RSS was accessible in live GitHub Actions probes, though intermittent timeouts can occur. The historical Melon source data and YouTube API continue independently.
+
+
+## Official Album chart monitoring and Circle Chart
+
+The **Apple Music KR Top 100 Most-Played Albums** feed is monitored hourly, separately from Hanteo sales and Circle wholesale shipments. In the Album panel choose **Apple Music KR** to see any verified EP ranking and capture timestamp. The collector only records an observation if the *exact* Apple KR album ID appears in the official Top 100 RSS feed. If absent, the ranking stays unavailable, not falsely labeled uncharted. No new API key is necessary. Feed URL: https://rss.applemarketingtools.com/api/v2/kr/music/most-played/100/albums.json
+
+The site also has official **Circle Chart Digital, Streaming and Album** links. No Circle chart ranking is automatically collected: Circle's pages prohibit unauthorized text/data mining and the runner's missing robots.txt did not establish scraping permission. See [Circle feasibility notes](docs/CIRCLE.md). Circle weekly ranks are not album sales and must not be inferred from Apple Music, Melon or YouTube.
