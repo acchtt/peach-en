@@ -165,6 +165,64 @@ function renderMilestones(){
   if (rows[3]) rows[3].lastElementChild.textContent='—';
 }
 
+
+function renderAlbum(){
+  const panel=$('#album');
+  if(!panel)return;
+  const rows=[...panel.querySelectorAll('.card-rows .statrow')];
+  const info=$('#sales-label');
+  if(rows.length<3 || !info)return;
+  const names=state.sales==='Apple Music'
+    ? ['KR most-played album rank','Observed peak','Last feed capture']
+    : state.sales==='Circle'
+    ? ['Weekly album chart rank','Album shipments','Chart period']
+    : ['Daily album sales','Cumulative album sales','Last official update'];
+  rows.forEach((row,i)=>{
+    row.firstElementChild.textContent=names[i];
+    row.lastElementChild.textContent='—';
+  });
+  if(state.sales==='Circle'){
+    info.replaceChildren(make('span','Circle weekly figures not connected · '));
+    const link=make('a','Official album chart ↗');
+    link.href='https://circlechart.co.kr/page_chart/album.circle';
+    link.target='_blank';link.rel='noopener noreferrer';
+    info.append(link);
+    return;
+  }
+  if(state.sales!=='Apple Music'){
+    info.textContent='Hanteo sales · awaiting a verified source';
+    return;
+  }
+  const data=state.data;
+  const expectedAlbum=data?.tracksById?.get(data.default_track_id)?.apple_music_kr_album_id;
+  const samples=(data?.album_chart_observations||[]).filter(item=>{
+    if(!item || item.chart_id!=='apple-music-kr-top-albums' || item.track_id!==data.default_track_id
+      || item.album_id!==expectedAlbum || item.verification!=='official-apple-rss'
+      || !Number.isInteger(item.rank) || item.rank<1 || item.rank>100
+      || !Number.isFinite(Date.parse(item.collected_at))
+      || item.movement!==null) return false;
+    try{
+      const song=new URL(item.album_url),feed=new URL(item.source_url);
+      return song.protocol==='https:' && song.hostname==='music.apple.com'
+        && song.pathname.endsWith('/'+expectedAlbum)
+        && feed.protocol==='https:' && feed.hostname==='rss.applemarketingtools.com';
+    }catch{return false;}
+  }).sort((a,b)=>Date.parse(a.collected_at)-Date.parse(b.collected_at));
+  const latest=samples.at(-1);
+  if(!latest){
+    info.textContent='Apple Music KR albums · no verified Top 100 capture yet (not sales)';
+    return;
+  }
+  rows[0].lastElementChild.textContent='#'+latest.rank;
+  rows[1].lastElementChild.textContent='#'+Math.min(...samples.map(s=>s.rank));
+  rows[2].lastElementChild.textContent=time(latest.collected_at);
+  info.replaceChildren(make('span','Most-played album chart · not sales · '));
+  const link=make('a','Apple Music ↗');
+  link.href=latest.album_url;
+  link.target='_blank';link.rel='noopener noreferrer';
+  info.append(link);
+}
+
 function renderStreaming(){
   const panel=$('#streaming');
   if(!panel)return;
@@ -207,7 +265,7 @@ function renderHeader(){
   const recent=obs.at(-1);
   label.textContent=(Date.now()-Date.parse(sampleTime(recent))>12*3600000?'HISTORICAL DATA · ':'LATEST VERIFIED DATA · ')+time(sampleTime(recent));
 }
-function render(){renderScores();updateHistory();renderStats();renderRecent();renderMilestones();renderStreaming();renderHeader()}
+function render(){renderScores();updateHistory();renderStats();renderRecent();renderMilestones();renderAlbum();renderStreaming();renderHeader()}
 for(const [selector,key] of SELECTORS){
   $$(selector).forEach(button=>button.addEventListener('click',()=>{
     const value=button.getAttribute('data-'+key);
@@ -219,7 +277,7 @@ for(const [selector,key] of SELECTORS){
         if(history){state.history=value;$$('[data-history]').forEach(x=>x.setAttribute('aria-pressed',String(x===history)));}
       }
     }
-    if(key==='sales')$('#sales-label').textContent=value+' · awaiting verified sales source';
+    if(key==='sales')renderAlbum();
     if(key==='stream')renderStreaming();
     if(['chart','cycle','history','window'].includes(key))render();
   }));

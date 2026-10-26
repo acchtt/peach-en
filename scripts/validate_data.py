@@ -43,7 +43,7 @@ print(f'PASS: {len(tracks)} tracks, {len(charts)} chart series, {len(seen)} time
 
 # Official MV cumulative counters are separate from chart positions and times.
 from urllib.parse import parse_qs
-from datetime import timezone
+from datetime import timezone, timedelta
 streaming = data.get('streaming', [])
 assert isinstance(streaming, list), 'streaming must be a list'
 video_ids = {t['id']: t.get('mv_video_id') for t in data['tracks']}
@@ -64,3 +64,42 @@ for item in streaming:
     assert key not in samples, 'Duplicate hourly MV counter sample'
     samples.add(key)
 print(f'PASS: {len(samples)} YouTube MV counter samples')
+
+
+# Official Apple Music KR most-played albums are NOT physical sales.
+album_sources={x['id']:x for x in data.get('album_charts',[])}
+assert 'apple-music-kr-top-albums' in album_sources, 'Missing Apple KR album chart registration'
+album_rows=data.get('album_chart_observations',[])
+assert isinstance(album_rows,list), 'Album chart captures must be a list'
+album_ids={x['id']:x.get('apple_music_kr_album_id') for x in data['tracks']}
+album_seen=set()
+for item in album_rows:
+    assert item.get('track_id') in tracks, 'Unknown album track'
+    assert item.get('chart_id')=='apple-music-kr-top-albums', 'Unsupported album chart'
+    assert item.get('album_id')==album_ids[item['track_id']], 'Official Apple KR EP ID mismatch'
+    assert type(item.get('rank')) is int and 1<=item['rank']<=100, 'Invalid KR album chart rank'
+    assert item.get('movement') is None, 'Apple album feed has no movement metadata'
+    assert item.get('verification')=='official-apple-rss', 'Album RSS source unverified'
+    collected=datetime.fromisoformat(item['collected_at'])
+    feed_updated=datetime.fromisoformat(item['feed_updated_at'])
+    assert collected.tzinfo is not None and feed_updated.tzinfo is not None, 'Album capture missing timezone'
+    assert collected.utcoffset()==timedelta(hours=9), 'Album captured_at must be KST'
+    assert feed_updated<=collected+timedelta(minutes=10), 'Invalid RSS update metadata timestamp'
+    feed_url=urlparse(item.get('source_url',''))
+    assert feed_url.scheme=='https' and feed_url.hostname=='rss.applemarketingtools.com', 'Album feed hostname mismatch'
+    assert item['source_url']==album_sources[item['chart_id']]['source_url'], 'Wrong official album RSS endpoint'
+    album_url=urlparse(item.get('album_url',''))
+    assert album_url.scheme=='https' and album_url.hostname=='music.apple.com', 'Album link must be official'
+    assert album_url.path.rstrip('/').endswith('/'+item['album_id']), 'Album link ID mismatch'
+    key=(item['track_id'],item['album_id'],collected.astimezone(timezone.utc).strftime('%Y-%m-%dT%H'))
+    assert key not in album_seen, 'Duplicate Apple KR album chart hour'
+    album_seen.add(key)
+print(f'PASS: {len(album_seen)} Apple Music KR album rank captures')
+
+# These are source links, not a license to scrape or redistribute Circle charts.
+circle_sources=data.get('circle_chart_sources',[])
+assert len(circle_sources)==3 and len(set(x['id'] for x in circle_sources))==3, 'Circle weekly source registry invalid'
+for x in circle_sources:
+    assert x['collection_status']=='permission-unconfirmed', 'No Circle automated access authorization'
+    uri=urlparse(x['source_url'])
+    assert uri.scheme=='https' and uri.hostname in ('circlechart.co.kr','circlechart.kr'), 'Wrong Circle official URL'
