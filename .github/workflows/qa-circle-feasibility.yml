@@ -23,6 +23,25 @@ jobs:
         run: |
           python3 scripts/collect_apple_albums_kr.py --dry-run
           git diff --exit-code -- data.json
+      - name: Screenshot desktop and mobile
+        continue-on-error: true
+        run: |
+          python3 -m http.server 8765 >/tmp/ive-radar-http.log 2>&1 &
+          sleep 2
+          CHROME="$(command -v google-chrome || command -v chromium || true)"
+          if [ -z "$CHROME" ]; then echo "Chrome unavailable"; exit 0; fi
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=5000 --screenshot=album-kr-desktop.png --window-size=1440,1000 http://127.0.0.1:8765/ || true
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=5000 --screenshot=album-kr-mobile.png --window-size=390,844 http://127.0.0.1:8765/ || true
+      - name: Upload responsive snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ive-radar-album-kr-premerge
+          path: |
+            album-kr-desktop.png
+            album-kr-mobile.png
+          if-no-files-found: ignore
+          retention-days: 3
       - name: Confirm Circle collection remains disabled
         run: |
           test ! -f scripts/collect_circle.py
