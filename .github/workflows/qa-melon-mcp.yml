@@ -1,0 +1,21 @@
+name: QA - Official Melon MCP Feasibility (No Authentication)
+on:
+  push:
+    branches: [demo/melon-official-mcp]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate probe syntax
+        run: python3 -m py_compile scripts/probe_melon_mcp.py
+      - name: Discover public MCP chart tools and OAuth metadata only
+        run: python3 scripts/probe_melon_mcp.py
+      - name: Validate existing website data unchanged
+        run: |
+          python3 scripts/validate_data.py
+          git diff --exit-code -- data.json
