@@ -1,0 +1,17 @@
+name: Guyso Source Review (one-off, no chart publishing)
+on:
+  push:
+    branches: [demo/guyso-source-review]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe robots rules and source freshness without ingestion
+        run: python3 scripts/probe_guyso.py
+      - name: Verify production stats unchanged
+        run: git diff --exit-code -- data.json
