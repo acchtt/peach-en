@@ -36,6 +36,9 @@ jobs:
         run: python3 scripts/collect_apple_kr.py
       - name: Monitor Apple Music KR Top 100 Albums
         run: python3 scripts/collect_apple_albums_kr.py
+      - name: Capture IVE ranking from first-party Melon MCP
+        continue-on-error: true
+        run: python3 scripts/collect_melon_mcp.py
       - name: Verify collectors against offline regression fixtures
         run: python3 -m unittest discover -s tests
       - name: Validate chart and streaming observations

@@ -126,3 +126,12 @@ The record belongs to album_chart_observations[] (not songs' observations[] or n
 ### Circle Chart
 
 See [CIRCLE.md](CIRCLE.md). Its Digital, Streaming and Album chart categories have distinct meanings, largely weekly reporting periods. Site data holds source links only and **no scraped Circle observations** because authorized collection has not been established. Charts remain unavailable until licensed or manually verified, separately from this Apple Music KR album-ranking feed.
+
+
+## First-party Melon MCP capture stream
+
+Melon MCP endpoint: https://mcp.melon.com/mcp/ . get_music_chart provides TOP_100, DAILY, WEEKLY rank lists. Exact known Melon song ID 603448999, title and artist must match. The collector queries bounded pages of 30 entries and stops when the exact track is found. TOP100 samples occur once per hour, Daily once per KST day, Weekly at most once every seven days.
+
+The source response did not establish the provider's chart reporting timestamp; therefore these records use collected_at (KST), verification official-melon-mcp-capture and movement null, not observed_at. Published official-chart-snapshot observations remain separate. A missing capture is UNKNOWN, never an uncharted verdict. No missing hours, fake rank movements or interpolation are shown.
+
+The Guyso history link on the site is external-reference-only. Its robots.txt disallows the project bot, so its chart data is never scraped or mirrored.

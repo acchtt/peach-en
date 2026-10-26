@@ -1,0 +1,58 @@
+name: QA - Guyso-style First-Party Melon Tracker
+on:
+  push:
+    branches: [demo/guyso-style-chart-tracker]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax and frontend syntax
+        run: |
+          python3 -m py_compile scripts/collect_melon_mcp.py scripts/validate_data.py
+          node --check stats.js
+      - name: Run all offline regression tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Validate preexisting signed-off dataset
+        run: python3 scripts/validate_data.py
+      - name: Check official Melon TOP100 access without changing data
+        run: |
+          python3 scripts/collect_melon_mcp.py --dry-run --chart TOP_100
+          git diff --exit-code -- data.json
+      - name: End-to-end chart ingestion in disposable QA runner
+        run: |
+          python3 scripts/collect_melon_mcp.py --chart TOP_100
+          python3 scripts/validate_data.py
+          python3 - <<'PY'
+          import json
+          d=json.load(open('data.json'))
+          assert d['tracks'][0]['melon_song_id']==603448999
+          points=[x for x in d['observations'] if x.get('verification')=='official-melon-mcp-capture']
+          assert len(points)>=1, 'No valid live first-party Melon rank was ingested'
+          latest=points[-1]
+          assert latest['movement'] is None and 'observed_at' not in latest
+          print('PASS: first-party Melon MCP IVE rank: #'+str(latest['rank'])+' captured '+latest['collected_at'])
+          PY
+      - name: Browser desktop and mobile screenshots
+        continue-on-error: true
+        run: |
+          python3 -m http.server 8765 >/tmp/radar-qa-http.log 2>&1 &
+          sleep 2
+          CHROME="$(command -v google-chrome || command -v chromium || true)"
+          if [ -z "$CHROME" ]; then echo "Chrome unavailable"; exit 0; fi
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=4500 --screenshot=melon-tracker-desktop.png --window-size=1440,960 http://127.0.0.1:8765/ || true
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --hide-scrollbars --virtual-time-budget=4500 --screenshot=melon-tracker-mobile.png --window-size=390,844 http://127.0.0.1:8765/ || true
+      - name: Upload QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ive-radar-melon-mcp-qa
+          path: |
+            melon-tracker-desktop.png
+            melon-tracker-mobile.png
+          if-no-files-found: ignore
+          retention-days: 3

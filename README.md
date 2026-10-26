@@ -65,3 +65,16 @@ The first fully tested, public **Korea-market ranking feed** is Apple's marketin
 The **Apple Music KR Top 100 Most-Played Albums** feed is monitored hourly, separately from Hanteo sales and Circle wholesale shipments. In the Album panel choose **Apple Music KR** to see any verified EP ranking and capture timestamp. The collector only records an observation if the *exact* Apple KR album ID appears in the official Top 100 RSS feed. If absent, the ranking stays unavailable, not falsely labeled uncharted. No new API key is necessary. Feed URL: https://rss.applemarketingtools.com/api/v2/kr/music/most-played/100/albums.json
 
 The site also has official **Circle Chart Digital, Streaming and Album** links. No Circle chart ranking is automatically collected: Circle's pages prohibit unauthorized text/data mining and the runner's missing robots.txt did not establish scraping permission. See [Circle feasibility notes](docs/CIRCLE.md). Circle weekly ranks are not album sales and must not be inferred from Apple Music, Melon or YouTube.
+
+
+## Guyso-style chart history, powered by first-party Melon MCP
+
+The historical Guyso.com site is an EXTERNAL REFERENCE ONLY. Its robots.txt disallowed our chart bot. Nothing is scraped, copied or mirrored from Guyso.
+
+For Melon, IVE RADAR independently queries Kakao Entertainment's public first-party Melon MCP get_music_chart tool. The only matching target is IVE's Looks Can Kill (Melon song ID 603448999). TOP100, Daily and Weekly captures are limited to once per KST hour, day and seven days respectively.
+
+The source tool did not supply an authenticated official chart reporting period. Captures therefore use collected_at (KST) and verification official-melon-mcp-capture, distinct from older published observed_at snapshots. A capture is never represented as a provider's published chart hour. We do not interpolate missing periods or compute full charted-hour totals.
+
+Each capture requires exact song ID, title and artist plus complete rank pages. A blocked/missing/malformed source never produces fake data and cannot block the Apple Music or YouTube collectors. Other restricted Korean sites (Genie, Bugs, FLO) remain unconnected.
+
+Melon's published terms may restrict reuse/redistribution. The fact that a public MCP chart endpoint responds without credentials does not confer broader publication rights. Maintain clear attribution, recheck terms before expanding, and disable this collector if the provider requests it. No bypass of blocked chart HTML or private account data is involved.

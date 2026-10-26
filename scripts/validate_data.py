@@ -17,7 +17,8 @@ for o in data['observations']:
     assert o['track_id'] in tracks, 'Unknown track ID'
     assert type(o['rank']) is int and 1<=o['rank']<=200, 'Invalid rank'
     apple = o['chart_id']=='apple-music-kr-top-songs'
-    iso = o['collected_at'] if apple else o['observed_at']
+    melon_capture = o.get('verification')=='official-melon-mcp-capture'
+    iso = o['collected_at'] if (apple or melon_capture) else o['observed_at']
     instant = datetime.fromisoformat(iso)
     assert instant.tzinfo is not None, 'Time must include timezone'
     url = urlparse(o['source_url'])
@@ -34,11 +35,30 @@ for o in data['observations']:
         feed_updated=datetime.fromisoformat(o['feed_updated_at'])
         assert feed_updated.tzinfo is not None, 'Apple feed metadata time needs timezone'
         assert feed_updated<=instant + timedelta(minutes=10), 'RSS feed metadata cannot be in the future'
+    elif melon_capture:
+        assert o['chart_id'] in {'melon-top100','melon-daily','melon-weekly'}, 'Unexpected Melon MCP series'
+        assert o['melon_song_id']==tracks[o['track_id']].get('melon_song_id'), 'Wrong first-party Melon song ID'
+        assert type(o['melon_song_id']) is int and o['melon_song_id'] > 0, 'Melon ID invalid'
+        assert o['mcp_endpoint']=='https://mcp.melon.com/mcp/', 'Must use first-party Melon MCP'
+        assert 1<=o['rank']<=100 and o.get('movement') is None, 'MCP capture has no confirmed movement'
+        assert 'observed_at' not in o, 'Capture time is not a provider-published chart time'
+        assert instant.utcoffset()==timedelta(hours=9), 'Melon captures must be timestamped in KST'
+        assert o['source_url']==charts[o['chart_id']]['source_url'], 'Wrong chart permalink'
     else:
         assert o['verification']=='official-chart-snapshot', 'Not a verified official chart snapshot'
     key=(o['track_id'],o['chart_id'],iso)
     assert key not in seen, 'Duplicate chart observation'
     seen.add(key)
+# Melon capture cadence: one sample per KST hour per chart. Daily/weekly are
+# sampled at lower frequency by the collector but still require unique hours.
+melon_capture_hours=set()
+for o in data['observations']:
+    if o.get('verification')!='official-melon-mcp-capture':
+        continue
+    stamp=datetime.fromisoformat(o['collected_at'])
+    key=(o['track_id'],o['chart_id'],stamp.strftime('%Y-%m-%dT%H'))
+    assert key not in melon_capture_hours, 'Duplicate official Melon MCP capture hour'
+    melon_capture_hours.add(key)
 print(f'PASS: {len(tracks)} tracks, {len(charts)} chart series, {len(seen)} timestamped observations')
 
 # Official MV cumulative counters are separate from chart positions and times.
