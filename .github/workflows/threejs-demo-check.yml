@@ -1,0 +1,59 @@
+name: QA - Three.js Hero Demo
+on:
+  push:
+    branches:
+      - demo/threejs-hero
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check JavaScript syntax
+        run: node --check hero-three.js
+      - name: Verify fallback and preserve chart application
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          h=Path("index.html").read_text(encoding="utf-8")
+          js=Path("hero-three.js").read_text(encoding="utf-8")
+          assert 'id="hero-three-canvas"' in h
+          assert 'id="hero-motion-toggle"' in h
+          assert './hero-three.js' in h
+          assert 'id="rank-cards"' in h
+          assert 'id="history-svg"' in h
+          assert 'fetch(\'./data.json\'' in h
+          assert "prefers-reduced-motion: reduce" in js
+          assert "IntersectionObserver" in js
+          assert "visibilitychange" in js
+          assert "webglcontextlost" in js
+          assert "renderer.setPixelRatio" in js
+          assert "https://cdn.jsdelivr.net/npm/three@0.180.0" in js
+          print("Three.js demo static checks passed.")
+          PY
+      - name: Capture desktop and mobile previews
+        continue-on-error: true
+        run: |
+          python3 -m http.server 8765 >/tmp/ive-radar-http.log 2>&1 &
+          sleep 2
+          CHROME="$(command -v google-chrome || command -v chromium || true)"
+          if [ -z "$CHROME" ]; then echo "Chrome not available; skips screenshots"; exit 0; fi
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --use-gl=angle --use-angle=swiftshader --hide-scrollbars --virtual-time-budget=6500 --screenshot=threejs-desktop.png --window-size=1440,950 http://127.0.0.1:8765/ || true
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --use-gl=angle --use-angle=swiftshader --hide-scrollbars --virtual-time-budget=6500 --screenshot=threejs-mobile.png --window-size=390,844 http://127.0.0.1:8765/ || true
+      - name: Upload screenshots for review
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ive-radar-threejs-demo-screenshots
+          path: |
+            threejs-desktop.png
+            threejs-mobile.png
+          if-no-files-found: ignore
+          retention-days: 7
