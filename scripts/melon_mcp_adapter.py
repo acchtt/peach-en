@@ -58,7 +58,7 @@ def inspect_ive(text, *, chart_type, captured_at):
         if not isinstance(artists,list):
             raise InvalidMelonChart("No artist list")
         names={normalized(a.get("artist_name","")) for a in artists if isinstance(a,dict)}
-        if normalized(item.get("song_name",""))=="looks can kill" and ("ive" in names or "아이브" in names):
+        if normalized(item.get("song_name",""))=="looks can kill" and any(n in {"ive","아이브","ive (아이브)","아이브 (ive)"} for n in names):
             matches.append((rank,item["song_id"]))
     if len(matches)>1:
         raise InvalidMelonChart("Multiple exact IVE matches")

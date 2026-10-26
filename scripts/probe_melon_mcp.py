@@ -109,7 +109,7 @@ def main():
             "jsonrpc": "2.0", "id": 2, "method": "tools/call",
             "params": {
                 "name": "get_music_chart",
-                "arguments": {"chart_type": "TOP_100", "start": 1, "size": 10}
+                "arguments": {"chart_type": "TOP_100", "start": 11, "size": 10}
             },
         }
     )
@@ -137,7 +137,7 @@ def main():
             raw=first.get("text","")
             summary["first_content_type"] = first.get("type","")
             summary["first_content_length"] = len(raw) if isinstance(raw,str) else None
-            summary["first_content_preview"] = str(raw)[:900]
+            summary["first_content_preview"] = str(raw)[:240]
             if isinstance(raw,str):
                 try:
                     contents=json.loads(raw)
