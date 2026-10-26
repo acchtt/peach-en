@@ -121,7 +121,18 @@
       "note": "IVE - Looks Can Kill at #6, unchanged, official Melon TOP100 21:00 KST."
     }
   ],
-  "streaming": [],
+  "streaming": [
+    {
+      "track_id": "looks-can-kill",
+      "platform": "YouTube",
+      "metric": "view_count",
+      "video_id": "rsNhWkC4neE",
+      "value": 21093993,
+      "collected_at": "2026-10-27T01:07:50+09:00",
+      "source_url": "https://www.youtube.com/watch?v=rsNhWkC4neE",
+      "verification": "youtube-data-api-v3"
+    }
+  ],
   "album_sales": [],
   "music_shows": []
 }
