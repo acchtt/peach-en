@@ -17,16 +17,86 @@
     }
   ],
   "charts": [
-    {"id":"melon-top100","platform":"Melon","chart":"TOP100","cadence":"hourly","territory":"KR","source_url":"https://www.melon.com/chart/index.htm"},
-    {"id":"melon-daily","platform":"Melon","chart":"Daily","cadence":"daily","territory":"KR","source_url":"https://www.melon.com/chart/day/index.htm"},
-    {"id":"melon-weekly","platform":"Melon","chart":"Weekly","cadence":"weekly","territory":"KR","source_url":"https://www.melon.com/chart/week/index.htm"},
-    {"id":"genie-realtime","platform":"Genie","chart":"Realtime","cadence":"hourly","territory":"KR","source_url":"https://www.genie.co.kr/chart/top200"},
-    {"id":"genie-daily","platform":"Genie","chart":"Daily","cadence":"daily","territory":"KR","source_url":"https://www.genie.co.kr/chart/top200"},
-    {"id":"bugs-realtime","platform":"Bugs","chart":"Realtime","cadence":"hourly","territory":"KR","source_url":"https://music.bugs.co.kr/chart"},
-    {"id":"bugs-daily","platform":"Bugs","chart":"Daily","cadence":"daily","territory":"KR","source_url":"https://music.bugs.co.kr/chart"},
-    {"id":"flo-realtime","platform":"FLO","chart":"Realtime","cadence":"hourly","territory":"KR","source_url":"https://www.music-flo.com/"},
-    {"id":"youtube-kr-weekly","platform":"YouTube","chart":"Weekly Top Songs","cadence":"weekly","territory":"KR","source_url":"https://charts.youtube.com/"},
-    {"id":"spotify-kr-daily","platform":"Spotify","chart":"Daily Top Songs","cadence":"daily","territory":"KR","source_url":"https://charts.spotify.com/"}
+    {
+      "id": "melon-top100",
+      "platform": "Melon",
+      "chart": "TOP100",
+      "cadence": "hourly",
+      "territory": "KR",
+      "source_url": "https://www.melon.com/chart/index.htm"
+    },
+    {
+      "id": "melon-daily",
+      "platform": "Melon",
+      "chart": "Daily",
+      "cadence": "daily",
+      "territory": "KR",
+      "source_url": "https://www.melon.com/chart/day/index.htm"
+    },
+    {
+      "id": "melon-weekly",
+      "platform": "Melon",
+      "chart": "Weekly",
+      "cadence": "weekly",
+      "territory": "KR",
+      "source_url": "https://www.melon.com/chart/week/index.htm"
+    },
+    {
+      "id": "genie-realtime",
+      "platform": "Genie",
+      "chart": "Realtime",
+      "cadence": "hourly",
+      "territory": "KR",
+      "source_url": "https://www.genie.co.kr/chart/top200"
+    },
+    {
+      "id": "genie-daily",
+      "platform": "Genie",
+      "chart": "Daily",
+      "cadence": "daily",
+      "territory": "KR",
+      "source_url": "https://www.genie.co.kr/chart/top200"
+    },
+    {
+      "id": "bugs-realtime",
+      "platform": "Bugs",
+      "chart": "Realtime",
+      "cadence": "hourly",
+      "territory": "KR",
+      "source_url": "https://music.bugs.co.kr/chart"
+    },
+    {
+      "id": "bugs-daily",
+      "platform": "Bugs",
+      "chart": "Daily",
+      "cadence": "daily",
+      "territory": "KR",
+      "source_url": "https://music.bugs.co.kr/chart"
+    },
+    {
+      "id": "flo-realtime",
+      "platform": "FLO",
+      "chart": "Realtime",
+      "cadence": "hourly",
+      "territory": "KR",
+      "source_url": "https://www.music-flo.com/"
+    },
+    {
+      "id": "youtube-kr-weekly",
+      "platform": "YouTube",
+      "chart": "Weekly Top Songs",
+      "cadence": "weekly",
+      "territory": "KR",
+      "source_url": "https://charts.youtube.com/"
+    },
+    {
+      "id": "spotify-kr-daily",
+      "platform": "Spotify",
+      "chart": "Daily Top Songs",
+      "cadence": "daily",
+      "territory": "KR",
+      "source_url": "https://charts.spotify.com/"
+    }
   ],
   "observations": [
     {
@@ -38,6 +108,16 @@
       "source_url": "https://www.melon.com/chart/index.htm",
       "verification": "official-chart-snapshot",
       "note": "IVE - Looks Can Kill at #6, up one place, Melon TOP100 20:00 KST; first recorded observation in this project."
+    },
+    {
+      "track_id": "looks-can-kill",
+      "chart_id": "melon-top100",
+      "rank": 6,
+      "movement": 0,
+      "observed_at": "2026-10-26T21:00:00+09:00",
+      "source_url": "https://www.melon.com/chart/",
+      "verification": "official-chart-snapshot",
+      "note": "IVE - Looks Can Kill at #6, unchanged, official Melon TOP100 21:00 KST."
     }
   ],
   "streaming": [],
