@@ -28,11 +28,14 @@ jobs:
         with:
           python-version: '3.12'
       - name: Collect official YouTube MV views
+        continue-on-error: true
         env:
           YOUTUBE_DATA_API_KEY: ${{ secrets.YOUTUBE_DATA_API_KEY }}
         run: python3 scripts/collect_youtube.py
       - name: Collect Apple Music KR Top Songs RSS
         run: python3 scripts/collect_apple_kr.py
+      - name: Verify collectors against offline regression fixtures
+        run: python3 -m unittest discover -s tests
       - name: Validate chart and streaming observations
         run: python3 scripts/validate_data.py
       - name: Check JavaScript syntax
