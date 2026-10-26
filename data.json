@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "era": "Looks Can Kill",
+  "updated_at": null,
+  "sources": [
+    {
+      "id": "melon-top100",
+      "rank": null,
+      "peak": null,
+      "change": null
+    },
+    {
+      "id": "melon-daily",
+      "rank": null,
+      "peak": null,
+      "change": null
+    },
+    {
+      "id": "melon-hot100",
+      "rank": null,
+      "peak": null,
+      "change": null
+    },
+    {
+      "id": "genie-realtime",
+      "rank": null,
+      "peak": null,
+      "change": null
+    },
+    {
+      "id": "bugs-realtime",
+      "rank": null,
+      "peak": null,
+      "change": null
+    },
+    {
+      "id": "flo-realtime",
+      "rank": null,
+      "peak": null,
+      "change": null
+    }
+  ],
+  "history": [],
+  "milestones": {
+    "top100_peak": null,
+    "top100_current": null,
+    "days_charted": null,
+    "hours_top20": null
+  },
+  "tracks": [
+    {
+      "name": "Looks Can Kill",
+      "melon_top100": null,
+      "peak": null
+    }
+  ],
+  "streaming": [],
+  "shows": []
+}
