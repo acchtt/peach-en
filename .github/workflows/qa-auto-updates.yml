@@ -1,0 +1,34 @@
+name: QA - IVE RADAR Automatic Updates
+on:
+  push:
+    branches: [demo/automatic-youtube-stats]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify Python and JS syntax
+        run: |
+          python3 -m py_compile scripts/collect_youtube.py scripts/validate_data.py
+          node --check stats.js
+      - name: Validate published observations
+        run: python3 scripts/validate_data.py
+      - name: Collector gracefully skips with no API key
+        run: |
+          unset YOUTUBE_DATA_API_KEY
+          python3 scripts/collect_youtube.py
+          git diff --exit-code -- data.json
+      - name: Verify configured official MV identity
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open('data.json'))
+          t=next(x for x in d['tracks'] if x['id']=='looks-can-kill')
+          assert t['mv_video_id']=='rsNhWkC4neE'
+          assert not d['streaming'], 'No synthetic view counters may be committed'
+          print('Verified MV ID configured; no fabricated stats')
+          PY

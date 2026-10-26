@@ -30,3 +30,15 @@ The hero image was cropped from a video of [IVE Hero Office](https://ive-herooff
 ## Recovery
 
 The previous IVE RADAR version is preserved on branch `archive/ive-radar-pre-chart-lab-20261026`, and the earlier Peach EN project on `archive/peach-en-before-ive-radar-20261026`.
+
+## Automatic website updates
+
+Visitors' browsers now refresh the published static data file every **5 minutes** while the tab is visible. A GitHub Actions workflow is scheduled hourly at minute 13 (UTC). It collects only supported official API data, validates it, commits new records and deploys the static site in the *same* workflow run. GitHub scheduled jobs may be delayed; this is not guaranteed live to the minute.
+
+**Supported automatic source:** The official IVE "Looks Can Kill" music video cumulative public view count from **YouTube Data API v3**, confirmed Starship MV video ID: https://youtu.be/rsNhWkC4neE. This is not a YouTube Music chart position, unique stream count or hour-by-hour official reporting period. The captured time is the collector retrieval time.
+
+**One-time activation:** In Google Cloud, enable the YouTube Data API v3 and create an API key with that API restricted. In the GitHub repository open **Settings → Secrets and variables → Actions → New repository secret**. Set the name to YOUTUBE_DATA_API_KEY and paste the key. Never put the key in repository files or chat. Test with **Actions → Deploy IVE RADAR to GitHub Pages → Run workflow**. Without the key the scheduled collector safely skips and the site shows no unverified view count.
+
+**Melon is NOT automatically polled.** A direct Melon TOP100 collector was tested from GitHub Actions and rejected by Melon's robots rules. It remains solely on the experimental branch demo/automatic-chart-collection; it is not merged or scheduled. The current Melon snapshots on the website remain historical until a permitted, verified new observation is available.
+
+Hourly runs with no new observations do not unnecessarily redeploy Pages. Changes made by the default GITHUB_TOKEN don't trigger a second push workflow, so the scheduled job deploys after its own commit.
