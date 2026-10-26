@@ -54,6 +54,8 @@ for url in RSS:
             results=feed.get("results",[])
             record["count"]=len(results)
             record["feed_title"]=feed.get("title")
+            record["feed_updated"]=feed.get("updated")
+            record["feed_country"]=feed.get("country")
             record["keys"]=list(feed.keys())
             matched=[{"index":i+1,"name":x.get("name"),"artist":x.get("artistName"),"id":x.get("id"),"url":x.get("url")} for i,x in enumerate(results) if re.search(r"looks can kill",x.get("name",""),re.I) and re.search(r"IVE|아이브",x.get("artistName",""),re.I)]
             record["matches"]=matched[:3]
