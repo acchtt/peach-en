@@ -25,14 +25,14 @@ CHARTS=[
 def get(url):
     try:
         req=Request(url,headers={"User-Agent":AGENT,"Accept":"application/json,text/plain,*/*"})
-        with urlopen(req,timeout=12) as r:
+        with urlopen(req,timeout=25) as r:
             body=r.read(800_000)
             return r.status,body, r.headers.get("Content-Type","")
     except HTTPError as e:
         return e.code,b"",str(e.headers.get("Content-Type",""))
     except (URLError,TimeoutError,OSError,socket.timeout) as e:
         return "ERROR_"+type(e).__name__,b"",""
-for url in CHARTS:
+for url in []:
     p=urlparse(url)
     robots=f"{p.scheme}://{p.netloc}/robots.txt"
     status,body,_=get(robots)
@@ -44,7 +44,7 @@ for url in CHARTS:
     else:
         verdict="robots-unavailable-or-missing"
     print(json.dumps({"site":p.netloc,"robots_http":status,"robots_verdict":verdict}))
-for url in RSS:
+for url in RSS[:1]:
     status,body,content_type=get(url)
     record={"endpoint":urlparse(url).netloc+urlparse(url).path,"status":status,"bytes":len(body),"content_type":content_type}
     if status==200:
