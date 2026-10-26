@@ -1,59 +1,46 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "artist": "IVE",
   "era": "Looks Can Kill",
-  "updated_at": null,
-  "sources": [
-    {
-      "id": "melon-top100",
-      "rank": null,
-      "peak": null,
-      "change": null
-    },
-    {
-      "id": "melon-daily",
-      "rank": null,
-      "peak": null,
-      "change": null
-    },
-    {
-      "id": "melon-hot100",
-      "rank": null,
-      "peak": null,
-      "change": null
-    },
-    {
-      "id": "genie-realtime",
-      "rank": null,
-      "peak": null,
-      "change": null
-    },
-    {
-      "id": "bugs-realtime",
-      "rank": null,
-      "peak": null,
-      "change": null
-    },
-    {
-      "id": "flo-realtime",
-      "rank": null,
-      "peak": null,
-      "change": null
-    }
-  ],
-  "history": [],
-  "milestones": {
-    "top100_peak": null,
-    "top100_current": null,
-    "days_charted": null,
-    "hours_top20": null
-  },
+  "album_release_date": "2026-10-26",
+  "timezone": "Asia/Seoul",
+  "default_track_id": "looks-can-kill",
   "tracks": [
     {
-      "name": "Looks Can Kill",
-      "melon_top100": null,
-      "peak": null
+      "id": "looks-can-kill",
+      "title": "Looks Can Kill",
+      "artist": "IVE",
+      "single_release_date": "2026-10-19",
+      "album": "Looks Can Kill",
+      "album_release_date": "2026-10-26",
+      "source_url": "https://music.apple.com/us/album/looks-can-kill-ep/6823675363"
+    }
+  ],
+  "charts": [
+    {"id":"melon-top100","platform":"Melon","chart":"TOP100","cadence":"hourly","territory":"KR","source_url":"https://www.melon.com/chart/index.htm"},
+    {"id":"melon-daily","platform":"Melon","chart":"Daily","cadence":"daily","territory":"KR","source_url":"https://www.melon.com/chart/day/index.htm"},
+    {"id":"melon-weekly","platform":"Melon","chart":"Weekly","cadence":"weekly","territory":"KR","source_url":"https://www.melon.com/chart/week/index.htm"},
+    {"id":"genie-realtime","platform":"Genie","chart":"Realtime","cadence":"hourly","territory":"KR","source_url":"https://www.genie.co.kr/chart/top200"},
+    {"id":"genie-daily","platform":"Genie","chart":"Daily","cadence":"daily","territory":"KR","source_url":"https://www.genie.co.kr/chart/top200"},
+    {"id":"bugs-realtime","platform":"Bugs","chart":"Realtime","cadence":"hourly","territory":"KR","source_url":"https://music.bugs.co.kr/chart"},
+    {"id":"bugs-daily","platform":"Bugs","chart":"Daily","cadence":"daily","territory":"KR","source_url":"https://music.bugs.co.kr/chart"},
+    {"id":"flo-realtime","platform":"FLO","chart":"Realtime","cadence":"hourly","territory":"KR","source_url":"https://www.music-flo.com/"},
+    {"id":"youtube-kr-weekly","platform":"YouTube","chart":"Weekly Top Songs","cadence":"weekly","territory":"KR","source_url":"https://charts.youtube.com/"},
+    {"id":"spotify-kr-daily","platform":"Spotify","chart":"Daily Top Songs","cadence":"daily","territory":"KR","source_url":"https://charts.spotify.com/"}
+  ],
+  "observations": [
+    {
+      "track_id": "looks-can-kill",
+      "chart_id": "melon-top100",
+      "rank": 6,
+      "movement": 1,
+      "observed_at": "2026-10-26T20:00:00+09:00",
+      "source_url": "https://www.melon.com/chart/index.htm",
+      "verification": "official-chart-snapshot",
+      "note": "IVE - Looks Can Kill at #6, up one place, Melon TOP100 20:00 KST; first recorded observation in this project."
     }
   ],
   "streaming": [],
-  "shows": []
+  "album_sales": [],
+  "music_shows": []
 }

@@ -1,153 +1,107 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0c0c0c">
-<meta name="description" content="IVE RADAR — an unofficial, free, current-comeback chart-tracking fan project. Rankings are shown only when verified source data is available.">
-<title>IVE RADAR ★ Comeback Headquarters</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IVE RADAR — The Chart Lab | IVE Comeback Tracker</title>
+<meta name="theme-color" content="#0b0b0d">
 <style>
-:root{--ink:#101010;--pink:#ed00b9;--yellow:#f8ff1b;--cyan:#09c9d1;--violet:#ae93e8;--rose:#ffb9e4;--paper:#fffefb;--blue:#77c5f4;--red:#ff7c87;--soft:#f7d2f1}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:108px}
-body{margin:0;background:#fff;color:var(--ink);font:15px/1.5 Arial,Helvetica,sans-serif;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='126'%3E%3Cg fill='%23f7ccef'%3E%3Cpath d='M22 10l6 12 12 5-12 5-6 12-6-12-12-5 12-5z'/%3E%3Cpath d='M100 65l7 10 10 5-10 5-7 11-6-11-11-5 11-5z'/%3E%3Cpath d='M73 16l4 6-4 6-4-6zM41 99l4 8-4 8-4-8z'/%3E%3C/g%3E%3C/svg%3E")}
-a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
-:focus-visible{outline:4px solid #3a7bf8;outline-offset:4px}
-.site-header{background:#070707;border-bottom:5px solid var(--pink);position:sticky;top:0;z-index:30;color:#fff}
-.header-inner{max-width:1490px;margin:auto;min-height:70px;padding:10px 25px;display:flex;align-items:center;gap:22px;justify-content:space-between}
-.brand{font:36px/1 Impact,'Arial Black',Arial,sans-serif;letter-spacing:.3px;white-space:nowrap}.brand b{color:var(--yellow)}
-nav{display:flex;align-items:center;gap:25px}nav a{font-size:12px;letter-spacing:.7px;font-weight:900;text-transform:uppercase}nav a:hover,nav a[aria-current="page"]{color:var(--yellow)}
-.top-tag{display:inline-flex;border:2px solid #fff;background:var(--yellow);color:#111;padding:6px 11px;transform:rotate(-2deg);font-size:11px;font-weight:900;white-space:nowrap}
-main{max-width:1470px;padding:35px 32px 65px;margin:auto}
-.tape{display:inline-flex;align-items:center;background:#111;border:3px solid #111;color:#fff;box-shadow:5px 5px 0 var(--pink);padding:8px 14px;transform:rotate(-1.5deg);font:22px/1 Impact,'Arial Black',sans-serif;letter-spacing:.5px}.tape span{background:var(--yellow);padding:3px 7px;color:#111;margin-right:10px}
-.hero{display:grid;grid-template-columns:1.08fr 1fr;gap:28px;margin:25px 0 35px}
-.hero-left,.hero-right{border:4px solid #111;box-shadow:9px 9px #111;min-height:360px;position:relative}
-.hero-left{background:var(--yellow);padding:37px;transform:rotate(-1deg);background-image:radial-gradient(#10101025 1px,transparent 1px);background-size:10px 10px}
-.hero-right{background-color:var(--pink);background-image:linear-gradient(45deg,#ffffff12 25%,transparent 25%,transparent 75%,#ffffff12 75%),linear-gradient(45deg,#ffffff12 25%,transparent 25%,transparent 75%,#ffffff12 75%);background-position:0 0,15px 15px;background-size:30px 30px;transform:rotate(.9deg);display:flex;align-items:center;justify-content:center;text-align:center;padding:42px 25px}
-.eyebrow,.micro{background:#111;color:#fff;padding:6px 10px;display:inline-block;font-weight:900;font-size:11px;letter-spacing:1px}
-.hero h1{font:clamp(56px,6vw,100px)/.92 Impact,'Arial Black',sans-serif;color:var(--pink);-webkit-text-stroke:2px #111;text-shadow:5px 5px #111;margin:26px 0 17px}
-.hero-left p{font-weight:800;max-width:530px;font-size:17px}
-.pink-tape{display:inline-block;background:var(--pink);border:3px solid #111;color:#fff;padding:7px 15px;font-weight:900;transform:rotate(-2deg)}
-.cta{display:inline-flex;align-items:center;justify-content:center;border:3px solid #111;box-shadow:5px 5px #111;padding:11px 15px;margin-top:18px;background:var(--yellow);font:italic 19px/1 Impact,'Arial Black',sans-serif;text-transform:uppercase;transition:transform .15s,box-shadow .15s}
-.cta:hover{transform:translate(-2px,-2px);box-shadow:7px 7px #111}
-.hero-right h2{font:italic clamp(56px,5vw,84px)/.95 Impact,'Arial Black',sans-serif;text-transform:uppercase;color:var(--yellow);-webkit-text-stroke:2px #111;text-shadow:6px 6px #111;transform:rotate(-5deg);margin:26px 0}
-.hero-right p{background:#fff;border:3px solid #111;display:inline-block;box-shadow:5px 5px #111;padding:8px 14px;font-weight:900;font-size:13px;transform:rotate(-3deg)}
-.burst{position:absolute;right:10px;top:-23px;background:var(--yellow);border:4px solid #111;clip-path:polygon(50% 0%,61% 23%,83% 4%,76% 31%,100% 30%,81% 50%,100% 69%,75% 65%,82% 97%,59% 76%,50% 100%,39% 78%,16% 95%,25% 67%,0 66%,18% 49%,0 28%,29% 31%,17% 3%,42% 21%);height:115px;width:115px;display:grid;place-items:center;font:25px Impact,Arial;transform:rotate(11deg);z-index:2}
-.row-title{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin:24px 0 20px}
-.status{background:white;border:2px solid #111;padding:10px 13px;font-size:12px;font-weight:900;max-width:700px}.status.warning{border-left:8px solid var(--pink)}
-.quick{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
-.rank-card{background:var(--cyan);border:3px solid #111;box-shadow:5px 5px #111;padding:17px 14px 13px;min-height:160px;transform:rotate(-.7deg)}
-.rank-card:nth-child(2){background:var(--yellow);transform:rotate(1deg)}.rank-card:nth-child(3){background:var(--rose);transform:rotate(-.8deg)}.rank-card:nth-child(4){background:var(--blue);transform:rotate(.8deg)}.rank-card:nth-child(5){background:var(--red);transform:rotate(-.8deg)}.rank-card:nth-child(6){background:var(--violet);transform:rotate(.9deg)}
-.rank-card header{font-size:12px;font-weight:900;line-height:1.3;letter-spacing:.5px;min-height:35px}
-.rank-card .number{font:76px/.95 Impact,'Arial Black',sans-serif;margin:15px 0 3px;font-variant-numeric:tabular-nums}
-.rank-card .smallline{font-size:11px;font-weight:900;display:flex;justify-content:space-between;gap:6px}
-.rank-card .smallline span:last-child{background:#111;color:white;padding:3px 5px}
-.section-tag{display:inline-block;background:#111;color:var(--yellow);padding:7px 13px;margin:38px 0 19px;font:italic 29px/1.1 Impact,'Arial Black',sans-serif;box-shadow:5px 5px var(--pink);transform:rotate(-1deg)}
-.analytics{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:24px}
-.panel{background:var(--paper);border:4px solid #111;box-shadow:7px 7px #111;padding:24px;min-width:0}
-.panel-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
-.kicker{display:inline-block;background:var(--pink);color:#fff;font-size:11px;letter-spacing:.5px;font-weight:900;padding:7px 10px;margin-bottom:9px}
-h2{font:italic 37px/1.05 Impact,'Arial Black',sans-serif;text-transform:uppercase;margin:0 0 14px}
-.filters{display:flex;flex-wrap:wrap;gap:7px}
-.filters button{border:2px solid #111;background:white;padding:9px 13px;font-size:12px;font-weight:900;box-shadow:2px 2px #111;min-height:40px}
-.filters button[aria-pressed="true"]{background:var(--yellow)}
-.graph{position:relative;margin-top:22px;background:#fff9fd;border:2px solid #111;padding:12px;background-image:radial-gradient(#eebbdc 1px,transparent 1px);background-size:12px 12px}
-.graph svg{width:100%;height:270px;display:block}.graph .empty{position:absolute;inset:25% 15%;background:#fff;border:3px solid #111;box-shadow:6px 6px #111;display:flex;align-items:center;justify-content:center;text-align:center;font-size:14px;font-weight:900;padding:18px}
-.graph .empty[hidden]{display:none}
-.graph-notes{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;font-size:11px;font-weight:900;margin-top:14px}
-.graph-notes strong{background:#111;color:var(--yellow);padding:5px 8px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
-.stat{border:2px solid #111;background:#fff;padding:17px 13px;min-height:104px}.stat:nth-child(2){background:var(--yellow)}.stat:nth-child(3){background:var(--rose)}.stat:nth-child(4){background:#a0ebe6}
-.stat label{display:block;font-size:11px;font-weight:900}.stat strong{display:block;font:44px/1 Impact,'Arial Black',sans-serif;margin:10px 0 4px}.stat small{font-size:11px}
-.note{font-size:12px;font-weight:750;margin:16px 0 0}
-.lower{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:23px;margin-top:26px}.lower .panel{padding:21px}
-.lower h2{font-size:30px}.subtitle{font-size:13px;font-weight:750;line-height:1.55}
-.album-lockup{display:flex;gap:14px;align-items:center;margin:16px 0}.album-icon{width:76px;height:76px;background:#111;color:var(--yellow);display:grid;place-items:center;font:italic 33px Impact;border:3px solid #111;box-shadow:4px 4px var(--pink)}.album-lockup strong{display:block;font:25px/1.1 Impact,Arial}.album-lockup span{font-size:12px;font-weight:800}
-table{width:100%;border-collapse:collapse;font-size:12px;margin:17px 0 0}th{background:#111;color:#fff;text-align:left;padding:10px}td{padding:12px 9px;border-bottom:2px dashed #aaa}td:last-child{text-align:right;font-weight:900}
-.info-stack{display:grid;gap:9px;margin-top:18px}.info-row{border:2px solid #111;background:white;display:flex;justify-content:space-between;gap:15px;align-items:center;padding:12px;font-size:12px;font-weight:900}.info-row:nth-child(2){background:#f9e4f4}
-footer{margin-top:48px;padding:18px 0 0;border-top:5px solid #111;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;font-size:12px;font-weight:900}
-footer a{text-decoration:underline;text-underline-offset:2px}
-@media(max-width:1080px){.quick{grid-template-columns:repeat(3,1fr)}.analytics{grid-template-columns:1fr}.lower{grid-template-columns:1fr 1fr}nav{gap:12px}.hero h1{font-size:65px}}
-@media(max-width:760px){.header-inner{padding:13px 15px;flex-wrap:wrap;gap:10px}.brand{font-size:27px}nav{order:3;flex:0 0 100%;overflow-x:auto;gap:20px;scrollbar-width:thin;padding:5px 0 2px}nav a{white-space:nowrap;font-size:11px}.top-tag{font-size:9px;padding:5px 7px}main{padding:22px 18px 55px}.hero{grid-template-columns:1fr;gap:21px}.hero-left,.hero-right{min-height:270px;box-shadow:6px 6px #111}.hero-left{padding:23px}.hero h1{font-size:63px}.hero-left p{font-size:15px}.hero-right{padding:28px 12px}.hero-right h2{font-size:63px}.burst{width:82px;height:82px;font-size:19px;top:-15px}.quick{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.rank-card{min-height:140px}.rank-card .number{font-size:62px}.panel{padding:17px}h2{font-size:31px}.graph svg{height:205px}.graph .empty{inset:20% 8%}.lower{grid-template-columns:1fr}.tape{font-size:19px}.section-tag{font-size:24px}.stats strong{font-size:37px}.row-title .status{font-size:11px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+:root{--ink:#141116;--muted:#68606e;--line:#ded9df;--pink:#ed0a93;--hot:#ff2ba8;--yellow:#fbff31;--cyan:#11cdda;--surface:#fff;--bg:#f9f8fa;--radius:9px;--outline:1.5px solid #292329}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:14px;background:var(--bg)}
+button,a{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible{outline:3px solid #008eff;outline-offset:3px}
+.banner-top{height:72px;background:#070608;color:#fff;display:flex;align-items:center;gap:42px;padding:0 27px;border-bottom:5px solid var(--pink);position:relative;z-index:5}
+.brand{display:flex;align-items:center;gap:11px;min-width:278px}.brand-symbol{font:italic 44px/.8 Impact,Arial,sans-serif;color:var(--hot);text-shadow:2px 2px #fff;transform:skew(-8deg)}.brand-copy b{font:italic 32px/1 Impact,'Arial Black',Arial,sans-serif;display:block;letter-spacing:.2px;transform:skew(-7deg)}.brand-copy small{display:block;font-size:9px;letter-spacing:2.5px;color:#fe9fdb}
+.topnav{display:flex;gap:34px;align-items:center;height:100%}.topnav a{font-size:12px;font-weight:800;text-transform:uppercase;height:100%;display:flex;align-items:center;border-bottom:3px solid transparent;padding-top:3px}.topnav a.active{border-bottom-color:var(--hot)}.topnav a:hover{color:var(--yellow)}
+.headright{margin-left:auto;display:flex;align-items:center;gap:10px}.design-flag{border:1px solid #5c515a;border-radius:6px;padding:8px 12px;white-space:nowrap;font-size:11px;font-weight:750;color:#ecdfeb}.live-dot{width:9px;height:9px;background:var(--pink);border:1px solid white;border-radius:50%;display:inline-block;margin-right:5px}
+.backdrop{background:radial-gradient(circle at 1px 1px,rgba(233,10,147,.24) 1px, transparent 1.2px) 0 0/10px 10px,linear-gradient(135deg,#fff 0%,#fff 35%,#f8d4e9 100%);min-height:100vh}
+.shell{display:grid;grid-template-columns:154px minmax(0,1fr);max-width:1640px;margin:auto;gap:13px;padding:13px 15px 35px}
+.sidebar{align-self:start;position:sticky;top:15px;display:flex;flex-direction:column;gap:15px}.sidebox{background:#fff;border:var(--outline);box-shadow:4px 4px 0 #151318;clip-path:polygon(0 0,92% 0,100% 5%,100% 100%,0 100%);padding:16px 10px 18px;min-height:310px}.side-top{padding:7px 13px 15px}.side-icon{font:24px Impact,sans-serif;display:block;margin-bottom:18px}.side-items{display:grid;gap:5px}.side-items a{display:flex;gap:9px;align-items:center;border-radius:3px;padding:12px 10px;font-size:12px;font-weight:800;min-height:43px}.side-items a.active,.side-items a:hover{background:#ffd5e9;color:#6b0843}.side-items .glyph{width:20px;text-align:center;font-size:14px}
+.sidebar-release{background:#fff;border:var(--outline);padding:14px 12px;box-shadow:3px 3px 0 #151318}.sidebar-release h3{font:italic 17px Impact,Arial;margin:0 0 10px}.mini-album{height:104px;background:#0c0911;display:grid;place-items:center;color:#fc5abf;position:relative;border:2px solid #171219;overflow:hidden}.mini-album span{font:italic 36px/.9 Impact,Arial;text-shadow:2px 2px #fff}.mini-album:before{content:'♥';position:absolute;font-size:110px;line-height:1;color:#ed0a93;opacity:.3;transform:rotate(-15deg)}.sidebar-release strong{display:block;font-size:12px;margin-top:12px}.sidebar-release small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.release-link{display:block;border-top:1px solid #e9dfe7;margin-top:12px;padding-top:10px;font-weight:700;font-size:11px;color:#8a245e}
+.side-sticker{font:italic 24px/.95 Impact,Arial,sans-serif;transform:rotate(-6deg);border:3px solid var(--ink);padding:14px 9px;background:#fff;box-shadow:5px 5px 0 var(--pink);text-align:center;margin:9px 10px 0}
+.content{min-width:0}
+.hero{height:181px;position:relative;border:var(--outline);background:radial-gradient(circle at 20% 90%,#f800931f 0 2px,transparent 2px) 0 0/9px 9px,linear-gradient(107deg,#0a0710 0%,#160915 35%,#f10a9a 100%);overflow:hidden;box-shadow:3px 4px 0 #101013;margin-bottom:12px}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(128deg,transparent 0 80px,#fff1 80px 86px,transparent 86px 160px);pointer-events:none}
+.hero-message{position:relative;z-index:2;height:100%;padding:26px 23px;width:46%;color:#fff}.hero-message h1{font:italic clamp(40px,5.8vw,87px)/.86 Impact,'Arial Black',sans-serif;letter-spacing:-.025em;color:#fff;margin:0;text-shadow:4px 4px 0 #151015;transform:skew(-6deg);white-space:nowrap}.hero-message h1 em{font-style:normal;color:#ff33a5}.hero-message .hero-kicker{display:inline-block;background:var(--yellow);color:#111;font:italic 21px/.95 Impact,Arial;padding:2px 10px 3px;transform:skew(-11deg) rotate(-3deg);box-shadow:4px 4px #111;margin-top:7px}.hero-message p{font-size:11px;font-weight:900;letter-spacing:.1px;margin:15px 0 0;color:#fff}
+.hero-art{position:absolute;left:44%;right:0;bottom:-20px;top:-50px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(4px 5px 0 #161019);pointer-events:none}.hero-art img{width:100%;height:100%;object-fit:contain;object-position:center bottom;mix-blend-mode:normal;transform:rotate(-1deg)}.hero-art::after{content:'';position:absolute;bottom:0;left:-4%;height:30px;width:109%;background:linear-gradient(0deg,rgba(7,6,8,.25),transparent)}
+.hero-ribbon{position:absolute;top:8px;right:9px;background:var(--yellow);border:2px solid black;color:black;font:italic 16px Impact,sans-serif;padding:6px 14px;transform:rotate(4deg);z-index:3;box-shadow:3px 3px var(--pink)}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 291px;gap:13px;align-items:start}.workmain{min-width:0;display:grid;gap:13px}.aside{min-width:0;display:grid;gap:13px}
+.panel{background:rgba(255,255,255,.98);border:1px solid #ccc6ce;border-radius:7px;box-shadow:1px 2px 0 #17121920;padding:14px;min-width:0}.platform-panel{padding:13px}
+.filters{display:flex;align-items:center;flex-wrap:wrap;gap:7px}.filter{border:1px solid #dcd6dd;background:#fff;padding:9px 14px;border-radius:5px;font-weight:700;font-size:11px;min-height:37px}.filter[aria-pressed=true]{background:var(--pink);color:#fff;border-color:var(--pink)}.filter:hover:not([aria-pressed=true]){background:#f9eff5}.range{margin-left:auto;display:flex;gap:0}.range .filter{border-radius:0;padding:9px 12px}.range .filter:first-child{border-radius:5px 0 0 5px}.range .filter:last-child{border-radius:0 5px 5px 0}.range .filter[aria-pressed=true]{background:#f7d6e8;color:#a40862;border-color:#f7d6e8}
+.scoreboards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:11px}.score{border:1px solid #e4dfe5;background:#fff;border-radius:6px;padding:13px 10px;min-width:0;min-height:151px}.scorehead{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:800;line-height:1.15}.scorehead small{color:#817a82;font-weight:400;font-size:10px}.logo{height:27px;width:27px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:0 0 27px;font-size:15px;font-weight:900}.score .rank{font:48px/.9 Impact,Arial,sans-serif;margin:15px 0 11px}.score .meta{border-top:1px solid #eae5eb;padding-top:7px;font-size:10px;color:#665b68;display:grid;grid-template-columns:1fr auto;gap:7px}.score .meta b{color:#181318}.sparkline{width:100%;height:20px;margin-top:5px}
+.section-heading{font:italic 22px/.95 Impact,Arial,sans-serif;display:inline-flex;align-items:center;gap:9px;margin:0 0 12px;color:#111;transform:skew(-6deg);text-transform:uppercase}.section-heading span{color:var(--pink);font-size:27px}
+.centerrow{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(220px,.8fr);gap:11px}.chart-panel,.key-panel{min-height:320px}.tiny-label{font-size:10px;font-weight:900;letter-spacing:1px;color:#9e6f8a;text-transform:uppercase}.tabs{display:flex;gap:5px;flex-wrap:wrap}.tabs button{font-size:11px;font-weight:700;background:#faf9fa;border:1px solid #e7e0e6;border-radius:4px;padding:7px 13px;min-height:35px;cursor:pointer}.tabs button[aria-pressed=true]{background:#ffdfed;border-color:#f5cade;color:#99175e}.tabs button:hover{border-color:#f596c9}.chart-controls{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.chartbox{height:232px;margin-top:10px;position:relative;padding:4px 5px 0;background:#fff}.chartbox svg{display:block;width:100%;height:100%}.demo-stamp{position:absolute;right:10px;top:10px;color:#b30c73;background:#fff0f8;border:1px solid #f1bddb;border-radius:5px;padding:6px 8px;font-size:10px;font-weight:850;letter-spacing:.3px}.chart-caption{color:#7f697a;font-size:10px;margin:8px 0 0;display:flex;align-items:center;justify-content:space-between;gap:10px}.chart-caption b{color:#be0c7e}.statrows{display:grid;gap:0}.statrow{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #ede9ef;font-size:11px}.statrow span:first-child{color:#564f57}.statrow strong{font-size:13px}.small-desc{font-size:11px;color:#827681;margin-top:10px}
+.bottomrow{display:grid;grid-template-columns:1.3fr 1fr;gap:11px}.data-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:6px}.data-table th{background:#f6f4f6;text-align:left;color:#68616c;font-weight:700;padding:9px 10px}.data-table td{border-bottom:1px solid #ece8ee;padding:10px;color:#766b78}.data-table td:last-child{text-align:right}.pill-note{display:inline-block;color:#ab1b79;background:#fff0f7;border:1px solid #f7d3e8;padding:5px 8px;border-radius:4px;font-size:10px;font-weight:800}
+.details .section-heading{font-size:21px}.album-row{display:flex;align-items:center;gap:13px;margin-bottom:12px}.album-art{background:#0d0a11;min-width:76px;width:76px;height:76px;display:grid;place-items:center;color:#ff4ab5;border:2px solid black;position:relative;overflow:hidden}.album-art::before{content:'♥';position:absolute;font-size:99px;transform:rotate(-12deg);color:#b30377;opacity:.43}.album-art span{position:relative;font:italic 25px Impact,sans-serif;text-shadow:1px 1px white}.album-row .album-title{font:20px/1.05 Georgia,serif;margin:2px 0 4px}.album-row small{font-size:11px;color:#847584}.subtle{color:#89818a;font-size:11px;margin-bottom:4px}.card-rows{margin-top:9px}.card-rows .statrow{padding:10px 0}
+.media-line{border:1px solid #ede6ec;background:#fcfafc;padding:10px;display:flex;align-items:center;gap:9px;margin-top:10px;border-radius:4px}.video-thumb{width:74px;height:43px;display:grid;place-items:center;color:#fff;font:20px Impact,sans-serif;background:linear-gradient(135deg,#1c061b,#b9097d);position:relative}.video-thumb::after{content:'▶';font:17px Arial;color:#fff}.media-line b{display:block;font-size:11px}.media-line small{font-size:10px;color:#817482}
+.linklike{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:#a80d6e;font-weight:800;font-size:11px;padding:9px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.faux-sticker{font:italic 16px Impact,Arial;transform:rotate(-3deg);color:#121114;margin:18px 0 2px;text-align:center}.faux-sticker span{color:var(--pink)}
+.footer{max-width:1640px;margin:0 auto;display:flex;justify-content:space-between;gap:20px;padding:5px 23px 32px;color:#685a68;font-size:11px}.footer a{text-decoration:underline}
+@media(max-width:1350px){.workspace{grid-template-columns:minmax(0,1fr) 260px}.banner-top{gap:25px}.scoreboards{grid-template-columns:repeat(3,1fr)}.score{min-height:129px}.score .rank{font-size:42px;margin:8px 0}.hero-message{width:52%}.hero-art{left:49%}}
+@media(max-width:1030px){.workspace{grid-template-columns:1fr}.aside{grid-template-columns:repeat(3,minmax(0,1fr))}.centerrow{grid-template-columns:minmax(0,1.3fr) minmax(210px,.7fr)}.hero-art{left:51%}.hero-message h1{font-size:58px}.headright{display:none}.banner-top{gap:22px}.brand{min-width:230px}}
+@media(max-width:760px){.banner-top{height:auto;min-height:67px;padding:12px 15px;flex-wrap:wrap;gap:12px}.brand{min-width:0}.brand-copy b{font-size:25px}.brand-symbol{font-size:35px}.topnav{gap:17px;height:32px;order:3;width:100%;overflow-x:auto;scrollbar-width:thin}.topnav a{font-size:10px;white-space:nowrap}.shell{grid-template-columns:1fr;padding:10px 10px 24px;gap:8px}.sidebar{position:static}.sidebox{padding:5px 6px;min-height:0;box-shadow:none;border-radius:3px;clip-path:none}.side-top,.sidebar-release,.side-sticker{display:none}.side-items{grid-template-columns:repeat(4,1fr);gap:4px}.side-items a{flex-direction:column;justify-content:center;font-size:10px;min-height:45px;padding:5px 3px;gap:0}.side-items .glyph{font-size:13px}.hero{height:135px;margin-bottom:9px}.hero-message{padding:18px 12px;width:55%}.hero-message h1{font-size:clamp(33px,9.5vw,53px);margin:0}.hero-message .hero-kicker{font-size:15px;margin-top:5px}.hero-message p{font-size:9px;line-height:1.3;margin-top:10px}.hero-art{left:49%;top:-1px;bottom:-7px}.hero-ribbon{font-size:10px;padding:4px 6px}.workspace,.workmain,.aside{gap:9px}.panel{padding:12px}.filters{gap:5px}.filter{padding:8px 9px;min-height:38px;font-size:10px}.range{margin-left:0;width:100%;justify-content:flex-start}.scoreboards{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.score{padding:9px 7px;min-height:116px}.logo{width:20px;height:20px;flex-basis:20px;font-size:11px}.scorehead{font-size:10px;gap:4px}.scorehead small{font-size:9px}.score .rank{font-size:39px;margin:8px 0}.score .meta{font-size:9px;padding-top:5px}.sparkline{height:14px}.centerrow,.bottomrow{grid-template-columns:1fr}.chart-panel,.key-panel{min-height:unset}.chartbox{height:229px}.aside{grid-template-columns:1fr}.details{min-height:unset}.footer{padding:3px 13px 25px;flex-direction:column;gap:5px}}
+@media(max-width:355px){.scoreboards{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-art{left:56%}.hero-message h1{font-size:35px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Reference-match typography: condensed, substantial comic titles; functional copy stays neutral. */
+.brand-copy b,.hero-message h1,.section-heading,.side-sticker,.hero-ribbon{font-family:"Roboto Condensed","Liberation Sans Narrow","Arial Narrow",Arial,sans-serif;font-weight:900;font-style:italic;letter-spacing:-.035em}
+.hero-message h1{-webkit-text-stroke:.6px currentColor;text-shadow:4px 4px 0 #111;letter-spacing:-.04em}
+.section-heading{letter-spacing:-.015em}
+
+
+/* Verified-data production enhancements; structural layout unchanged. */
+#source-status{font-variant-numeric:tabular-nums}
+.score .rank,.statrow strong{font-variant-numeric:tabular-nums}
+.empty-history{position:absolute;top:43%;left:13%;right:12%;z-index:2;text-align:center;font-weight:700;font-size:13px;line-height:1.5;color:#625664;background:rgba(255,255,255,.92);padding:12px;border:1px solid #e1dce2;border-radius:5px}
+.empty-history[hidden]{display:none}
+.chartbox{position:relative}
+.demo-stamp{letter-spacing:.035em}
+.data-source{font-size:10px;line-height:1.4;color:#574b58}
+.data-source a{text-decoration:underline;text-underline-offset:2px;color:#91265d}
+.score .meta{min-height:34px}
+.score[data-status="stale"] .rank{color:#524a51}
+.score[data-status="missing"] .rank{color:#aaa1ad}
+.scorehead small{text-transform:none}
+.data-table a{color:#a0166b;text-decoration:underline;text-underline-offset:2px}
+#source-status{background:#21181e;color:#f8d6ed}
+@media(max-width:760px){.empty-history{left:8%;right:8%;font-size:11px;padding:8px}.data-source{font-size:9px}}
 </style>
 </head>
 <body>
-<header class="site-header"><div class="header-inner">
-<a class="brand" href="#top" aria-label="IVE RADAR home">IVE <b>★</b> RADAR</a>
-<nav aria-label="Main navigation"><a href="#top">HEADQUARTERS</a><a href="#charts">CHART INTEL</a><a href="#album">ALBUM</a><a href="#streaming">STREAMING</a><a href="#shows">MUSIC SHOWS</a></nav>
-<span class="top-tag">CURRENT COMEBACK · FAN PROJECT</span>
-</div></header>
-<main id="top">
-<span class="tape"><span>01</span> COMEBACK HEADQUARTERS</span>
-<div class="hero">
-<section class="hero-left"><span class="eyebrow">★ CHART INTELLIGENCE MISSION</span><h1>IVE RADAR!</h1><div class="pink-tape">LOOKS CAN KILL / THE COMEBACK FILE</div><p>Melon. Genie. Bugs. Streaming. Music shows. One command center for IVE's current era.</p><a class="cta" href="#charts">OPEN CHART BOARD ↗</a></section>
-<section class="hero-right" aria-label="Current era"><div class="burst" aria-hidden="true">NEW!</div><div><span class="micro">★ IVE HERO OFFICE / DATA DIVISION ★</span><h2>SHOW YOUR<br>CHART<br>POWER!</h2><p>RANKINGS · MILESTONES · STREAMING</p></div></section>
+<header class="banner-top"><a class="brand" href="#top" aria-label="IVE RADAR home"><span class="brand-symbol" aria-hidden="true">★</span><span class="brand-copy"><b>IVE RADAR</b><small>THE CHART LAB</small></span></a><nav class="topnav" aria-label="Primary"><a class="active" href="#charts">CHARTS</a><a href="#album">ALBUM</a><a href="#streaming">STREAMING</a><a href="#shows">MUSIC SHOWS</a></nav><div class="headright"><span class="design-flag" id="source-status">VERIFYING CHART SOURCES</span></div></header>
+<div class="backdrop" id="top"><div class="shell">
+<aside class="sidebar" aria-label="Section navigation">
+<div class="sidebox"><div class="side-top"><div class="side-icon" aria-hidden="true">▤</div><span class="tiny-label">EXPLORE</span></div><div class="side-items"><a class="active" href="#charts"><span class="glyph">✦</span>CHARTS</a><a href="#album"><span class="glyph">▣</span>ALBUM</a><a href="#streaming"><span class="glyph">◉</span>STREAMING</a><a href="#shows"><span class="glyph">☆</span>MUSIC SHOWS</a></div></div>
+<div class="sidebar-release"><h3>COMEBACK FILE</h3><div class="mini-album"><span>IVE</span></div><strong>Looks Can Kill</strong><small>IVE EP · October 26, 2026</small><a class="release-link" href="https://www.starship-ent.com/musician/ive" target="_blank" rel="noopener noreferrer">Official artist page ↗</a></div><div class="side-sticker">IVE<br><span style="color:#ed0a93">FOREVER ✦</span></div>
+</aside>
+<div class="content">
+<section class="hero" aria-label="IVE RADAR comeback banner"><div class="hero-message"><h1>IVE <em>RADAR</em></h1><span class="hero-kicker">THE CHART LAB</span><p>TRACKING THE LOOKS CAN KILL ERA<br>ONE VERIFIED ENTRY AT A TIME.</p></div><div class="hero-art"><img src="./assets/hero-office-reference.jpg" alt="IVE Hero Office superhero character promotional artwork, reproduced from the reference video"></div><div class="hero-ribbon">IVE / 2026</div></section>
+<div class="workspace">
+<div class="workmain" id="charts">
+<section class="panel platform-panel" aria-label="Platform chart rankings">
+<div class="filters" role="group" aria-label="Chart platforms"><button class="filter" data-chart="all" aria-pressed="true">All platforms</button><button class="filter" data-chart="Melon" aria-pressed="false">Melon</button><button class="filter" data-chart="Genie" aria-pressed="false">Genie</button><button class="filter" data-chart="Bugs" aria-pressed="false">Bugs</button><button class="filter" data-chart="FLO" aria-pressed="false">FLO</button><button class="filter" data-chart="YouTube" aria-pressed="false">YouTube</button><button class="filter" data-chart="Spotify" aria-pressed="false">Spotify</button><div class="range" role="group" aria-label="Chart type"><button class="filter" data-cycle="Realtime" aria-pressed="true">Realtime</button><button class="filter" data-cycle="Daily" aria-pressed="false">Daily</button><button class="filter" data-cycle="Weekly" aria-pressed="false">Weekly</button></div></div>
+<div class="scoreboards" id="scoreboards">
+<div class="score" data-name="Melon"><div class="scorehead"><div class="logo" style="background:#00c968">●</div><div>Melon<br><small>TOP100</small></div></div><div class="rank">—</div><div class="meta"><span>Peak</span><b>—</b><span>Change</span><b>—</b></div></div>
+<div class="score" data-name="Genie"><div class="scorehead"><div class="logo" style="background:#1e9cff">g</div><div>Genie<br><small>Realtime</small></div></div><div class="rank">—</div><div class="meta"><span>Peak</span><b>—</b><span>Change</span><b>—</b></div></div>
+<div class="score" data-name="Bugs"><div class="scorehead"><div class="logo" style="background:#fa3a4f">B</div><div>Bugs<br><small>Realtime</small></div></div><div class="rank">—</div><div class="meta"><span>Peak</span><b>—</b><span>Change</span><b>—</b></div></div>
+<div class="score" data-name="FLO"><div class="scorehead"><div class="logo" style="background:#6445ee">F</div><div>FLO<br><small>Realtime</small></div></div><div class="rank">—</div><div class="meta"><span>Peak</span><b>—</b><span>Change</span><b>—</b></div></div>
+<div class="score" data-name="YouTube"><div class="scorehead"><div class="logo" style="background:#ee2626">▶</div><div>YouTube<br><small>Music</small></div></div><div class="rank">—</div><div class="meta"><span>Peak</span><b>—</b><span>Change</span><b>—</b></div></div>
+<div class="score" data-name="Spotify"><div class="scorehead"><div class="logo" style="background:#15b86c">≋</div><div>Spotify<br><small>Top Songs</small></div></div><div class="rank">—</div><div class="meta"><span>Peak</span><b>—</b><span>Change</span><b>—</b></div></div>
 </div>
-<div class="row-title"><span class="tape"><span>02</span> CHART SCOREBOARD</span><div id="data-status" class="status warning" role="status">DESIGN PREVIEW · NO VERIFIED CHART FEED CONNECTED</div></div>
-<div id="rank-cards" class="quick" aria-label="Chart rankings">
-<article class="rank-card"><header>MELON<br>TOP100</header><div class="number">—</div><div class="smallline"><span>PEAK: —</span><span>NO DATA</span></div></article>
-<article class="rank-card"><header>MELON<br>DAILY</header><div class="number">—</div><div class="smallline"><span>PEAK: —</span><span>NO DATA</span></div></article>
-<article class="rank-card"><header>MELON<br>HOT100</header><div class="number">—</div><div class="smallline"><span>PEAK: —</span><span>NO DATA</span></div></article>
-<article class="rank-card"><header>GENIE<br>REALTIME</header><div class="number">—</div><div class="smallline"><span>PEAK: —</span><span>NO DATA</span></div></article>
-<article class="rank-card"><header>BUGS<br>REALTIME</header><div class="number">—</div><div class="smallline"><span>PEAK: —</span><span>NO DATA</span></div></article>
-<article class="rank-card"><header>FLO<br>REALTIME</header><div class="number">—</div><div class="smallline"><span>PEAK: —</span><span>NO DATA</span></div></article>
+</section>
+<div class="centerrow">
+<section class="panel chart-panel"><h2 class="section-heading"><span>⚡</span> RANKING HISTORY</h2><div class="chart-controls"><div class="tabs" role="group" aria-label="History platform"><button data-history="Melon" aria-pressed="true">Melon</button><button data-history="Genie" aria-pressed="false">Genie</button><button data-history="Bugs" aria-pressed="false">Bugs</button><button data-history="FLO" aria-pressed="false">FLO</button><button data-history="YouTube" aria-pressed="false">YouTube</button></div><div class="tabs" role="group" aria-label="Time range"><button data-window="7D" aria-pressed="true">7D</button><button data-window="30D" aria-pressed="false">30D</button><button data-window="ALL" aria-pressed="false">ALL</button></div></div>
+<div class="chartbox"><div class="empty-history" id="history-empty">Ranking history will appear after two verified observations.</div><div class="demo-stamp">VERIFIED OBSERVATIONS ONLY</div><svg id="preview-chart" viewBox="0 0 650 240" preserveAspectRatio="none" role="img" aria-label="Chart history; verified observations only"><defs><linearGradient id="linefill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f71796" stop-opacity=".25"/><stop offset="1" stop-color="#f71796" stop-opacity=".025"/></linearGradient></defs><g stroke="#e9e5ea" stroke-width="1"><path d="M42 32H642M42 78H642M42 124H642M42 170H642M42 214H642"/></g><g fill="#79717b" font-size="12" font-family="Arial"><text x="4" y="35">#1</text><text x="4" y="81">#25</text><text x="4" y="127">#50</text><text x="4" y="173">#75</text><text x="0" y="217">#100</text><text x="48" y="234">EARLIER</text><text x="580" y="234">LATEST</text></g><path id="example-area" d="" fill="url(#linefill)"/><path id="example-line" d="" stroke="#ec0b93" stroke-width="3" fill="none"/><g id="example-points" fill="#ec0b93" stroke="#fff" stroke-width="1"></g></svg></div><div class="chart-caption"><span id="chart-source-label"><b id="chart-label">Melon</b> · awaiting verified snapshots</span><span id="chart-timestamp">No fabricated history</span></div></section>
+<section class="panel key-panel"><h2 class="section-heading"><span>★</span> KEY STATS</h2><div class="statrows"><div class="statrow"><span>Highest chart rank</span><strong>—</strong></div><div class="statrow"><span>Current rank</span><strong>—</strong></div><div class="statrow"><span>Chart peak</span><strong>—</strong></div><div class="statrow"><span>Days charted</span><strong>—</strong></div><div class="statrow"><span>Hours in Top 20</span><strong>—</strong></div><div class="statrow"><span>Hours in Top 50</span><strong>—</strong></div><div class="statrow"><span>Last update</span><strong>—</strong></div></div><p class="small-desc">The chart statistics are computed only from recorded observations.</p></section>
 </div>
-<span class="section-tag" id="charts">03 / CHART INTELLIGENCE</span>
-<div class="analytics">
-<section class="panel"><div class="panel-top"><div><span class="kicker">★ TRACK YOUR RISE</span><h2>RANKING HISTORY!</h2></div><div class="filters" role="group" aria-label="Chart history platform"><button type="button" data-source="melon-top100" aria-pressed="true">MELON</button><button type="button" data-source="genie-realtime" aria-pressed="false">GENIE</button><button type="button" data-source="bugs-realtime" aria-pressed="false">BUGS</button><button type="button" data-source="flo-realtime" aria-pressed="false">FLO</button></div></div>
-<div class="graph"><svg id="history-svg" viewBox="0 0 720 270" role="img" aria-label="Rank history: no verified data yet"><g stroke="#111" opacity=".18" stroke-width="1"><path d="M55 20V235H706M55 72H706M55 127H706M55 181H706"/></g><g font-size="13" font-family="Arial" fill="#111" font-weight="bold"><text x="7" y="25">#1</text><text x="7" y="77">#25</text><text x="7" y="132">#50</text><text x="7" y="186">#75</text><text x="1" y="240">#100</text></g><path id="history-line" d="" fill="none" stroke="#111" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><path id="history-accent" d="" fill="none" stroke="#ed00b9" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg><div class="empty" id="chart-empty">NO VERIFIED RANK HISTORY YET.<br>THE GRAPH WILL APPEAR WHEN A SOURCE IS CONNECTED.</div></div>
-<div class="graph-notes"><span id="series-title">MELON TOP100</span><span>RANK #1 = CHART TOP</span><strong id="series-count">0 VERIFIED POINTS</strong></div></section>
-<section class="panel"><span class="kicker">★ THE SCOREBOARD</span><h2>CHART MILESTONES</h2><p class="subtitle">Every number will show its original source and reporting timestamp once collection is configured.</p><div class="stats"><div class="stat"><label>TOP100 PEAK</label><strong id="peak-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>CURRENT RANK</label><strong id="current-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>DAYS CHARTED</label><strong id="days-stat">—</strong><small>Awaiting source</small></div><div class="stat"><label>TOP 20 HOURS</label><strong id="hours-stat">—</strong><small>Awaiting source</small></div></div><p class="note" id="source-time">SOURCE TIMESTAMP: NOT CONNECTED</p></section>
+<div class="bottomrow"><section class="panel"><h2 class="section-heading"><span>✦</span> RECENT UPDATES</h2><table class="data-table"><thead><tr><th>TIME (KST)</th><th>PLATFORM</th><th>SONG</th><th>RANK</th></tr></thead><tbody><tr><td colspan="4" style="text-align:left;padding:20px 10px">No verified observations yet.</td></tr></tbody></table></section><section class="panel"><h2 class="section-heading"><span>◎</span> MILESTONES</h2><div class="statrows"><div class="statrow"><span>#1 on Melon TOP100</span><strong>—</strong></div><div class="statrow"><span>First Top 10 entry</span><strong>—</strong></div><div class="statrow"><span>First Top 50 entry</span><strong>—</strong></div><div class="statrow"><span>10M verified streams</span><strong>—</strong></div></div></section></div>
 </div>
-<div class="lower">
-<section class="panel" id="album"><span class="kicker">★ FILE 04 / ALBUM</span><h2>THE TRACKLIST</h2><div class="album-lockup"><div class="album-icon" aria-hidden="true">IVE</div><div><strong>LOOKS CAN KILL</strong><span>Current comeback · title track</span></div></div><table><thead><tr><th>TRACK</th><th>TOP100</th><th>PEAK</th></tr></thead><tbody id="tracks-body"><tr><td>Looks Can Kill</td><td>—</td><td>—</td></tr><tr><td>Other tracks</td><td>—</td><td>—</td></tr></tbody></table><a class="cta" href="#charts">VIEW CHART DATA ↗</a></section>
-<section class="panel" id="streaming"><span class="kicker">★ FILE 05 / GLOBAL</span><h2>STREAMING POWER</h2><p class="subtitle">YouTube, Spotify and album sales are kept separate because they follow different reporting schedules.</p><div class="info-stack" id="streams"><div class="info-row"><span>YOUTUBE</span><span>AWAITING DATA</span></div><div class="info-row"><span>SPOTIFY</span><span>AWAITING DATA</span></div><div class="info-row"><span>HANTEO</span><span>AWAITING DATA</span></div></div><p class="note">No projections or fabricated counters.</p></section>
-<section class="panel" id="shows"><span class="kicker">★ FILE 06 / MUSIC SHOWS</span><h2>WIN WATCH!</h2><p class="subtitle">Verified nominations, show appearances, scores and wins — with evidence links when available.</p><table><thead><tr><th>SHOW</th><th>STATUS</th></tr></thead><tbody id="shows-body"><tr><td>M Countdown</td><td>NOT LOADED</td></tr><tr><td>Music Bank</td><td>NOT LOADED</td></tr><tr><td>Inkigayo</td><td>NOT LOADED</td></tr></tbody></table><a class="cta" href="#top">BACK TO HQ ↑</a></section>
+<aside class="aside" aria-label="Comeback details">
+<section class="panel details" id="album"><h2 class="section-heading"><span>★</span> ALBUM</h2><div class="album-row"><div class="album-art"><span>IVE</span></div><div><div class="subtle">IVE EP</div><div class="album-title">Looks Can Kill</div><small>Released Oct 26, 2026</small></div></div><div class="tabs" role="group" aria-label="Album sales source"><button data-sales="Hanteo" aria-pressed="true">Hanteo</button><button data-sales="Circle" aria-pressed="false">Circle</button><button data-sales="Other" aria-pressed="false">Other</button></div><div class="card-rows"><div class="statrow"><span>Daily sales</span><strong>—</strong></div><div class="statrow"><span>Total sales</span><strong>—</strong></div><div class="statrow"><span>Peak chart rank</span><strong>—</strong></div></div><span class="pill-note" id="sales-label">Hanteo · not connected</span></section>
+<section class="panel details" id="streaming"><h2 class="section-heading"><span>♫</span> STREAMING</h2><div class="tabs" role="group" aria-label="Streaming services"><button data-stream="YouTube" aria-pressed="true">YouTube</button><button data-stream="Spotify" aria-pressed="false">Spotify</button><button data-stream="Apple Music" aria-pressed="false">Apple Music</button></div><div class="media-line"><div class="video-thumb" aria-hidden="true"></div><div><b>Looks Can Kill</b><small>Official MV · IVE</small></div></div><div class="card-rows"><div class="statrow"><span id="stream-metric">YouTube views</span><strong>—</strong></div><div class="statrow"><span>Updated</span><strong>—</strong></div></div><p class="small-desc">Streaming figures appear only with a verified source and observation time.</p></section>
+<section class="panel details" id="shows"><h2 class="section-heading"><span>★</span> MUSIC SHOWS</h2><table class="data-table"><thead><tr><th>SHOW</th><th>RESULT</th></tr></thead><tbody><tr><td>M Countdown</td><td>—</td></tr><tr><td>Music Bank</td><td>—</td></tr><tr><td>Inkigayo</td><td>—</td></tr></tbody></table><p class="small-desc">Verified scores and wins will appear here.</p></section>
+</aside>
 </div>
-<footer><span>IVE RADAR ★ UNOFFICIAL FAN PROJECT · NOT AFFILIATED WITH IVE OR STARSHIP</span><span>FREE PROJECT · VERIFIED DATA ONLY · <a href="https://github.com/acchtt/peach-en">SOURCE CODE</a></span></footer>
-</main>
-<script>
-(function(){
-'use strict';
-var labels={'melon-top100':'MELON TOP100','melon-daily':'MELON DAILY','melon-hot100':'MELON HOT100','genie-realtime':'GENIE REALTIME','bugs-realtime':'BUGS REALTIME','flo-realtime':'FLO REALTIME'};
-var order=Object.keys(labels);
-var data={sources:[],history:[],milestones:{},tracks:[],streaming:[],shows:[],updated_at:null};
-var current='melon-top100';
-function safeText(x){return x===null||x===undefined||x===''?'—':String(x)}
-function rank(x){return typeof x==='number'&&Number.isFinite(x)?'#'+x:'—'}
-function el(tag,cls,txt){var node=document.createElement(tag);if(cls)node.className=cls;if(txt!==undefined)node.textContent=txt;return node}
-function refreshCards(){
-var host=document.getElementById('rank-cards');host.replaceChildren();
-order.forEach(function(id){var source=data.sources.find(function(s){return s.id===id})||{};
-var card=el('article','rank-card');var head=el('header','',labels[id].split(' ').join('\n'));head.style.whiteSpace='pre-line';
-var number=el('div','number',source.rank===null||source.rank===undefined?'—':safeText(source.rank));
-var line=el('div','smallline');line.appendChild(el('span','', 'PEAK: '+rank(source.peak)));
-line.appendChild(el('span','',source.rank===null||source.rank===undefined?'NO DATA':(typeof source.change==='number'?((source.change>0?'▲ ':'▼ ')+Math.abs(source.change)):'VERIFIED')));
-card.append(head,number,line);host.appendChild(card)
-})}
-function refreshChart(){
-document.querySelectorAll('[data-source]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.source===current?'true':'false')});
-document.getElementById('series-title').textContent=labels[current];
-var pts=(data.history||[]).filter(function(p){return p.source===current&&typeof p.rank==='number'&&p.rank>=1&&p.rank<=100}).sort(function(a,b){return String(a.timestamp||a.date||'').localeCompare(String(b.timestamp||b.date||''))});
-document.getElementById('series-count').textContent=pts.length+' VERIFIED POINT'+(pts.length===1?'':'S');
-var blank=pts.length<2;document.getElementById('chart-empty').hidden=!blank;
-var line='';if(!blank){line=pts.map(function(p,i){var x=55+(i/(pts.length-1))*646;var y=20+((p.rank-1)/99)*215;return(i?'L':'M')+x.toFixed(2)+' '+y.toFixed(2)}).join(' ')}
-document.getElementById('history-line').setAttribute('d',line);document.getElementById('history-accent').setAttribute('d',line);
-document.getElementById('history-svg').setAttribute('aria-label',blank?'No verified rank history for '+labels[current]:'Verified rank history for '+labels[current]+', '+pts.length+' points');
-}
-function refreshStats(){
-var m=data.milestones||{};document.getElementById('peak-stat').textContent=rank(m.top100_peak);
-document.getElementById('current-stat').textContent=rank(m.top100_current);
-document.getElementById('days-stat').textContent=safeText(m.days_charted);
-document.getElementById('hours-stat').textContent=safeText(m.hours_top20);
-document.getElementById('source-time').textContent=data.updated_at?'SOURCE TIMESTAMP: '+data.updated_at:'SOURCE TIMESTAMP: NOT CONNECTED';
-}
-function updateTable(id,rows,columns,placeholder){if(!Array.isArray(rows)||rows.length===0)return;var target=document.getElementById(id);target.replaceChildren();rows.forEach(function(row){var tr=document.createElement('tr');columns.forEach(function(col){tr.appendChild(el('td','',safeText(row[col])))});target.appendChild(tr)})}
-function updateStreaming(){if(!Array.isArray(data.streaming)||data.streaming.length===0)return;var host=document.getElementById('streams');host.replaceChildren();data.streaming.forEach(function(item){var row=el('div','info-row');row.append(el('span','',safeText(item.platform)),el('span','',safeText(item.value)));host.appendChild(row)})}
-function refresh(){refreshCards();refreshChart();refreshStats();updateTable('tracks-body',data.tracks,['name','melon_top100','peak']);updateTable('shows-body',data.shows,['name','status']);updateStreaming();var any=data.sources.some(function(s){return typeof s.rank==='number'});var st=document.getElementById('data-status');st.textContent=any?'VERIFIED DATA LOADED · LAST UPDATE: '+safeText(data.updated_at):'DESIGN PREVIEW · NO VERIFIED CHART FEED CONNECTED';st.className='status'+(any?'':' warning')}
-document.querySelectorAll('[data-source]').forEach(function(btn){btn.addEventListener('click',function(){current=btn.dataset.source;refreshChart()})});
-fetch('./data.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw Error('data unavailable');return r.json()}).then(function(payload){if(payload&&Array.isArray(payload.sources)&&Array.isArray(payload.history)){data=payload;refresh()}}).catch(function(){refresh()});
-})();
-</script>
-</body></html>
+</div></div></div>
+<footer class="footer"><span>UNOFFICIAL IVE FAN PROJECT · NOT AFFILIATED WITH STARSHIP OR HERO OFFICE</span><span>Hero Office artwork used from the user-provided site reference. Rankings are attributed to their original chart sources.</span></footer>
+<script type="module" src="./stats.js"></script>
+</body>
+</html>
