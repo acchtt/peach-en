@@ -9,6 +9,7 @@ Status (2026-10-27 KST): **tested successfully as a research prototype; not inte
 - The chart tool is get_music_chart. Its chart_type values include TOP_100, DAILY, WEEKLY, HOT_100 and specialized HOT_TRACK types.
 - Optional parameters: start 1..100, size 1..30, hot_100_filter D30/D100 for HOT_100.
 - A one-off tools/call for TOP_100, start=1, size=10 returned HTTP 200, result isError=false, with Melon song IDs, ranks, artist credits and titles without authentication.
+- Follow-up TOP_100, start=11, size=10 at 2026-10-27 02:14 KST returned an exact match for IVE Looks Can Kill, rank #12 and Melon song ID 603448999. This is a *retrieval-time* observation, not a provider-verified chart-hour snapshot, and is deliberately NOT included in production data.json.
 - The returned tool-content string was Python-like dictionary syntax rather than strict JSON. The test adapter uses tokenize + ast.literal_eval, never arbitrary eval.
 - The inspected payload did not include an identifiable official chart reporting timestamp. Retrieval time must not be misrepresented as the chart's published hour.
 - This test downloaded no personal account data, registered no OAuth app and made no modifications to data.json.
