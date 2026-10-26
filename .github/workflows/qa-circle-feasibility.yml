@@ -1,0 +1,15 @@
+name: QA - Circle & Official Album Source Feasibility
+on:
+  push:
+    branches: [demo/circle-chart-feasibility]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect source access controls and official album RSS
+        run: python3 scripts/probe_circle_sources.py
