@@ -615,6 +615,43 @@
       "melon_song_id": 603448999,
       "verification": "official-melon-mcp-capture",
       "note": "Rank captured via official Melon MCP at collection time, not verified as a published chart hour."
+    },
+    {
+      "track_id": "looks-can-kill",
+      "chart_id": "apple-music-kr-top-songs",
+      "rank": 3,
+      "movement": null,
+      "collected_at": "2026-10-31T04:18:31+09:00",
+      "feed_updated_at": "2026-10-31T04:18:30+09:00",
+      "source_url": "https://rss.applemarketingtools.com/api/v2/kr/music/most-played/100/songs.json",
+      "song_url": "https://music.apple.com/kr/album/looks-can-kill/6820421860?i=6820422075",
+      "song_id": "6820422075",
+      "verification": "official-apple-rss",
+      "note": "Apple Music KR Top Songs RSS feed rank, captured during collection. Timestamp is NOT an hourly chart publication period."
+    },
+    {
+      "track_id": "looks-can-kill",
+      "chart_id": "melon-top100",
+      "rank": 6,
+      "movement": null,
+      "collected_at": "2026-10-31T04:18:57+09:00",
+      "source_url": "https://www.melon.com/chart/index.htm",
+      "mcp_endpoint": "https://mcp.melon.com/mcp/",
+      "melon_song_id": 603448999,
+      "verification": "official-melon-mcp-capture",
+      "note": "Rank captured via official Melon MCP at collection time, not verified as a published chart hour."
+    },
+    {
+      "track_id": "looks-can-kill",
+      "chart_id": "melon-daily",
+      "rank": 6,
+      "movement": null,
+      "collected_at": "2026-10-31T04:18:57+09:00",
+      "source_url": "https://www.melon.com/chart/day/index.htm",
+      "mcp_endpoint": "https://mcp.melon.com/mcp/",
+      "melon_song_id": 603448999,
+      "verification": "official-melon-mcp-capture",
+      "note": "Rank captured via official Melon MCP at collection time, not verified as a published chart hour."
     }
   ],
   "streaming": [
@@ -805,6 +842,16 @@
       "video_id": "rsNhWkC4neE",
       "value": 22626398,
       "collected_at": "2026-10-30T23:05:09+09:00",
+      "source_url": "https://www.youtube.com/watch?v=rsNhWkC4neE",
+      "verification": "youtube-data-api-v3"
+    },
+    {
+      "track_id": "looks-can-kill",
+      "platform": "YouTube",
+      "metric": "view_count",
+      "video_id": "rsNhWkC4neE",
+      "value": 22728172,
+      "collected_at": "2026-10-31T04:18:30+09:00",
       "source_url": "https://www.youtube.com/watch?v=rsNhWkC4neE",
       "verification": "youtube-data-api-v3"
     }
