@@ -2887,6 +2887,18 @@
       "melon_song_id": 603448999,
       "verification": "official-melon-mcp-capture",
       "note": "Rank captured via official Melon MCP at collection time, not verified as a published chart hour."
+    },
+    {
+      "track_id": "looks-can-kill",
+      "chart_id": "melon-top100",
+      "rank": 12,
+      "movement": null,
+      "collected_at": "2026-11-23T09:14:58+09:00",
+      "source_url": "https://www.melon.com/chart/index.htm",
+      "mcp_endpoint": "https://mcp.melon.com/mcp/",
+      "melon_song_id": 603448999,
+      "verification": "official-melon-mcp-capture",
+      "note": "Rank captured via official Melon MCP at collection time, not verified as a published chart hour."
     }
   ],
   "streaming": [
@@ -3907,6 +3919,16 @@
       "video_id": "rsNhWkC4neE",
       "value": 28868976,
       "collected_at": "2026-11-23T03:32:29+09:00",
+      "source_url": "https://www.youtube.com/watch?v=rsNhWkC4neE",
+      "verification": "youtube-data-api-v3"
+    },
+    {
+      "track_id": "looks-can-kill",
+      "platform": "YouTube",
+      "metric": "view_count",
+      "video_id": "rsNhWkC4neE",
+      "value": 28915344,
+      "collected_at": "2026-11-23T09:14:55+09:00",
       "source_url": "https://www.youtube.com/watch?v=rsNhWkC4neE",
       "verification": "youtube-data-api-v3"
     }
